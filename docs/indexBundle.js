@@ -3874,7 +3874,7 @@ function indexPage(props) {
         }
         catch (_a) { }
         if (!deck) {
-            deck = createNewDeck(i);
+            deck = createNewDeck(i + 1);
         }
         return deck;
     })), decks = _c[0], setDecks = _c[1];

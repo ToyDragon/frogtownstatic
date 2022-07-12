@@ -49,7 +49,7 @@ export default function indexPage(props: {
               deck = JSON.parse(localStorage.getItem(`deck_${i}`) || 'null');
             } catch {}
             if (!deck) {
-              deck = createNewDeck(i);
+              deck = createNewDeck(i+1);
             }
             return deck;
           }),
