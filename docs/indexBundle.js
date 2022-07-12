@@ -847,22 +847,22 @@ function CardActions(props) {
     };
     return react_1.default.createElement(react_1.default.Fragment, null,
         !props.onAdd ? null :
-            react_1.default.createElement("div", { className: "action", title: "Add copy of card to deck", style: __assign({ backgroundImage: "url(\"/icons/add card32.png\")" }, position()), onMouseUp: function () { return props.onAdd(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Add copy of card to deck", style: __assign({ backgroundImage: "url(\"icons/add card32.png\")" }, position()), onMouseUp: function () { return props.onAdd(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onRemove ? null :
-            react_1.default.createElement("div", { className: "action", title: "Remove card from deck", style: __assign({ backgroundImage: "url(\"/icons/remove card32.png\")" }, position()), onMouseUp: function () { return props.onRemove(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Remove card from deck", style: __assign({ backgroundImage: "url(\"icons/remove card32.png\")" }, position()), onMouseUp: function () { return props.onRemove(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onSimilar ? null :
-            react_1.default.createElement("div", { className: "action", title: "Find other printings of this card", style: __assign({ backgroundImage: "url(\"/icons/misc card32.png\")" }, position()), onMouseUp: function () { return props.onSimilar(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Find other printings of this card", style: __assign({ backgroundImage: "url(\"icons/misc card32.png\")" }, position()), onMouseUp: function () { return props.onSimilar(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onSideboard ? null :
-            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"/icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onSideboard(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onSideboard(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onMainboard ? null :
-            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"/icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onMainboard(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onMainboard(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onStar ? null :
-            react_1.default.createElement("div", { className: "action", title: "Mark as the key card to this deck", style: __assign({ backgroundImage: "url(\"/icons/star card32.png\")" }, position()), onMouseUp: function () { return props.onStar(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Mark as the key card to this deck", style: __assign({ backgroundImage: "url(\"icons/star card32.png\")" }, position()), onMouseUp: function () { return props.onStar(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })));
 }
 exports["default"] = CardActions;
@@ -1251,6 +1251,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
+var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function CompactDetailsCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -1277,10 +1278,6 @@ function CompactDetailsCard(props) {
     if (rarity === 'mythic') {
         rarityColor = '#e24d23';
     }
-    var makeManaIcon = function (name) {
-        // eslint-disable-next-line max-len
-        return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(/icons/" + name + ".jpg)'></div>";
-    };
     var idToText = props.loader.getMapDataSync('IDToText');
     var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
     var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
@@ -1340,7 +1337,7 @@ function CompactDetailsCard(props) {
                         top: '14px',
                     }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                         __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                            .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
+                            .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
                             .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                     } })),
             react_1.default.createElement("div", { style: {
@@ -1376,7 +1373,7 @@ function CompactDetailsCard(props) {
                     marginTop: '-6px',
                 }, dangerouslySetInnerHTML: {
                     __html: (idToText[props.cardId] || '')
-                        .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
+                        .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
                         .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                 } }),
             react_1.default.createElement(card_actions_1.default, __assign({ top: false, cardId: props.cardId }, props.actionHandlers)))));
@@ -1424,6 +1421,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
+var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function CompactListCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -1450,10 +1448,6 @@ function CompactListCard(props) {
     if (rarity === 'mythic') {
         rarityColor = '#e24d23';
     }
-    var makeManaIcon = function (name) {
-        // eslint-disable-next-line max-len
-        return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(/icons/" + name + ".jpg)'></div>";
-    };
     return (react_1.default.createElement("div", { className: 'actionContainer', "data-hovercardid": props.cardId, style: {
             width: 'calc(100% - 8px)',
             height: '42px',
@@ -1502,7 +1496,7 @@ function CompactListCard(props) {
                 paddingRight: '4px',
             }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                 __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                    .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+                    .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
             } }),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',
@@ -1737,6 +1731,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
+var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function DetailsCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -1763,10 +1758,6 @@ function DetailsCard(props) {
     if (rarity === 'mythic') {
         rarityColor = '#e24d23';
     }
-    var makeManaIcon = function (name) {
-        // eslint-disable-next-line max-len
-        return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(/icons/" + name + ".jpg)'></div>";
-    };
     var idToText = props.loader.getMapDataSync('IDToText');
     var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
     var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
@@ -1829,7 +1820,7 @@ function DetailsCard(props) {
                         top: '14px',
                     }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                         __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                            .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
+                            .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
                             .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                     } })),
             react_1.default.createElement("div", { style: {
@@ -1865,7 +1856,7 @@ function DetailsCard(props) {
                     marginTop: '-6px',
                 }, dangerouslySetInnerHTML: {
                     __html: (idToText[props.cardId] || '')
-                        .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
+                        .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
                         .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                 } }),
             react_1.default.createElement(card_actions_1.default, __assign({ top: false, cardId: props.cardId }, props.actionHandlers)))));
@@ -2839,6 +2830,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
+var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function ListCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -2865,10 +2857,6 @@ function ListCard(props) {
     if (rarity === 'mythic') {
         rarityColor = '#e24d23';
     }
-    var makeManaIcon = function (name) {
-        // eslint-disable-next-line max-len
-        return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(/icons/" + name + ".jpg)'></div>";
-    };
     return (react_1.default.createElement("div", { className: 'actionContainer', "data-hovercardid": props.cardId, style: {
             width: 'calc(100% - 8px)',
             maxWidth: '750px',
@@ -2921,7 +2909,7 @@ function ListCard(props) {
                 paddingRight: '4px',
             }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                 __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                    .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+                    .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
             } }),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',
@@ -2935,6 +2923,24 @@ function ListCard(props) {
 }
 exports["default"] = ListCard;
 //# sourceMappingURL=list_card.js.map
+
+/***/ }),
+
+/***/ "./docs/views/components/make_mana_icon.js":
+/*!*************************************************!*\
+  !*** ./docs/views/components/make_mana_icon.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function makeManaIcon(name) {
+    // eslint-disable-next-line max-len
+    return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(icons/" + name + ".jpg)'></div>";
+}
+exports["default"] = makeManaIcon;
+;
+//# sourceMappingURL=make_mana_icon.js.map
 
 /***/ }),
 

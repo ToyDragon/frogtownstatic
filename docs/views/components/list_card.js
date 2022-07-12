@@ -30,6 +30,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var card_actions_1 = __importDefault(require("./card_actions"));
+var make_mana_icon_1 = __importDefault(require("./make_mana_icon"));
 function ListCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -56,10 +57,6 @@ function ListCard(props) {
     if (rarity === 'mythic') {
         rarityColor = '#e24d23';
     }
-    var makeManaIcon = function (name) {
-        // eslint-disable-next-line max-len
-        return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(/icons/" + name + ".jpg)'></div>";
-    };
     return (react_1.default.createElement("div", { className: 'actionContainer', "data-hovercardid": props.cardId, style: {
             width: 'calc(100% - 8px)',
             maxWidth: '750px',
@@ -112,7 +109,7 @@ function ListCard(props) {
                 paddingRight: '4px',
             }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                 __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                    .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+                    .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
             } }),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',

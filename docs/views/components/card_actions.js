@@ -36,22 +36,22 @@ function CardActions(props) {
     };
     return react_1.default.createElement(react_1.default.Fragment, null,
         !props.onAdd ? null :
-            react_1.default.createElement("div", { className: "action", title: "Add copy of card to deck", style: __assign({ backgroundImage: "url(\"/icons/add card32.png\")" }, position()), onMouseUp: function () { return props.onAdd(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Add copy of card to deck", style: __assign({ backgroundImage: "url(\"icons/add card32.png\")" }, position()), onMouseUp: function () { return props.onAdd(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onRemove ? null :
-            react_1.default.createElement("div", { className: "action", title: "Remove card from deck", style: __assign({ backgroundImage: "url(\"/icons/remove card32.png\")" }, position()), onMouseUp: function () { return props.onRemove(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Remove card from deck", style: __assign({ backgroundImage: "url(\"icons/remove card32.png\")" }, position()), onMouseUp: function () { return props.onRemove(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onSimilar ? null :
-            react_1.default.createElement("div", { className: "action", title: "Find other printings of this card", style: __assign({ backgroundImage: "url(\"/icons/misc card32.png\")" }, position()), onMouseUp: function () { return props.onSimilar(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Find other printings of this card", style: __assign({ backgroundImage: "url(\"icons/misc card32.png\")" }, position()), onMouseUp: function () { return props.onSimilar(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onSideboard ? null :
-            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"/icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onSideboard(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onSideboard(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onMainboard ? null :
-            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"/icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onMainboard(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Move card to sideboard", style: __assign({ backgroundImage: "url(\"icons/transfer card32.png\")" }, position()), onMouseUp: function () { return props.onMainboard(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
         !props.onStar ? null :
-            react_1.default.createElement("div", { className: "action", title: "Mark as the key card to this deck", style: __assign({ backgroundImage: "url(\"/icons/star card32.png\")" }, position()), onMouseUp: function () { return props.onStar(props.cardId); } },
+            react_1.default.createElement("div", { className: "action", title: "Mark as the key card to this deck", style: __assign({ backgroundImage: "url(\"icons/star card32.png\")" }, position()), onMouseUp: function () { return props.onStar(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })));
 }
 exports.default = CardActions;

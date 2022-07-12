@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {DataLoader} from '../../data/data_loader';
 import CardActions from './card_actions';
+import makeManaIcon from './make_mana_icon';
 import URLLoader from './url_loader';
 
 export default function DetailsCard(props: { cardId: string, count: number, loader: DataLoader, urlLoader: URLLoader,
@@ -39,11 +40,6 @@ export default function DetailsCard(props: { cardId: string, count: number, load
   if (rarity === 'mythic') {
     rarityColor = '#e24d23';
   }
-
-  const makeManaIcon = (name: string) => {
-    // eslint-disable-next-line max-len
-    return `<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(/icons/${name}.jpg)'></div>`;
-  };
 
   const idToText = props.loader.getMapDataSync('IDToText')!;
   const idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI')!;
