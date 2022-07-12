@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./bin/data/debouncer.js":
-/*!*******************************!*\
-  !*** ./bin/data/debouncer.js ***!
-  \*******************************/
+/***/ "./docs/data/debouncer.js":
+/*!********************************!*\
+  !*** ./docs/data/debouncer.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -72,10 +72,10 @@ exports["default"] = Debouncer;
 
 /***/ }),
 
-/***/ "./bin/data/execute_filter.js":
-/*!************************************!*\
-  !*** ./bin/data/execute_filter.js ***!
-  \************************************/
+/***/ "./docs/data/execute_filter.js":
+/*!*************************************!*\
+  !*** ./docs/data/execute_filter.js ***!
+  \*************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -119,7 +119,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var execute_number_range_filter_1 = __importDefault(__webpack_require__(/*! ./execute_number_range_filter */ "./bin/data/execute_number_range_filter.js"));
+var execute_number_range_filter_1 = __importDefault(__webpack_require__(/*! ./execute_number_range_filter */ "./docs/data/execute_number_range_filter.js"));
 function cleanName(name) {
     return name.replace(/[,_-]/g, '').toLowerCase();
 }
@@ -310,10 +310,10 @@ exports["default"] = executeFilter;
 
 /***/ }),
 
-/***/ "./bin/data/execute_number_range_filter.js":
-/*!*************************************************!*\
-  !*** ./bin/data/execute_number_range_filter.js ***!
-  \*************************************************/
+/***/ "./docs/data/execute_number_range_filter.js":
+/*!**************************************************!*\
+  !*** ./docs/data/execute_number_range_filter.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -366,10 +366,10 @@ exports["default"] = executeNumberRangeFilter;
 
 /***/ }),
 
-/***/ "./bin/data/map_data.js":
-/*!******************************!*\
-  !*** ./bin/data/map_data.js ***!
-  \******************************/
+/***/ "./docs/data/map_data.js":
+/*!*******************************!*\
+  !*** ./docs/data/map_data.js ***!
+  \*******************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -467,10 +467,10 @@ exports.MapData = MapData;
 
 /***/ }),
 
-/***/ "./bin/data/url_data_loader.js":
-/*!*************************************!*\
-  !*** ./bin/data/url_data_loader.js ***!
-  \*************************************/
+/***/ "./docs/data/url_data_loader.js":
+/*!**************************************!*\
+  !*** ./docs/data/url_data_loader.js ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -513,10 +513,10 @@ exports.UrlDataLoader = UrlDataLoader;
 
 /***/ }),
 
-/***/ "./bin/views/bootstrap_icons/icon_check.js":
-/*!*************************************************!*\
-  !*** ./bin/views/bootstrap_icons/icon_check.js ***!
-  \*************************************************/
+/***/ "./docs/views/bootstrap_icons/icon_check.js":
+/*!**************************************************!*\
+  !*** ./docs/views/bootstrap_icons/icon_check.js ***!
+  \**************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -542,10 +542,10 @@ exports["default"] = IconCheck;
 
 /***/ }),
 
-/***/ "./bin/views/bootstrap_icons/icon_filter.js":
-/*!**************************************************!*\
-  !*** ./bin/views/bootstrap_icons/icon_filter.js ***!
-  \**************************************************/
+/***/ "./docs/views/bootstrap_icons/icon_filter.js":
+/*!***************************************************!*\
+  !*** ./docs/views/bootstrap_icons/icon_filter.js ***!
+  \***************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -568,10 +568,10 @@ exports["default"] = IconFilter;
 
 /***/ }),
 
-/***/ "./bin/views/bootstrap_icons/icon_page_text.js":
-/*!*****************************************************!*\
-  !*** ./bin/views/bootstrap_icons/icon_page_text.js ***!
-  \*****************************************************/
+/***/ "./docs/views/bootstrap_icons/icon_page_text.js":
+/*!******************************************************!*\
+  !*** ./docs/views/bootstrap_icons/icon_page_text.js ***!
+  \******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -595,10 +595,10 @@ exports["default"] = IconPageText;
 
 /***/ }),
 
-/***/ "./bin/views/bootstrap_icons/icon_search.js":
-/*!**************************************************!*\
-  !*** ./bin/views/bootstrap_icons/icon_search.js ***!
-  \**************************************************/
+/***/ "./docs/views/bootstrap_icons/icon_search.js":
+/*!***************************************************!*\
+  !*** ./docs/views/bootstrap_icons/icon_search.js ***!
+  \***************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -621,10 +621,10 @@ exports["default"] = IconSearch;
 
 /***/ }),
 
-/***/ "./bin/views/components/bulk_import_window.js":
-/*!****************************************************!*\
-  !*** ./bin/views/components/bulk_import_window.js ***!
-  \****************************************************/
+/***/ "./docs/views/components/bulk_import_window.js":
+/*!*****************************************************!*\
+  !*** ./docs/views/components/bulk_import_window.js ***!
+  \*****************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -637,7 +637,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var execute_filter_1 = __webpack_require__(/*! ../../data/execute_filter */ "./bin/data/execute_filter.js");
+var execute_filter_1 = __webpack_require__(/*! ../../data/execute_filter */ "./docs/data/execute_filter.js");
 function parseCards(loader, input) {
     var _a, _b;
     var result = {
@@ -803,10 +803,10 @@ exports["default"] = BulkImportWindow;
 
 /***/ }),
 
-/***/ "./bin/views/components/card_actions.js":
-/*!**********************************************!*\
-  !*** ./bin/views/components/card_actions.js ***!
-  \**********************************************/
+/***/ "./docs/views/components/card_actions.js":
+/*!***********************************************!*\
+  !*** ./docs/views/components/card_actions.js ***!
+  \***********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -870,10 +870,10 @@ exports["default"] = CardActions;
 
 /***/ }),
 
-/***/ "./bin/views/components/card_area.js":
-/*!*******************************************!*\
-  !*** ./bin/views/components/card_area.js ***!
-  \*******************************************/
+/***/ "./docs/views/components/card_area.js":
+/*!********************************************!*\
+  !*** ./docs/views/components/card_area.js ***!
+  \********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -889,10 +889,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var card_group_1 = __importDefault(__webpack_require__(/*! ./card_group */ "./bin/views/components/card_group.js"));
-var display_dropdown_1 = __webpack_require__(/*! ./display_dropdown */ "./bin/views/components/display_dropdown.js");
-var grouper_dropdown_1 = __webpack_require__(/*! ./grouper_dropdown */ "./bin/views/components/grouper_dropdown.js");
-var lazy_background_loader_1 = __importDefault(__webpack_require__(/*! ./lazy_background_loader */ "./bin/views/components/lazy_background_loader.js"));
+var card_group_1 = __importDefault(__webpack_require__(/*! ./card_group */ "./docs/views/components/card_group.js"));
+var display_dropdown_1 = __webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js");
+var grouper_dropdown_1 = __webpack_require__(/*! ./grouper_dropdown */ "./docs/views/components/grouper_dropdown.js");
+var lazy_background_loader_1 = __importDefault(__webpack_require__(/*! ./lazy_background_loader */ "./docs/views/components/lazy_background_loader.js"));
 function groupModeSingleGrid(cardIds) {
     var groups = [];
     for (var _i = 0, cardIds_1 = cardIds; _i < cardIds_1.length; _i++) {
@@ -1074,10 +1074,10 @@ exports["default"] = CardArea;
 
 /***/ }),
 
-/***/ "./bin/views/components/card_group.js":
-/*!********************************************!*\
-  !*** ./bin/views/components/card_group.js ***!
-  \********************************************/
+/***/ "./docs/views/components/card_group.js":
+/*!*********************************************!*\
+  !*** ./docs/views/components/card_group.js ***!
+  \*********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1097,12 +1097,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./bin/views/components/card_actions.js"));
-var compact_details_card_1 = __importDefault(__webpack_require__(/*! ./compact_details_card */ "./bin/views/components/compact_details_card.js"));
-var compact_list_card_1 = __importDefault(__webpack_require__(/*! ./compact_list_card */ "./bin/views/components/compact_list_card.js"));
-var details_card_1 = __importDefault(__webpack_require__(/*! ./details_card */ "./bin/views/components/details_card.js"));
-var display_dropdown_1 = __webpack_require__(/*! ./display_dropdown */ "./bin/views/components/display_dropdown.js");
-var list_card_1 = __importDefault(__webpack_require__(/*! ./list_card */ "./bin/views/components/list_card.js"));
+var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
+var compact_details_card_1 = __importDefault(__webpack_require__(/*! ./compact_details_card */ "./docs/views/components/compact_details_card.js"));
+var compact_list_card_1 = __importDefault(__webpack_require__(/*! ./compact_list_card */ "./docs/views/components/compact_list_card.js"));
+var details_card_1 = __importDefault(__webpack_require__(/*! ./details_card */ "./docs/views/components/details_card.js"));
+var display_dropdown_1 = __webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js");
+var list_card_1 = __importDefault(__webpack_require__(/*! ./list_card */ "./docs/views/components/list_card.js"));
 function countCards(cardIds) {
     var idToCount = {};
     for (var _i = 0, cardIds_1 = cardIds; _i < cardIds_1.length; _i++) {
@@ -1213,10 +1213,10 @@ exports["default"] = CardGroup;
 
 /***/ }),
 
-/***/ "./bin/views/components/compact_details_card.js":
-/*!******************************************************!*\
-  !*** ./bin/views/components/compact_details_card.js ***!
-  \******************************************************/
+/***/ "./docs/views/components/compact_details_card.js":
+/*!*******************************************************!*\
+  !*** ./docs/views/components/compact_details_card.js ***!
+  \*******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1250,7 +1250,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./bin/views/components/card_actions.js"));
+var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 function CompactDetailsCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -1386,10 +1386,10 @@ exports["default"] = CompactDetailsCard;
 
 /***/ }),
 
-/***/ "./bin/views/components/compact_list_card.js":
-/*!***************************************************!*\
-  !*** ./bin/views/components/compact_list_card.js ***!
-  \***************************************************/
+/***/ "./docs/views/components/compact_list_card.js":
+/*!****************************************************!*\
+  !*** ./docs/views/components/compact_list_card.js ***!
+  \****************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1423,7 +1423,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./bin/views/components/card_actions.js"));
+var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 function CompactListCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -1519,10 +1519,10 @@ exports["default"] = CompactListCard;
 
 /***/ }),
 
-/***/ "./bin/views/components/deck_area.js":
-/*!*******************************************!*\
-  !*** ./bin/views/components/deck_area.js ***!
-  \*******************************************/
+/***/ "./docs/views/components/deck_area.js":
+/*!********************************************!*\
+  !*** ./docs/views/components/deck_area.js ***!
+  \********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1549,10 +1549,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var tabletop_simulator_1 = __importDefault(__webpack_require__(/*! ../exporter/tabletop_simulator */ "./bin/views/exporter/tabletop_simulator.js"));
-var card_area_1 = __importDefault(__webpack_require__(/*! ./card_area */ "./bin/views/components/card_area.js"));
-var display_dropdown_1 = __importStar(__webpack_require__(/*! ./display_dropdown */ "./bin/views/components/display_dropdown.js"));
-var grouper_dropdown_1 = __importDefault(__webpack_require__(/*! ./grouper_dropdown */ "./bin/views/components/grouper_dropdown.js"));
+var tabletop_simulator_1 = __importDefault(__webpack_require__(/*! ../exporter/tabletop_simulator */ "./docs/views/exporter/tabletop_simulator.js"));
+var card_area_1 = __importDefault(__webpack_require__(/*! ./card_area */ "./docs/views/components/card_area.js"));
+var display_dropdown_1 = __importStar(__webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js"));
+var grouper_dropdown_1 = __importDefault(__webpack_require__(/*! ./grouper_dropdown */ "./docs/views/components/grouper_dropdown.js"));
 function deckArea(props) {
     var _a = react_1.useState(display_dropdown_1.DisplayMode.Grid), displayMode = _a[0], setDisplayMode = _a[1];
     var _b = react_1.useState(null), grouper = _b[0], setGrouper = _b[1];
@@ -1699,10 +1699,10 @@ exports["default"] = deckArea;
 
 /***/ }),
 
-/***/ "./bin/views/components/details_card.js":
-/*!**********************************************!*\
-  !*** ./bin/views/components/details_card.js ***!
-  \**********************************************/
+/***/ "./docs/views/components/details_card.js":
+/*!***********************************************!*\
+  !*** ./docs/views/components/details_card.js ***!
+  \***********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1736,7 +1736,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./bin/views/components/card_actions.js"));
+var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 function DetailsCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -1875,10 +1875,10 @@ exports["default"] = DetailsCard;
 
 /***/ }),
 
-/***/ "./bin/views/components/display_dropdown.js":
-/*!**************************************************!*\
-  !*** ./bin/views/components/display_dropdown.js ***!
-  \**************************************************/
+/***/ "./docs/views/components/display_dropdown.js":
+/*!***************************************************!*\
+  !*** ./docs/views/components/display_dropdown.js ***!
+  \***************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1894,7 +1894,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./bin/views/bootstrap_icons/icon_check.js"));
+var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./docs/views/bootstrap_icons/icon_check.js"));
 /* eslint-disable no-unused-vars */
 var DisplayMode;
 (function (DisplayMode) {
@@ -2012,10 +2012,10 @@ exports["default"] = DisplayDropdown;
 
 /***/ }),
 
-/***/ "./bin/views/components/edit_name_window.js":
-/*!**************************************************!*\
-  !*** ./bin/views/components/edit_name_window.js ***!
-  \**************************************************/
+/***/ "./docs/views/components/edit_name_window.js":
+/*!***************************************************!*\
+  !*** ./docs/views/components/edit_name_window.js ***!
+  \***************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2107,10 +2107,10 @@ exports["default"] = EditNameWindow;
 
 /***/ }),
 
-/***/ "./bin/views/components/filters/filter_datalist.js":
-/*!*********************************************************!*\
-  !*** ./bin/views/components/filters/filter_datalist.js ***!
-  \*********************************************************/
+/***/ "./docs/views/components/filters/filter_datalist.js":
+/*!**********************************************************!*\
+  !*** ./docs/views/components/filters/filter_datalist.js ***!
+  \**********************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2170,10 +2170,10 @@ exports["default"] = FilterDatalist;
 
 /***/ }),
 
-/***/ "./bin/views/components/filters/filter_map_category.js":
-/*!*************************************************************!*\
-  !*** ./bin/views/components/filters/filter_map_category.js ***!
-  \*************************************************************/
+/***/ "./docs/views/components/filters/filter_map_category.js":
+/*!**************************************************************!*\
+  !*** ./docs/views/components/filters/filter_map_category.js ***!
+  \**************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2189,7 +2189,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var icon_check_1 = __importDefault(__webpack_require__(/*! ../../bootstrap_icons/icon_check */ "./bin/views/bootstrap_icons/icon_check.js"));
+var icon_check_1 = __importDefault(__webpack_require__(/*! ../../bootstrap_icons/icon_check */ "./docs/views/bootstrap_icons/icon_check.js"));
 function FilterMapCategory(props) {
     var _a = react_1.useState([]), mapValues = _a[0], setMapValues = _a[1];
     if (mapValues.length === 0) {
@@ -2338,10 +2338,10 @@ exports["default"] = FilterMapCategory;
 
 /***/ }),
 
-/***/ "./bin/views/components/filters/filter_text.js":
-/*!*****************************************************!*\
-  !*** ./bin/views/components/filters/filter_text.js ***!
-  \*****************************************************/
+/***/ "./docs/views/components/filters/filter_text.js":
+/*!******************************************************!*\
+  !*** ./docs/views/components/filters/filter_text.js ***!
+  \******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2385,10 +2385,10 @@ exports["default"] = FilterText;
 
 /***/ }),
 
-/***/ "./bin/views/components/grouper_dropdown.js":
-/*!**************************************************!*\
-  !*** ./bin/views/components/grouper_dropdown.js ***!
-  \**************************************************/
+/***/ "./docs/views/components/grouper_dropdown.js":
+/*!***************************************************!*\
+  !*** ./docs/views/components/grouper_dropdown.js ***!
+  \***************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2404,7 +2404,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./bin/views/bootstrap_icons/icon_check.js"));
+var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./docs/views/bootstrap_icons/icon_check.js"));
 /* eslint-disable no-unused-vars */
 var Grouper;
 (function (Grouper) {
@@ -2469,10 +2469,10 @@ exports["default"] = GrouperDropdown;
 
 /***/ }),
 
-/***/ "./bin/views/components/header_bar.js":
-/*!********************************************!*\
-  !*** ./bin/views/components/header_bar.js ***!
-  \********************************************/
+/***/ "./docs/views/components/header_bar.js":
+/*!*********************************************!*\
+  !*** ./docs/views/components/header_bar.js ***!
+  \*********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2481,7 +2481,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var header_deck_preview_1 = __importDefault(__webpack_require__(/*! ./header_deck_preview */ "./bin/views/components/header_deck_preview.js"));
+var header_deck_preview_1 = __importDefault(__webpack_require__(/*! ./header_deck_preview */ "./docs/views/components/header_deck_preview.js"));
 function HeaderBar(props) {
     return (react_1.default.createElement("div", { className: "header", style: {
             position: 'absolute',
@@ -2527,10 +2527,10 @@ exports["default"] = HeaderBar;
 
 /***/ }),
 
-/***/ "./bin/views/components/header_deck_preview.js":
-/*!*****************************************************!*\
-  !*** ./bin/views/components/header_deck_preview.js ***!
-  \*****************************************************/
+/***/ "./docs/views/components/header_deck_preview.js":
+/*!******************************************************!*\
+  !*** ./docs/views/components/header_deck_preview.js ***!
+  \******************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2554,7 +2554,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var map_data_1 = __webpack_require__(/*! ../../data/map_data */ "./bin/data/map_data.js");
+var map_data_1 = __webpack_require__(/*! ../../data/map_data */ "./docs/data/map_data.js");
 function ColorBlock(props) {
     var setColorMapLoaded = react_1.useState(false)[1];
     react_1.useEffect(function () {
@@ -2678,10 +2678,10 @@ exports["default"] = HeaderDeckPreview;
 
 /***/ }),
 
-/***/ "./bin/views/components/hovercard_handler.js":
-/*!***************************************************!*\
-  !*** ./bin/views/components/hovercard_handler.js ***!
-  \***************************************************/
+/***/ "./docs/views/components/hovercard_handler.js":
+/*!****************************************************!*\
+  !*** ./docs/views/components/hovercard_handler.js ***!
+  \****************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2738,10 +2738,10 @@ exports["default"] = hoverCardHandler;
 
 /***/ }),
 
-/***/ "./bin/views/components/image_load_tracker.js":
-/*!****************************************************!*\
-  !*** ./bin/views/components/image_load_tracker.js ***!
-  \****************************************************/
+/***/ "./docs/views/components/image_load_tracker.js":
+/*!*****************************************************!*\
+  !*** ./docs/views/components/image_load_tracker.js ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -2763,10 +2763,10 @@ exports["default"] = ImageLoadTracker;
 
 /***/ }),
 
-/***/ "./bin/views/components/lazy_background_loader.js":
-/*!********************************************************!*\
-  !*** ./bin/views/components/lazy_background_loader.js ***!
-  \********************************************************/
+/***/ "./docs/views/components/lazy_background_loader.js":
+/*!*********************************************************!*\
+  !*** ./docs/views/components/lazy_background_loader.js ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -2801,10 +2801,10 @@ exports["default"] = tryStartLazyBackgroundLoader;
 
 /***/ }),
 
-/***/ "./bin/views/components/list_card.js":
-/*!*******************************************!*\
-  !*** ./bin/views/components/list_card.js ***!
-  \*******************************************/
+/***/ "./docs/views/components/list_card.js":
+/*!********************************************!*\
+  !*** ./docs/views/components/list_card.js ***!
+  \********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2838,7 +2838,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./bin/views/components/card_actions.js"));
+var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 function ListCard(props) {
     var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -2938,10 +2938,10 @@ exports["default"] = ListCard;
 
 /***/ }),
 
-/***/ "./bin/views/components/search_area.js":
-/*!*********************************************!*\
-  !*** ./bin/views/components/search_area.js ***!
-  \*********************************************/
+/***/ "./docs/views/components/search_area.js":
+/*!**********************************************!*\
+  !*** ./docs/views/components/search_area.js ***!
+  \**********************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3004,17 +3004,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var debouncer_1 = __importDefault(__webpack_require__(/*! ../../data/debouncer */ "./bin/data/debouncer.js"));
-var execute_filter_1 = __importDefault(__webpack_require__(/*! ../../data/execute_filter */ "./bin/data/execute_filter.js"));
-var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./bin/views/bootstrap_icons/icon_check.js"));
-var icon_filter_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_filter */ "./bin/views/bootstrap_icons/icon_filter.js"));
-var icon_page_text_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_page_text */ "./bin/views/bootstrap_icons/icon_page_text.js"));
-var icon_search_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_search */ "./bin/views/bootstrap_icons/icon_search.js"));
-var card_area_1 = __importDefault(__webpack_require__(/*! ./card_area */ "./bin/views/components/card_area.js"));
-var display_dropdown_1 = __importStar(__webpack_require__(/*! ./display_dropdown */ "./bin/views/components/display_dropdown.js"));
-var filter_datalist_1 = __importDefault(__webpack_require__(/*! ./filters/filter_datalist */ "./bin/views/components/filters/filter_datalist.js"));
-var filter_map_category_1 = __importDefault(__webpack_require__(/*! ./filters/filter_map_category */ "./bin/views/components/filters/filter_map_category.js"));
-var filter_text_1 = __importDefault(__webpack_require__(/*! ./filters/filter_text */ "./bin/views/components/filters/filter_text.js"));
+var debouncer_1 = __importDefault(__webpack_require__(/*! ../../data/debouncer */ "./docs/data/debouncer.js"));
+var execute_filter_1 = __importDefault(__webpack_require__(/*! ../../data/execute_filter */ "./docs/data/execute_filter.js"));
+var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./docs/views/bootstrap_icons/icon_check.js"));
+var icon_filter_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_filter */ "./docs/views/bootstrap_icons/icon_filter.js"));
+var icon_page_text_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_page_text */ "./docs/views/bootstrap_icons/icon_page_text.js"));
+var icon_search_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_search */ "./docs/views/bootstrap_icons/icon_search.js"));
+var card_area_1 = __importDefault(__webpack_require__(/*! ./card_area */ "./docs/views/components/card_area.js"));
+var display_dropdown_1 = __importStar(__webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js"));
+var filter_datalist_1 = __importDefault(__webpack_require__(/*! ./filters/filter_datalist */ "./docs/views/components/filters/filter_datalist.js"));
+var filter_map_category_1 = __importDefault(__webpack_require__(/*! ./filters/filter_map_category */ "./docs/views/components/filters/filter_map_category.js"));
+var filter_text_1 = __importDefault(__webpack_require__(/*! ./filters/filter_text */ "./docs/views/components/filters/filter_text.js"));
 function initFilterData() {
     return {
         name: '',
@@ -3351,10 +3351,10 @@ exports["default"] = searchArea;
 
 /***/ }),
 
-/***/ "./bin/views/components/settings_window.js":
-/*!*************************************************!*\
-  !*** ./bin/views/components/settings_window.js ***!
-  \*************************************************/
+/***/ "./docs/views/components/settings_window.js":
+/*!**************************************************!*\
+  !*** ./docs/views/components/settings_window.js ***!
+  \**************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3459,10 +3459,10 @@ exports["default"] = SettingsWindow;
 
 /***/ }),
 
-/***/ "./bin/views/components/url_loader.js":
-/*!********************************************!*\
-  !*** ./bin/views/components/url_loader.js ***!
-  \********************************************/
+/***/ "./docs/views/components/url_loader.js":
+/*!*********************************************!*\
+  !*** ./docs/views/components/url_loader.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -3488,15 +3488,15 @@ exports["default"] = URLLoader;
 
 /***/ }),
 
-/***/ "./bin/views/exporter/exporter.js":
-/*!****************************************!*\
-  !*** ./bin/views/exporter/exporter.js ***!
-  \****************************************/
+/***/ "./docs/views/exporter/exporter.js":
+/*!*****************************************!*\
+  !*** ./docs/views/exporter/exporter.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var tts_deck_1 = __webpack_require__(/*! ./tts_deck */ "./bin/views/exporter/tts_deck.js");
+var tts_deck_1 = __webpack_require__(/*! ./tts_deck */ "./docs/views/exporter/tts_deck.js");
 var Exporter = /** @class */ (function () {
     function Exporter() {
     }
@@ -3592,10 +3592,10 @@ exports.Exporter = Exporter;
 
 /***/ }),
 
-/***/ "./bin/views/exporter/tabletop_simulator.js":
-/*!**************************************************!*\
-  !*** ./bin/views/exporter/tabletop_simulator.js ***!
-  \**************************************************/
+/***/ "./docs/views/exporter/tabletop_simulator.js":
+/*!***************************************************!*\
+  !*** ./docs/views/exporter/tabletop_simulator.js ***!
+  \***************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3607,7 +3607,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var TTSExport = __importStar(__webpack_require__(/*! ./exporter */ "./bin/views/exporter/exporter.js"));
+var TTSExport = __importStar(__webpack_require__(/*! ./exporter */ "./docs/views/exporter/exporter.js"));
 var TableTopSimulator = /** @class */ (function () {
     function TableTopSimulator(dl) {
         this.exporter = new TTSExport.Exporter();
@@ -3743,10 +3743,10 @@ exports["default"] = TableTopSimulator;
 
 /***/ }),
 
-/***/ "./bin/views/exporter/tts_deck.js":
-/*!****************************************!*\
-  !*** ./bin/views/exporter/tts_deck.js ***!
-  \****************************************/
+/***/ "./docs/views/exporter/tts_deck.js":
+/*!*****************************************!*\
+  !*** ./docs/views/exporter/tts_deck.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -3783,10 +3783,10 @@ exports.standardTTSTransformForDeck = standardTTSTransformForDeck;
 
 /***/ }),
 
-/***/ "./bin/views/index.js":
-/*!****************************!*\
-  !*** ./bin/views/index.js ***!
-  \****************************/
+/***/ "./docs/views/index.js":
+/*!*****************************!*\
+  !*** ./docs/views/index.js ***!
+  \*****************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3796,10 +3796,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var client_1 = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var url_data_loader_1 = __webpack_require__(/*! ../data/url_data_loader */ "./bin/data/url_data_loader.js");
-var image_load_tracker_1 = __importDefault(__webpack_require__(/*! ./components/image_load_tracker */ "./bin/views/components/image_load_tracker.js"));
-var url_loader_1 = __importDefault(__webpack_require__(/*! ./components/url_loader */ "./bin/views/components/url_loader.js"));
-var index_page_1 = __importDefault(__webpack_require__(/*! ./index_page */ "./bin/views/index_page.js"));
+var url_data_loader_1 = __webpack_require__(/*! ../data/url_data_loader */ "./docs/data/url_data_loader.js");
+var image_load_tracker_1 = __importDefault(__webpack_require__(/*! ./components/image_load_tracker */ "./docs/views/components/image_load_tracker.js"));
+var url_loader_1 = __importDefault(__webpack_require__(/*! ./components/url_loader */ "./docs/views/components/url_loader.js"));
+var index_page_1 = __importDefault(__webpack_require__(/*! ./index_page */ "./docs/views/index_page.js"));
 var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json');
 var root = client_1.createRoot(document.getElementById('content'));
 var imageLoadTracker = new image_load_tracker_1.default();
@@ -3809,10 +3809,10 @@ root.render(react_1.default.createElement(index_page_1.default, { imageLoadTrack
 
 /***/ }),
 
-/***/ "./bin/views/index_page.js":
-/*!*********************************!*\
-  !*** ./bin/views/index_page.js ***!
-  \*********************************/
+/***/ "./docs/views/index_page.js":
+/*!**********************************!*\
+  !*** ./docs/views/index_page.js ***!
+  \**********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -3827,14 +3827,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var header_bar_1 = __importDefault(__webpack_require__(/*! ./components/header_bar */ "./bin/views/components/header_bar.js"));
+var header_bar_1 = __importDefault(__webpack_require__(/*! ./components/header_bar */ "./docs/views/components/header_bar.js"));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var search_area_1 = __importDefault(__webpack_require__(/*! ./components/search_area */ "./bin/views/components/search_area.js"));
-var deck_area_1 = __importDefault(__webpack_require__(/*! ./components/deck_area */ "./bin/views/components/deck_area.js"));
-var hovercard_handler_1 = __importDefault(__webpack_require__(/*! ./components/hovercard_handler */ "./bin/views/components/hovercard_handler.js"));
-var edit_name_window_1 = __importDefault(__webpack_require__(/*! ./components/edit_name_window */ "./bin/views/components/edit_name_window.js"));
-var bulk_import_window_1 = __importDefault(__webpack_require__(/*! ./components/bulk_import_window */ "./bin/views/components/bulk_import_window.js"));
-var settings_window_1 = __importDefault(__webpack_require__(/*! ./components/settings_window */ "./bin/views/components/settings_window.js"));
+var search_area_1 = __importDefault(__webpack_require__(/*! ./components/search_area */ "./docs/views/components/search_area.js"));
+var deck_area_1 = __importDefault(__webpack_require__(/*! ./components/deck_area */ "./docs/views/components/deck_area.js"));
+var hovercard_handler_1 = __importDefault(__webpack_require__(/*! ./components/hovercard_handler */ "./docs/views/components/hovercard_handler.js"));
+var edit_name_window_1 = __importDefault(__webpack_require__(/*! ./components/edit_name_window */ "./docs/views/components/edit_name_window.js"));
+var bulk_import_window_1 = __importDefault(__webpack_require__(/*! ./components/bulk_import_window */ "./docs/views/components/bulk_import_window.js"));
+var settings_window_1 = __importDefault(__webpack_require__(/*! ./components/settings_window */ "./docs/views/components/settings_window.js"));
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -37358,7 +37358,7 @@ if (false) {} else {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("./bin/views/index.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./docs/views/index.js");
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

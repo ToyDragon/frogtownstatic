@@ -13,9 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var path = __importStar(require("path"));
 var app = express_1.default();
-app.use(express_1.default.static(path.resolve(__dirname, '../views')));
-app.use(express_1.default.static(path.resolve(__dirname, '../bundles')));
-app.use(express_1.default.static(path.resolve(__dirname, '../../src/views')));
+app.use(express_1.default.static(path.resolve(__dirname, '../../docs')));
 app.listen(8080);
 console.log("Listening on port {8080}.");
 //# sourceMappingURL=server.js.map

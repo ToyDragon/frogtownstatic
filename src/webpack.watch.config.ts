@@ -1,28 +1,28 @@
-import * as Path from "path";
+import * as Path from 'path';
 
 module.exports = [
   {
     watch: true,
     output: {
-      filename: "indexBundle.js",
-      path: Path.resolve(__dirname, "./bundles"),
-      libraryTarget: "commonjs",
+      filename: 'indexBundle.js',
+      path: __dirname,
+      libraryTarget: 'commonjs',
     },
-    name: "index",
+    name: 'index',
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          use: "ts-loader",
+          use: 'ts-loader',
           exclude: /node_modules/,
         },
       ],
     },
-    entry: Path.resolve(__dirname, "views/index.js"),
-    mode: "development",
-    devtool: "source-map",
+    entry: Path.resolve(__dirname, 'views/index.js'),
+    mode: 'development',
+    devtool: 'source-map',
     resolve: {
-      extensions: [".tsx", ".ts", ".js"],
+      extensions: ['.tsx', '.ts', '.js'],
       // fallback: {
       //   https: require.resolve("https-browserify"),
       //   http: require.resolve("stream-http"),
