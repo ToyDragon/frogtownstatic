@@ -14,7 +14,7 @@ export default function HeaderBar(props: {
       position: 'absolute',
       width: '100%',
     }}>
-      <a href="/" className="active header-item">Frogtown</a>
+      <a href={window.location.href} className="active header-item">Frogtown</a>
       <div className="dropdown" style={{display: 'inline-block'}}>
         <div className="btn dropdown-toggle header-item" data-bs-toggle="dropdown" aria-expanded="false"
           style={{

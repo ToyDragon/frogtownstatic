@@ -10,7 +10,7 @@ function HeaderBar(props) {
             position: 'absolute',
             width: '100%',
         } },
-        react_1.default.createElement("a", { href: "/", className: "active header-item" }, "Frogtown"),
+        react_1.default.createElement("a", { href: window.location.href, className: "active header-item" }, "Frogtown"),
         react_1.default.createElement("div", { className: "dropdown", style: { display: 'inline-block' } },
             react_1.default.createElement("div", { className: "btn dropdown-toggle header-item", "data-bs-toggle": "dropdown", "aria-expanded": "false", style: {
                     'marginTop': '-12px',
