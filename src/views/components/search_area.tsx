@@ -222,22 +222,22 @@ const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function search
           </FilterDatalist>
           <FilterMapCategory map={'IDToColor'} loader={props.loader} visible={enabledFilters['color']}
             value={filterData.color} setValue={filterDataSetter('color')} multiSelect={true} categories={[
-              {value: 'W', display: <><img src="/icons/ManaW.jpg" style={{marginTop: '-5px'}} /> White</>},
-              {value: 'U', display: <><img src="/icons/ManaU.jpg" style={{marginTop: '-5px'}} /> Blue</>},
-              {value: 'B', display: <><img src="/icons/ManaB.jpg" style={{marginTop: '-5px'}} /> Black</>},
-              {value: 'R', display: <><img src="/icons/ManaR.jpg" style={{marginTop: '-5px'}} /> Red</>},
-              {value: 'G', display: <><img src="/icons/ManaG.jpg" style={{marginTop: '-5px'}} /> Green</>},
+              {value: 'W', display: <><img src="icons/ManaW.jpg" style={{marginTop: '-5px'}} /> White</>},
+              {value: 'U', display: <><img src="icons/ManaU.jpg" style={{marginTop: '-5px'}} /> Blue</>},
+              {value: 'B', display: <><img src="icons/ManaB.jpg" style={{marginTop: '-5px'}} /> Black</>},
+              {value: 'R', display: <><img src="icons/ManaR.jpg" style={{marginTop: '-5px'}} /> Red</>},
+              {value: 'G', display: <><img src="icons/ManaG.jpg" style={{marginTop: '-5px'}} /> Green</>},
             ]}>
           Color
           </FilterMapCategory>
           <FilterMapCategory map={'IDToColorIdentity'} loader={props.loader} visible={enabledFilters['color_identity']}
             value={filterData.color_identity} setValue={filterDataSetter('color_identity')} multiSelect={true}
             categories={[
-              {value: 'W', display: <><img src="/icons/ManaW.jpg" style={{marginTop: '-5px'}} /> White</>},
-              {value: 'U', display: <><img src="/icons/ManaU.jpg" style={{marginTop: '-5px'}} /> Blue</>},
-              {value: 'B', display: <><img src="/icons/ManaB.jpg" style={{marginTop: '-5px'}} /> Black</>},
-              {value: 'R', display: <><img src="/icons/ManaR.jpg" style={{marginTop: '-5px'}} /> Red</>},
-              {value: 'G', display: <><img src="/icons/ManaG.jpg" style={{marginTop: '-5px'}} /> Green</>},
+              {value: 'W', display: <><img src="icons/ManaW.jpg" style={{marginTop: '-5px'}} /> White</>},
+              {value: 'U', display: <><img src="icons/ManaU.jpg" style={{marginTop: '-5px'}} /> Blue</>},
+              {value: 'B', display: <><img src="icons/ManaB.jpg" style={{marginTop: '-5px'}} /> Black</>},
+              {value: 'R', display: <><img src="icons/ManaR.jpg" style={{marginTop: '-5px'}} /> Red</>},
+              {value: 'G', display: <><img src="icons/ManaG.jpg" style={{marginTop: '-5px'}} /> Green</>},
             ]}>
           Color Identity
           </FilterMapCategory>
