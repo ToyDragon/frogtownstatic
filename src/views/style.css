@@ -1,0 +1,67 @@
+.header {
+  background-color: #303b4c;
+  height: 64px;
+  padding-top: 16px;
+  padding-left: 8px;
+  flex-shrink: 0;
+}
+
+body {
+  background-color: #cdd6e4;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  
+  background: repeating-conic-gradient(#d3dce8 0% 25%, #cdd6e4 0% 50%) 50% / 80px 20px;
+  
+  animation-name: bg_move_boxes;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+  
+@keyframes bg_move_boxes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 160px 20px;
+  }
+}
+
+body, html, #content {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header .header-item.active, .header .header-item:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.header .header-item {
+  font-size: 24px;
+  margin: 16px;
+  color: #aaaaaa;
+}
+
+.tbDeckGradiant {
+  background: linear-gradient(0deg, black, transparent);
+}
+
+.tbDeckGradiant:hover {
+  background: linear-gradient(0deg, #000630, transparent);
+}
+
+.actionContainer .action {
+  visibility: hidden;
+}
+.actionContainer:hover .action {
+  visibility: visible;
+}
+
+.hoverContainer:hover .hoverToTop {
+  z-index: 2;
+}
