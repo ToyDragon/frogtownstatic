@@ -9,7 +9,7 @@ import ImageLoadTracker from './image_load_tracker';
 import ListCard from './list_card';
 import URLLoader from './url_loader';
 
-function countCards(cardIds: string[]): {id: string, count: number}[] {
+export function countCards(cardIds: string[]): {id: string, count: number}[] {
   const idToCount: Record<string, number> = {};
   for (const id of cardIds) {
     idToCount[id] = (idToCount[id] || 0) + 1;

@@ -40,6 +40,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var tabletop_simulator_1 = __importDefault(require("../exporter/tabletop_simulator"));
 var card_area_1 = __importDefault(require("./card_area"));
+var card_group_1 = require("./card_group");
 var display_dropdown_1 = __importStar(require("./display_dropdown"));
 var grouper_dropdown_1 = __importDefault(require("./grouper_dropdown"));
 function deckArea(props) {
@@ -67,6 +68,14 @@ function deckArea(props) {
                 encodeURIComponent(tabletopSimManager.current.exportDeck(props.mainboardCards, props.sideboardCards, props.backUrl)),
         download: !exportReady ? '' : "".concat(props.name, ".json"),
     };
+    var idToName = props.loader.getMapDataSync('IDToName');
+    var tcgplayerLink = '';
+    if (idToName && props.mainboardCards.length + props.sideboardCards.length > 0) {
+        var affiliateCode = 'frogtown';
+        tcgplayerLink = "https://www.tcgplayer.com/massentry?productline=Magic&utm_campaign=".concat(affiliateCode, "&utm_medium=scryfall&utm_source=").concat(affiliateCode, "&c=") +
+            encodeURIComponent((0, card_group_1.countCards)(props.mainboardCards.concat(props.sideboardCards))
+                .map(function (a) { return "".concat(a.count, " ").concat(idToName[a.id]); }).join('||'));
+    }
     return (react_1.default.createElement("div", { style: {
             position: 'relative',
             width: '100%',
@@ -180,7 +189,9 @@ function deckArea(props) {
                         } },
                         react_1.default.createElement("a", __assign({ className: "dropdown-item" }, downloadProps), "Export to Tabletop Simulator")),
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onSettings(); } }, "Settings")))))));
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onSettings(); } }, "Settings")),
+                    react_1.default.createElement("li", null,
+                        react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")))))));
 }
 exports.default = deckArea;
 //# sourceMappingURL=deck_area.js.map

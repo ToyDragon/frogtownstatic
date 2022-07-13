@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {useState} from 'react';
 import {DataLoader} from '../../data/data_loader';
 import IconCheck from '../bootstrap_icons/icon_check';

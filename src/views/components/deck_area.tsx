@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {DataLoader} from '../../data/data_loader';
 import TableTopSimulator from '../exporter/tabletop_simulator';
 import CardArea from './card_area';
+import {countCards} from './card_group';
 import DisplayDropdown, {DisplayMode} from './display_dropdown';
 import GrouperDropdown, {Grouper} from './grouper_dropdown';
 import ImageLoadTracker from './image_load_tracker';
@@ -54,6 +55,15 @@ export default function deckArea(props: {
           props.backUrl)),
     download: !exportReady ? '' : `${props.name}.json`,
   };
+
+  const idToName = props.loader.getMapDataSync('IDToName');
+  let tcgplayerLink = '';
+  if (idToName && props.mainboardCards.length + props.sideboardCards.length > 0) {
+    const affiliateCode = 'frogtown';
+    tcgplayerLink = `https://www.tcgplayer.com/massentry?productline=Magic&utm_campaign=${affiliateCode}&utm_medium=scryfall&utm_source=${affiliateCode}&c=` +
+      encodeURIComponent(countCards(props.mainboardCards.concat(props.sideboardCards))
+          .map((a) => `${a.count} ${idToName[a.id]}`).join('||'));
+  }
 
   return (
     <div style={{
@@ -175,6 +185,7 @@ export default function deckArea(props: {
               backgroundColor: exportReady ? 'transparent' : 'lightgray',
             }}><a className="dropdown-item" {...downloadProps}>Export to Tabletop Simulator</a></li>
             <li><a className="dropdown-item" href="#" onMouseUp={() => props.onSettings()}>Settings</a></li>
+            <li><a className="dropdown-item" href={tcgplayerLink} target="_blank" rel="noreferrer">TCG Player</a></li>
           </ul>
         </div>
       </div>

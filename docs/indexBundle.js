@@ -1199,6 +1199,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.countCards = void 0;
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 var compact_details_card_1 = __importDefault(__webpack_require__(/*! ./compact_details_card */ "./docs/views/components/compact_details_card.js"));
@@ -1219,6 +1220,7 @@ function countCards(cardIds) {
         };
     });
 }
+exports.countCards = countCards;
 ;
 function CardGroup(props) {
     var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
@@ -1700,6 +1702,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var tabletop_simulator_1 = __importDefault(__webpack_require__(/*! ../exporter/tabletop_simulator */ "./docs/views/exporter/tabletop_simulator.js"));
 var card_area_1 = __importDefault(__webpack_require__(/*! ./card_area */ "./docs/views/components/card_area.js"));
+var card_group_1 = __webpack_require__(/*! ./card_group */ "./docs/views/components/card_group.js");
 var display_dropdown_1 = __importStar(__webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js"));
 var grouper_dropdown_1 = __importDefault(__webpack_require__(/*! ./grouper_dropdown */ "./docs/views/components/grouper_dropdown.js"));
 function deckArea(props) {
@@ -1727,6 +1730,14 @@ function deckArea(props) {
                 encodeURIComponent(tabletopSimManager.current.exportDeck(props.mainboardCards, props.sideboardCards, props.backUrl)),
         download: !exportReady ? '' : "".concat(props.name, ".json"),
     };
+    var idToName = props.loader.getMapDataSync('IDToName');
+    var tcgplayerLink = '';
+    if (idToName && props.mainboardCards.length + props.sideboardCards.length > 0) {
+        var affiliateCode = 'frogtown';
+        tcgplayerLink = "https://www.tcgplayer.com/massentry?productline=Magic&utm_campaign=".concat(affiliateCode, "&utm_medium=scryfall&utm_source=").concat(affiliateCode, "&c=") +
+            encodeURIComponent((0, card_group_1.countCards)(props.mainboardCards.concat(props.sideboardCards))
+                .map(function (a) { return "".concat(a.count, " ").concat(idToName[a.id]); }).join('||'));
+    }
     return (react_1.default.createElement("div", { style: {
             position: 'relative',
             width: '100%',
@@ -1840,7 +1851,9 @@ function deckArea(props) {
                         } },
                         react_1.default.createElement("a", __assign({ className: "dropdown-item" }, downloadProps), "Export to Tabletop Simulator")),
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onSettings(); } }, "Settings")))))));
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onSettings(); } }, "Settings")),
+                    react_1.default.createElement("li", null,
+                        react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")))))));
 }
 exports["default"] = deckArea;
 //# sourceMappingURL=deck_area.js.map

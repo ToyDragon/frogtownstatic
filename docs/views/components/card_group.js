@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.countCards = void 0;
 var react_1 = __importDefault(require("react"));
 var card_actions_1 = __importDefault(require("./card_actions"));
 var compact_details_card_1 = __importDefault(require("./compact_details_card"));
@@ -34,6 +35,7 @@ function countCards(cardIds) {
         };
     });
 }
+exports.countCards = countCards;
 ;
 function CardGroup(props) {
     var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
