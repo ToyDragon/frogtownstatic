@@ -3167,7 +3167,11 @@ function HeaderBar(props) {
             position: 'absolute',
             width: '100%',
         } },
-        react_1.default.createElement("a", { href: window.location.href, className: "active header-item" }, "Frogtown"),
+        react_1.default.createElement("a", { href: window.location.href, className: "active header-item", onMouseUp: function (e) {
+                if (e.button === 0) {
+                    props.onInfo();
+                }
+            } }, "About Frogtown"),
         react_1.default.createElement("div", { className: "dropdown", style: { display: 'inline-block' } },
             react_1.default.createElement("div", { className: "btn dropdown-toggle header-item", "data-bs-toggle": "dropdown", "aria-expanded": "false", style: {
                     'marginTop': '-12px',
@@ -3456,6 +3460,104 @@ var ImageLoadTracker = /** @class */ (function () {
 }());
 exports["default"] = ImageLoadTracker;
 //# sourceMappingURL=image_load_tracker.js.map
+
+/***/ }),
+
+/***/ "./docs/views/components/info_window.js":
+/*!**********************************************!*\
+  !*** ./docs/views/components/info_window.js ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var InfoWindow = (0, react_1.forwardRef)(function InfoWindow(_props, ref) {
+    var _a = (0, react_1.useState)(false), isOpen = _a[0], setIsOpen = _a[1];
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
+        open: function () {
+            setIsOpen(true);
+        },
+    }); });
+    if (!isOpen) {
+        return null;
+    }
+    var discordLogo = react_1.default.createElement("a", { href: "https://discord.gg/Yv8kY2m" },
+        react_1.default.createElement("img", { src: "icons/Discord-Logo+Wordmark-Color64.png", style: { width: '117px' } }));
+    var githubLogo = react_1.default.createElement("a", { href: "https://github.com/ToyDragon/frogtownstatic" },
+        react_1.default.createElement("img", { src: "icons/GitHub_Logo64.png", style: { width: '64px', marginLeft: '-4px' } }));
+    return react_1.default.createElement("div", { style: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0',
+            left: '0',
+            backgroundColor: '#00000070',
+            zIndex: '6',
+        }, onMouseUp: function (e) {
+            if (e.button === 0) {
+                setIsOpen(false);
+            }
+        } },
+        react_1.default.createElement("div", { style: {
+                width: '600px',
+                height: '600px',
+                position: 'absolute',
+                left: 'calc(50% - 300px)',
+                top: 'calc(50% - 300px)',
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                border: '3px solid #cdd6e4',
+                padding: '16px',
+            }, onMouseUp: function (e) { return e.stopPropagation(); } },
+            react_1.default.createElement("div", { style: {
+                    fontSize: '24px',
+                } }, "Frogtown"),
+            react_1.default.createElement("div", { style: { marginTop: '12px' } }),
+            react_1.default.createElement("div", null, "All of your decks are stored locally here in your browser, so if you cleared your browser's cache that may have caused your decks to disappear. If you exported your decks as JSON files you can drop/drop them onto the page."),
+            react_1.default.createElement("div", { style: { marginTop: '12px' } }),
+            react_1.default.createElement("div", null, "If you are having issues or would like to suggest changes, join the Discord channel and let us know. If you're a developer and want to contribute to the site, check out our GitHub repository."),
+            react_1.default.createElement("div", { style: { marginTop: '12px' } }),
+            react_1.default.createElement("div", null, discordLogo),
+            react_1.default.createElement("div", null, githubLogo),
+            react_1.default.createElement("div", { style: { marginTop: '140px' } }),
+            react_1.default.createElement("div", { style: { fontSize: '12px', color: '#555555' } }, "Portions of Frogtown are unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy. The literal and graphical information presented on this site about Magic: The Gathering, including card images, the mana symbols, and Oracle text, is copyright Wizards of the Coast, LLC, a subsidiary of Hasbro, Inc. Frogtown is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast."),
+            react_1.default.createElement("div", { style: { position: 'absolute', right: '12px', bottom: '12px' } },
+                react_1.default.createElement("button", { className: 'btn btn-secondary', onMouseUp: function (e) {
+                        if (e.button === 0) {
+                            setIsOpen(false);
+                        }
+                    }, onKeyDown: function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            setIsOpen(false);
+                        }
+                    } }, "Close"))));
+});
+exports["default"] = InfoWindow;
+//# sourceMappingURL=info_window.js.map
 
 /***/ }),
 
@@ -4744,6 +4846,7 @@ var settings_window_1 = __importDefault(__webpack_require__(/*! ./components/set
 var loading_window_1 = __importDefault(__webpack_require__(/*! ./components/loading_window */ "./docs/views/components/loading_window.js"));
 var confirm_delete_window_1 = __importDefault(__webpack_require__(/*! ./components/confirm_delete_window */ "./docs/views/components/confirm_delete_window.js"));
 var deck_drop_handler_1 = __importDefault(__webpack_require__(/*! ./components/deck_drop_handler */ "./docs/views/components/deck_drop_handler.js"));
+var info_window_1 = __importDefault(__webpack_require__(/*! ./components/info_window */ "./docs/views/components/info_window.js"));
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -4786,6 +4889,7 @@ function indexPage(props) {
     var bulkImportWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
+    var infoWindowRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
@@ -4916,7 +5020,7 @@ function indexPage(props) {
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
-            }, newDeck: addDeck }),
+            }, newDeck: addDeck, onInfo: function () { return infoWindowRef.current.open(); } }),
         react_1.default.createElement(search_area_1.default, { ref: searchRef, loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
                 addCard(cardId, false);
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
@@ -4960,6 +5064,7 @@ function indexPage(props) {
         react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
         react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
         react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
+        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef }),
         react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {
                 for (var i = 0; i < decks.length; i++) {
                     var existingDeck = decks[i];

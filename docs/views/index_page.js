@@ -37,6 +37,7 @@ var settings_window_1 = __importDefault(require("./components/settings_window"))
 var loading_window_1 = __importDefault(require("./components/loading_window"));
 var confirm_delete_window_1 = __importDefault(require("./components/confirm_delete_window"));
 var deck_drop_handler_1 = __importDefault(require("./components/deck_drop_handler"));
+var info_window_1 = __importDefault(require("./components/info_window"));
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -79,6 +80,7 @@ function indexPage(props) {
     var bulkImportWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
+    var infoWindowRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
@@ -209,7 +211,7 @@ function indexPage(props) {
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
-            }, newDeck: addDeck }),
+            }, newDeck: addDeck, onInfo: function () { return infoWindowRef.current.open(); } }),
         react_1.default.createElement(search_area_1.default, { ref: searchRef, loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
                 addCard(cardId, false);
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
@@ -253,6 +255,7 @@ function indexPage(props) {
         react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
         react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
         react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
+        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef }),
         react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {
                 for (var i = 0; i < decks.length; i++) {
                     var existingDeck = decks[i];

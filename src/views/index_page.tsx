@@ -13,6 +13,7 @@ import LoadingWindow from './components/loading_window';
 import {DataLoader} from '../data/data_loader';
 import ConfirmDeleteWindow, {ConfirmDeleteWindowHandle} from './components/confirm_delete_window';
 import DeckDropHandler from './components/deck_drop_handler';
+import InfoWindow, { InfoWindowHandle } from './components/info_window';
 
 function createNewDeck(num: number) {
   return {
@@ -62,6 +63,7 @@ export default function indexPage(props: {
   const bulkImportWindowRef = useRef<BulkImportWindowHandle>(null);
   const settingsWindowRef = useRef<SettingsWindowHandle>(null);
   const confirmDeleteWindowRef = useRef<ConfirmDeleteWindowHandle>(null);
+  const infoWindowRef = useRef<InfoWindowHandle>(null);
 
   useEffect(() => {
     for (let i = 0; i < decks.length; i++) {
@@ -195,7 +197,7 @@ export default function indexPage(props: {
   return <>
     <HeaderBar loader={props.loader} decks={decks} changeDeck={(i: number) => {
       setDeckIndex(i);
-    }} newDeck={addDeck} />
+    }} newDeck={addDeck} onInfo={() => infoWindowRef.current!.open()} />
     <SearchArea ref={searchRef} loader={props.loader} urlLoader={props.urlLoader} addCard={(cardId: string) => {
       addCard(cardId, false);
     }} imageLoadTracker={props.imageLoadTracker} width={searchWidth} />
@@ -248,6 +250,7 @@ export default function indexPage(props: {
     <HoverCardHandler loader={props.loader} />
     <LoadingWindow loader={props.loader} />
     <ConfirmDeleteWindow deleteConfirmed={deleteConfirmed} ref={confirmDeleteWindowRef} />
+    <InfoWindow ref={infoWindowRef} />
     <DeckDropHandler loader={props.loader} addDeck={(deck: Deck) => {
       for (let i = 0; i < decks.length; i++) {
         const existingDeck = decks[i];
