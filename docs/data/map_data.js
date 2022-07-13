@@ -3,24 +3,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * String values for all of the available cost symbols.
  */
+/* eslint-disable no-unused-vars */
 var MTGCostType;
 (function (MTGCostType) {
-    //Ability specific
+    // Ability specific
     MTGCostType["Tap"] = "T";
-    //Normal WUBRG+C
+    // Normal WUBRG+C
     MTGCostType["White"] = "W";
     MTGCostType["Blue"] = "U";
     MTGCostType["Black"] = "B";
     MTGCostType["Red"] = "R";
     MTGCostType["Green"] = "G";
     MTGCostType["Colorless"] = "C";
-    //Half WUBRG
+    // Half WUBRG
     MTGCostType["HalfWhite"] = "HalfW";
     MTGCostType["HalfBlue"] = "HalfU";
     MTGCostType["HalfBlack"] = "HalfB";
     MTGCostType["HalfRed"] = "HalfR";
     MTGCostType["HalfGreen"] = "HalfG";
-    //Color Combos
+    // Color Combos
     MTGCostType["WhiteOrBlue"] = "WU";
     MTGCostType["WhiteOrBlack"] = "WB";
     MTGCostType["BlueOrRed"] = "UR";
@@ -31,23 +32,24 @@ var MTGCostType;
     MTGCostType["RedOrGreen"] = "RG";
     MTGCostType["GreenOrWhite"] = "GW";
     MTGCostType["GreenOrBlue"] = "GU";
-    //Color or 2 Colorless
+    // Color or 2 Colorless
     MTGCostType["WhiteOrTwoColorless"] = "2W";
     MTGCostType["BlueOrTwoColorless"] = "2U";
     MTGCostType["BlackOrTwoColorless"] = "2B";
     MTGCostType["RedOrTwoColorless"] = "2R";
     MTGCostType["GreenOrTwoColorless"] = "2G";
-    //Color or 2 Life
+    // Color or 2 Life
     MTGCostType["WhiteOrTwoLife"] = "WP";
     MTGCostType["BlueOrTwoLife"] = "UP";
     MTGCostType["BlackOrTwoLife"] = "BP";
     MTGCostType["RedOrTwoLife"] = "RP";
     MTGCostType["GreenOrTwoLife"] = "GP";
-    //Variable
+    // Variable
     MTGCostType["X"] = "X";
     MTGCostType["Y"] = "Y";
     MTGCostType["Z"] = "Z";
 })(MTGCostType = exports.MTGCostType || (exports.MTGCostType = {}));
+/* eslint-enable no-unused-vars */
 var MapData = /** @class */ (function () {
     function MapData() {
         this.IDToName = {};
@@ -82,6 +84,7 @@ var MapData = /** @class */ (function () {
         this.IDToCollectorsNumber = {};
         this.IDToCost = {};
         this.IDToLargeImageURI = {};
+        this.IDToCropImageURI = {};
         this.IDToTokenStrings = {};
         this.TokenStringToTokenID = {};
         this.TokenIDToTokenString = {};

@@ -31,7 +31,7 @@ export default function deckArea(props: {
   const setImageMapLoaded = useState(false)[1];
   const tabletopSimManager = useRef(new TableTopSimulator(props.loader));
   useEffect(() => {
-    props.loader.getMapData('IDToLargeImageURI').then(() => {
+    props.loader.getMapData('IDToCropImageURI').then(() => {
       setImageMapLoaded(true);
     });
     tabletopSimManager.current.ready.then(() => {
@@ -40,9 +40,9 @@ export default function deckArea(props: {
   }, []);
 
   let keycardImageUrl = '';
-  const idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-  if (idToLargeImageURI) {
-    keycardImageUrl = `url("${idToLargeImageURI[props.keycard]}")`;
+  const idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
+  if (idToCropImageURI) {
+    keycardImageUrl = `url("${idToCropImageURI[props.keycard]}")`;
   }
 
   const downloadProps = {
@@ -68,8 +68,7 @@ export default function deckArea(props: {
         left: '16px',
         width: '220px',
         height: '160px',
-        backgroundPosition: '-24px -44px',
-        backgroundSize: '269px 375px',
+        backgroundSize: '100% 100%',
         backgroundImage: keycardImageUrl,
         borderRadius: '12px',
       }}></div>

@@ -59,14 +59,14 @@ function ColorBlock(props) {
 function HeaderDeckPreview(props) {
     var setImageMapLoaded = react_1.useState(false)[1];
     react_1.useEffect(function () {
-        props.loader.getMapData('IDToLargeImageURI').then(function () {
+        props.loader.getMapData('IDToCropImageURI').then(function () {
             setImageMapLoaded(true);
         });
     }, []);
     var url = '';
-    var idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-    if (idToLargeImageURI) {
-        url = "url(\"" + idToLargeImageURI[props.deck.keycard] + "\")";
+    var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
+    if (idToCropImageURI) {
+        url = "url(\"" + idToCropImageURI[props.deck.keycard] + "\")";
     }
     var fillParent = {
         width: '100%',
@@ -91,7 +91,7 @@ function HeaderDeckPreview(props) {
             marginBottom: '10px',
             marginRight: '4px',
         } },
-        react_1.default.createElement("div", { style: __assign(__assign({}, fillParent), { backgroundImage: url, backgroundPosition: '-24px -44px', backgroundSize: '269px 375px' }) }),
+        react_1.default.createElement("div", { style: __assign(__assign({}, fillParent), { backgroundImage: url, backgroundSize: '100% 100%' }) }),
         react_1.default.createElement("div", { className: "tbDeckGradiant", style: __assign({}, fillParent) }),
         cardCount === 0 ? null :
             react_1.default.createElement("div", null,

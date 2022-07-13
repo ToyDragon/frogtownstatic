@@ -377,24 +377,25 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 /**
  * String values for all of the available cost symbols.
  */
+/* eslint-disable no-unused-vars */
 var MTGCostType;
 (function (MTGCostType) {
-    //Ability specific
+    // Ability specific
     MTGCostType["Tap"] = "T";
-    //Normal WUBRG+C
+    // Normal WUBRG+C
     MTGCostType["White"] = "W";
     MTGCostType["Blue"] = "U";
     MTGCostType["Black"] = "B";
     MTGCostType["Red"] = "R";
     MTGCostType["Green"] = "G";
     MTGCostType["Colorless"] = "C";
-    //Half WUBRG
+    // Half WUBRG
     MTGCostType["HalfWhite"] = "HalfW";
     MTGCostType["HalfBlue"] = "HalfU";
     MTGCostType["HalfBlack"] = "HalfB";
     MTGCostType["HalfRed"] = "HalfR";
     MTGCostType["HalfGreen"] = "HalfG";
-    //Color Combos
+    // Color Combos
     MTGCostType["WhiteOrBlue"] = "WU";
     MTGCostType["WhiteOrBlack"] = "WB";
     MTGCostType["BlueOrRed"] = "UR";
@@ -405,23 +406,24 @@ var MTGCostType;
     MTGCostType["RedOrGreen"] = "RG";
     MTGCostType["GreenOrWhite"] = "GW";
     MTGCostType["GreenOrBlue"] = "GU";
-    //Color or 2 Colorless
+    // Color or 2 Colorless
     MTGCostType["WhiteOrTwoColorless"] = "2W";
     MTGCostType["BlueOrTwoColorless"] = "2U";
     MTGCostType["BlackOrTwoColorless"] = "2B";
     MTGCostType["RedOrTwoColorless"] = "2R";
     MTGCostType["GreenOrTwoColorless"] = "2G";
-    //Color or 2 Life
+    // Color or 2 Life
     MTGCostType["WhiteOrTwoLife"] = "WP";
     MTGCostType["BlueOrTwoLife"] = "UP";
     MTGCostType["BlackOrTwoLife"] = "BP";
     MTGCostType["RedOrTwoLife"] = "RP";
     MTGCostType["GreenOrTwoLife"] = "GP";
-    //Variable
+    // Variable
     MTGCostType["X"] = "X";
     MTGCostType["Y"] = "Y";
     MTGCostType["Z"] = "Z";
 })(MTGCostType = exports.MTGCostType || (exports.MTGCostType = {}));
+/* eslint-enable no-unused-vars */
 var MapData = /** @class */ (function () {
     function MapData() {
         this.IDToName = {};
@@ -456,6 +458,7 @@ var MapData = /** @class */ (function () {
         this.IDToCollectorsNumber = {};
         this.IDToCost = {};
         this.IDToLargeImageURI = {};
+        this.IDToCropImageURI = {};
         this.IDToTokenStrings = {};
         this.TokenStringToTokenID = {};
         this.TokenIDToTokenString = {};
@@ -1554,7 +1557,7 @@ function deckArea(props) {
     var setImageMapLoaded = react_1.useState(false)[1];
     var tabletopSimManager = react_1.useRef(new tabletop_simulator_1.default(props.loader));
     react_1.useEffect(function () {
-        props.loader.getMapData('IDToLargeImageURI').then(function () {
+        props.loader.getMapData('IDToCropImageURI').then(function () {
             setImageMapLoaded(true);
         });
         tabletopSimManager.current.ready.then(function () {
@@ -1562,9 +1565,9 @@ function deckArea(props) {
         });
     }, []);
     var keycardImageUrl = '';
-    var idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-    if (idToLargeImageURI) {
-        keycardImageUrl = "url(\"" + idToLargeImageURI[props.keycard] + "\")";
+    var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
+    if (idToCropImageURI) {
+        keycardImageUrl = "url(\"" + idToCropImageURI[props.keycard] + "\")";
     }
     var downloadProps = {
         href: !exportReady ? '#' :
@@ -1584,8 +1587,7 @@ function deckArea(props) {
                 left: '16px',
                 width: '220px',
                 height: '160px',
-                backgroundPosition: '-24px -44px',
-                backgroundSize: '269px 375px',
+                backgroundSize: '100% 100%',
                 backgroundImage: keycardImageUrl,
                 borderRadius: '12px',
             } }),
@@ -2585,14 +2587,14 @@ function ColorBlock(props) {
 function HeaderDeckPreview(props) {
     var setImageMapLoaded = react_1.useState(false)[1];
     react_1.useEffect(function () {
-        props.loader.getMapData('IDToLargeImageURI').then(function () {
+        props.loader.getMapData('IDToCropImageURI').then(function () {
             setImageMapLoaded(true);
         });
     }, []);
     var url = '';
-    var idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-    if (idToLargeImageURI) {
-        url = "url(\"" + idToLargeImageURI[props.deck.keycard] + "\")";
+    var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
+    if (idToCropImageURI) {
+        url = "url(\"" + idToCropImageURI[props.deck.keycard] + "\")";
     }
     var fillParent = {
         width: '100%',
@@ -2617,7 +2619,7 @@ function HeaderDeckPreview(props) {
             marginBottom: '10px',
             marginRight: '4px',
         } },
-        react_1.default.createElement("div", { style: __assign(__assign({}, fillParent), { backgroundImage: url, backgroundPosition: '-24px -44px', backgroundSize: '269px 375px' }) }),
+        react_1.default.createElement("div", { style: __assign(__assign({}, fillParent), { backgroundImage: url, backgroundSize: '100% 100%' }) }),
         react_1.default.createElement("div", { className: "tbDeckGradiant", style: __assign({}, fillParent) }),
         cardCount === 0 ? null :
             react_1.default.createElement("div", null,

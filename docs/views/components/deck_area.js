@@ -33,7 +33,7 @@ function deckArea(props) {
     var setImageMapLoaded = react_1.useState(false)[1];
     var tabletopSimManager = react_1.useRef(new tabletop_simulator_1.default(props.loader));
     react_1.useEffect(function () {
-        props.loader.getMapData('IDToLargeImageURI').then(function () {
+        props.loader.getMapData('IDToCropImageURI').then(function () {
             setImageMapLoaded(true);
         });
         tabletopSimManager.current.ready.then(function () {
@@ -41,9 +41,9 @@ function deckArea(props) {
         });
     }, []);
     var keycardImageUrl = '';
-    var idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-    if (idToLargeImageURI) {
-        keycardImageUrl = "url(\"" + idToLargeImageURI[props.keycard] + "\")";
+    var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
+    if (idToCropImageURI) {
+        keycardImageUrl = "url(\"" + idToCropImageURI[props.keycard] + "\")";
     }
     var downloadProps = {
         href: !exportReady ? '#' :
@@ -63,8 +63,7 @@ function deckArea(props) {
                 left: '16px',
                 width: '220px',
                 height: '160px',
-                backgroundPosition: '-24px -44px',
-                backgroundSize: '269px 375px',
+                backgroundSize: '100% 100%',
                 backgroundImage: keycardImageUrl,
                 borderRadius: '12px',
             } }),

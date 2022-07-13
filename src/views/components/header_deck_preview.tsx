@@ -41,15 +41,15 @@ function ColorBlock(props: { colorType: MTGCostType, color: string, deck: Deck, 
 export default function HeaderDeckPreview(props: { deck: Deck, loader: DataLoader, changeToDeck: () => void }) {
   const setImageMapLoaded = useState(false)[1];
   useEffect(() => {
-    props.loader.getMapData('IDToLargeImageURI').then(() => {
+    props.loader.getMapData('IDToCropImageURI').then(() => {
       setImageMapLoaded(true);
     });
   }, []);
 
   let url = '';
-  const idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-  if (idToLargeImageURI) {
-    url = `url("${idToLargeImageURI[props.deck.keycard]}")`;
+  const idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
+  if (idToCropImageURI) {
+    url = `url("${idToCropImageURI[props.deck.keycard]}")`;
   }
 
   const fillParent: React.CSSProperties = {
@@ -78,8 +78,7 @@ export default function HeaderDeckPreview(props: { deck: Deck, loader: DataLoade
     <div style={{
       ...fillParent,
       backgroundImage: url,
-      backgroundPosition: '-24px -44px',
-      backgroundSize: '269px 375px',
+      backgroundSize: '100% 100%',
     }}></div>
     <div className="tbDeckGradiant" style={{
       ...fillParent,
