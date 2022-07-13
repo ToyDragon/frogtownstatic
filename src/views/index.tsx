@@ -5,7 +5,14 @@ import ImageLoadTracker from './components/image_load_tracker';
 import URLLoader from './components/url_loader';
 import IndexPage from './index_page';
 
-const loader = new UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json');
+const loader = new UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json',
+    (url: string) => {
+      return new Promise((resolve) => {
+        fetch(url).then((response) => {
+          resolve(response.json());
+        });
+      });
+    });
 const root = createRoot(document.getElementById('content')!);
 const imageLoadTracker = new ImageLoadTracker();
 const urlLoader = new URLLoader();

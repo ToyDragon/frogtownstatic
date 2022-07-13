@@ -9,7 +9,13 @@ var url_data_loader_1 = require("../data/url_data_loader");
 var image_load_tracker_1 = __importDefault(require("./components/image_load_tracker"));
 var url_loader_1 = __importDefault(require("./components/url_loader"));
 var index_page_1 = __importDefault(require("./index_page"));
-var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json');
+var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json', function (url) {
+    return new Promise(function (resolve) {
+        fetch(url).then(function (response) {
+            resolve(response.json());
+        });
+    });
+});
 var root = client_1.createRoot(document.getElementById('content'));
 var imageLoadTracker = new image_load_tracker_1.default();
 var urlLoader = new url_loader_1.default();

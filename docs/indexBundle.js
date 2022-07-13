@@ -483,10 +483,11 @@ var UrlDataLoader = /** @class */ (function () {
      * @param baseUrl String containing {MapName}, like
      * "https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json"
      */
-    function UrlDataLoader(baseUrl) {
+    function UrlDataLoader(baseUrl, jsonRequestHelper) {
         this.mapLoadPromise = {};
         this.loadedMaps = {};
         this.baseUrl = baseUrl;
+        this.jsonRequestHelper = jsonRequestHelper;
     }
     UrlDataLoader.prototype.getAnyMapData = function (mapName) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -496,11 +497,9 @@ var UrlDataLoader = /** @class */ (function () {
         var _this = this;
         if (!this.mapLoadPromise[mapName]) {
             this.mapLoadPromise[mapName] = new Promise(function (resolve) {
-                fetch(_this.baseUrl.replace(/\{MapName\}/g, mapName)).then(function (response) {
-                    response.json().then(function (jsonResponse) {
-                        _this.loadedMaps[mapName] = jsonResponse;
-                        resolve(jsonResponse);
-                    });
+                _this.jsonRequestHelper(_this.baseUrl.replace(/\{MapName\}/g, mapName)).then(function (result) {
+                    _this.loadedMaps[mapName] = result;
+                    resolve(result);
                 });
             });
         }
@@ -3808,7 +3807,13 @@ var url_data_loader_1 = __webpack_require__(/*! ../data/url_data_loader */ "./do
 var image_load_tracker_1 = __importDefault(__webpack_require__(/*! ./components/image_load_tracker */ "./docs/views/components/image_load_tracker.js"));
 var url_loader_1 = __importDefault(__webpack_require__(/*! ./components/url_loader */ "./docs/views/components/url_loader.js"));
 var index_page_1 = __importDefault(__webpack_require__(/*! ./index_page */ "./docs/views/index_page.js"));
-var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json');
+var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json', function (url) {
+    return new Promise(function (resolve) {
+        fetch(url).then(function (response) {
+            resolve(response.json());
+        });
+    });
+});
 var root = client_1.createRoot(document.getElementById('content'));
 var imageLoadTracker = new image_load_tracker_1.default();
 var urlLoader = new url_loader_1.default();

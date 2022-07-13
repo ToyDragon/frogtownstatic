@@ -5,10 +5,11 @@ var UrlDataLoader = /** @class */ (function () {
      * @param baseUrl String containing {MapName}, like
      * "https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json"
      */
-    function UrlDataLoader(baseUrl) {
+    function UrlDataLoader(baseUrl, jsonRequestHelper) {
         this.mapLoadPromise = {};
         this.loadedMaps = {};
         this.baseUrl = baseUrl;
+        this.jsonRequestHelper = jsonRequestHelper;
     }
     UrlDataLoader.prototype.getAnyMapData = function (mapName) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,11 +19,9 @@ var UrlDataLoader = /** @class */ (function () {
         var _this = this;
         if (!this.mapLoadPromise[mapName]) {
             this.mapLoadPromise[mapName] = new Promise(function (resolve) {
-                fetch(_this.baseUrl.replace(/\{MapName\}/g, mapName)).then(function (response) {
-                    response.json().then(function (jsonResponse) {
-                        _this.loadedMaps[mapName] = jsonResponse;
-                        resolve(jsonResponse);
-                    });
+                _this.jsonRequestHelper(_this.baseUrl.replace(/\{MapName\}/g, mapName)).then(function (result) {
+                    _this.loadedMaps[mapName] = result;
+                    resolve(result);
                 });
             });
         }
