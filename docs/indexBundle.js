@@ -554,9 +554,9 @@ function IconCheck(_a) {
     var _b = _a.visible, visible = _b === void 0 ? true : _b;
     // https://icons.getbootstrap.com/icons/check/
     return (React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", fill: "currentColor", className: "bi bi-check", viewBox: "0 0 16 16", style: {
-            visibility: visible ? "visible" : "hidden",
+            visibility: visible ? 'visible' : 'hidden',
         } },
-        React.createElement("path", { d: "M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" })));
+        React.createElement("path", { d: 'M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z' })));
 }
 exports["default"] = IconCheck;
 //# sourceMappingURL=icon_check.js.map
@@ -597,8 +597,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function IconFilter() {
     // https://icons.getbootstrap.com/icons/filter/
-    return (React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", fill: "currentColor", className: "bi bi-filter", viewBox: "0 0 16 16" },
-        React.createElement("path", { d: "M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" })));
+    return (React.createElement("svg", { xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', fill: 'currentColor', className: 'bi bi-filter', viewBox: '0 0 16 16' },
+        React.createElement("path", { d: 'M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z' })));
 }
 exports["default"] = IconFilter;
 //# sourceMappingURL=icon_filter.js.map
@@ -639,9 +639,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function IconPageText() {
     // https://icons.getbootstrap.com/icons/file-earmark-text/
-    return (React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", fill: "currentColor", className: "bi bi-file-earmark-text", viewBox: "0 0 16 16" },
-        React.createElement("path", { d: "M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" }),
-        React.createElement("path", { d: "M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" })));
+    return (React.createElement("svg", { xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', fill: 'currentColor', className: 'bi bi-file-earmark-text', viewBox: '0 0 16 16' },
+        React.createElement("path", { d: 'M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z' }),
+        React.createElement("path", { d: 'M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z' })));
 }
 exports["default"] = IconPageText;
 //# sourceMappingURL=icon_page_text.js.map
@@ -682,8 +682,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function IconSearch() {
     // https://icons.getbootstrap.com/icons/search/
-    return (React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", fill: "currentColor", className: "bi bi-search", viewBox: "0 0 16 16" },
-        React.createElement("path", { d: "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" })));
+    return (React.createElement("svg", { xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', fill: 'currentColor', className: 'bi bi-search', viewBox: '0 0 16 16' },
+        React.createElement("path", { d: 'M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z' })));
 }
 exports["default"] = IconSearch;
 //# sourceMappingURL=icon_search.js.map
