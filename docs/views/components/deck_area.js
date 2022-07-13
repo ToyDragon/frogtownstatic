@@ -38,6 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
+var icon_gear_1 = __importDefault(require("../bootstrap_icons/icon_gear"));
 var tabletop_simulator_1 = __importDefault(require("../exporter/tabletop_simulator"));
 var card_area_1 = __importDefault(require("./card_area"));
 var card_group_1 = require("./card_group");
@@ -181,15 +182,21 @@ function deckArea(props) {
                 react_1.default.createElement("button", { type: "button", className: "btn btn-primary dropdown-toggle", "data-bs-toggle": "dropdown", "aria-expanded": "false" }, "Actions"),
                 react_1.default.createElement("ul", { className: "dropdown-menu" },
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onEditName(); } }, "Edit Name")),
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onEditName(); } }, "Edit Name")),
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onBulkImport(); } }, "Bulk Import")),
-                    react_1.default.createElement("li", { style: {
-                            backgroundColor: exportReady ? 'transparent' : 'lightgray',
-                        } },
-                        react_1.default.createElement("a", __assign({ className: "dropdown-item" }, downloadProps), "Export to Tabletop Simulator")),
-                    react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onSettings(); } }, "Settings")),
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onBulkImport(); } }, "Bulk Import")),
+                    react_1.default.createElement("li", { style: { position: 'relative', marginRight: '26px', width: '222px' } },
+                        react_1.default.createElement("a", __assign({ className: 'dropdown-item ' + (!exportReady ? 'disabled' : '') }, downloadProps), "Export to Tabletop Simulator"),
+                        react_1.default.createElement("a", { className: "dropdown-item", style: {
+                                position: 'absolute',
+                                top: '0',
+                                right: '-26px',
+                                color: 'black',
+                                width: '26px',
+                                height: '32px',
+                                padding: '2px 5px 8px 5px',
+                            }, href: "#", onMouseUp: function (e) { return e.button === 0 && props.onSettings(); } },
+                            react_1.default.createElement(icon_gear_1.default, null))),
                     react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")))))));
 }

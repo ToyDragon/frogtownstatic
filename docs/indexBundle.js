@@ -605,6 +605,49 @@ exports["default"] = IconFilter;
 
 /***/ }),
 
+/***/ "./docs/views/bootstrap_icons/icon_gear.js":
+/*!*************************************************!*\
+  !*** ./docs/views/bootstrap_icons/icon_gear.js ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function IconGear() {
+    // https://icons.getbootstrap.com/icons/gear/
+    return (React.createElement("svg", { xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', fill: 'currentColor', className: 'bi bi-search', viewBox: '0 0 16 16' },
+        React.createElement("path", { d: 'M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z' }),
+        React.createElement("path", { d: 'M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z' })));
+}
+exports["default"] = IconGear;
+//# sourceMappingURL=icon_gear.js.map
+
+/***/ }),
+
 /***/ "./docs/views/bootstrap_icons/icon_page_text.js":
 /*!******************************************************!*\
   !*** ./docs/views/bootstrap_icons/icon_page_text.js ***!
@@ -1700,6 +1743,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var icon_gear_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_gear */ "./docs/views/bootstrap_icons/icon_gear.js"));
 var tabletop_simulator_1 = __importDefault(__webpack_require__(/*! ../exporter/tabletop_simulator */ "./docs/views/exporter/tabletop_simulator.js"));
 var card_area_1 = __importDefault(__webpack_require__(/*! ./card_area */ "./docs/views/components/card_area.js"));
 var card_group_1 = __webpack_require__(/*! ./card_group */ "./docs/views/components/card_group.js");
@@ -1843,15 +1887,21 @@ function deckArea(props) {
                 react_1.default.createElement("button", { type: "button", className: "btn btn-primary dropdown-toggle", "data-bs-toggle": "dropdown", "aria-expanded": "false" }, "Actions"),
                 react_1.default.createElement("ul", { className: "dropdown-menu" },
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onEditName(); } }, "Edit Name")),
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onEditName(); } }, "Edit Name")),
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onBulkImport(); } }, "Bulk Import")),
-                    react_1.default.createElement("li", { style: {
-                            backgroundColor: exportReady ? 'transparent' : 'lightgray',
-                        } },
-                        react_1.default.createElement("a", __assign({ className: "dropdown-item" }, downloadProps), "Export to Tabletop Simulator")),
-                    react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function () { return props.onSettings(); } }, "Settings")),
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onBulkImport(); } }, "Bulk Import")),
+                    react_1.default.createElement("li", { style: { position: 'relative', marginRight: '26px', width: '222px' } },
+                        react_1.default.createElement("a", __assign({ className: 'dropdown-item ' + (!exportReady ? 'disabled' : '') }, downloadProps), "Export to Tabletop Simulator"),
+                        react_1.default.createElement("a", { className: "dropdown-item", style: {
+                                position: 'absolute',
+                                top: '0',
+                                right: '-26px',
+                                color: 'black',
+                                width: '26px',
+                                height: '32px',
+                                padding: '2px 5px 8px 5px',
+                            }, href: "#", onMouseUp: function (e) { return e.button === 0 && props.onSettings(); } },
+                            react_1.default.createElement(icon_gear_1.default, null))),
                     react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")))))));
 }

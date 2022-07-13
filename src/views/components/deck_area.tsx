@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {DataLoader} from '../../data/data_loader';
+import IconGear from '../bootstrap_icons/icon_gear';
 import TableTopSimulator from '../exporter/tabletop_simulator';
 import CardArea from './card_area';
 import {countCards} from './card_group';
@@ -179,12 +180,22 @@ export default function deckArea(props: {
             aria-expanded="false">Actions
           </button>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="#" onMouseUp={() => props.onEditName()}>Edit Name</a></li>
-            <li><a className="dropdown-item" href="#" onMouseUp={() => props.onBulkImport()}>Bulk Import</a></li>
-            <li style={{
-              backgroundColor: exportReady ? 'transparent' : 'lightgray',
-            }}><a className="dropdown-item" {...downloadProps}>Export to Tabletop Simulator</a></li>
-            <li><a className="dropdown-item" href="#" onMouseUp={() => props.onSettings()}>Settings</a></li>
+            <li><a className="dropdown-item" href="#"
+              onMouseUp={(e) => e.button === 0 && props.onEditName()}>Edit Name</a></li>
+            <li><a className="dropdown-item" href="#"
+              onMouseUp={(e) => e.button === 0 && props.onBulkImport()}>Bulk Import</a></li>
+            <li style={{position: 'relative', marginRight: '26px', width: '222px'}}>
+              <a className={'dropdown-item ' + (!exportReady ? 'disabled' : '')} {...downloadProps}>
+                  Export to Tabletop Simulator</a>
+              <a className="dropdown-item" style={{
+                position: 'absolute',
+                top: '0',
+                right: '-26px',
+                color: 'black',
+                width: '26px',
+                height: '32px',
+                padding: '2px 5px 8px 5px',
+              }} href="#" onMouseUp={(e) => e.button === 0 && props.onSettings()}><IconGear /></a></li>
             <li><a className="dropdown-item" href={tcgplayerLink} target="_blank" rel="noreferrer">TCG Player</a></li>
           </ul>
         </div>
