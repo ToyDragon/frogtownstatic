@@ -74,7 +74,6 @@ export function parseCards(loader: DataLoader, input: string): {ids: string[], e
     }
   }
 
-  console.log(namesToMatch);
   for (const info of namesToMatch) {
     if (!info.matchedName) {
       uniqueErrors[`Card "${info.text}" not found.`] = true;

@@ -878,7 +878,6 @@ function parseCards(loader, input) {
             }
         }
     }
-    console.log(namesToMatch);
     for (var _e = 0, namesToMatch_2 = namesToMatch; _e < namesToMatch_2.length; _e++) {
         var info = namesToMatch_2[_e];
         if (!info.matchedName) {
