@@ -60,6 +60,14 @@ function copyDecks(decks) {
     return newDecks;
 }
 function indexPage(props) {
+    // Call getMapData with the maps required to display the page, to ensure they always start loading first.
+    var priorityMaps = [
+        props.loader.getMapData('IDToName'),
+        props.loader.getMapData('IDToText'),
+        props.loader.getMapData('IDToLargeImageURI'),
+        props.loader.getMapData('IDToCropImageURI'),
+    ];
+    props.loader.holdUntil(Promise.all(priorityMaps));
     var searchRef = (0, react_1.useRef)(null);
     var _a = (0, react_1.useState)(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
     var _b = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];

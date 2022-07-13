@@ -54,4 +54,32 @@ it('Provides test data', function () { return __awaiter(void 0, void 0, void 0, 
         }
     });
 }); });
+it('Can hold until', function () { return __awaiter(void 0, void 0, void 0, function () {
+    var nameMap, dataLoader, endHold, dataLoaded;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                nameMap = { 'a': 'test' };
+                dataLoader = new memory_data_loader_1.MemoryDataLoader();
+                dataLoader.holdUntil(new Promise(function (resolve) {
+                    endHold = resolve;
+                }));
+                dataLoaded = false;
+                dataLoader.getMapData('IDToName').then(function () {
+                    dataLoaded = true;
+                });
+                dataLoader.setMapDataLoaded('IDToName', nameMap);
+                return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 0); })];
+            case 1:
+                _a.sent();
+                expect(dataLoaded).toBeFalsy();
+                endHold();
+                return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 0); })];
+            case 2:
+                _a.sent();
+                expect(dataLoaded).toBeTruthy();
+                return [2 /*return*/];
+        }
+    });
+}); });
 //# sourceMappingURL=memory_data_loader.test.js.map

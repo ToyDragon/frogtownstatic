@@ -61,4 +61,30 @@ it('Provides data', function () { return __awaiter(void 0, void 0, void 0, funct
         }
     });
 }); });
+it('Can hold until', function () { return __awaiter(void 0, void 0, void 0, function () {
+    var fetcher, dataLoader, endHold, idToNamePromise, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                fetcher = jest.fn(function (x) { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        return [2 /*return*/, { 'a': x }];
+                    });
+                }); });
+                dataLoader = new url_data_loader_1.UrlDataLoader('www.test.com/{MapName}.json', fetcher);
+                dataLoader.holdUntil(new Promise(function (resolve) {
+                    endHold = resolve;
+                }));
+                idToNamePromise = dataLoader.getMapData('IDToName');
+                expect(fetcher.mock.calls.length).toEqual(0);
+                endHold();
+                _a = expect;
+                return [4 /*yield*/, idToNamePromise];
+            case 1:
+                _a.apply(void 0, [_b.sent()]).toEqual({ 'a': 'www.test.com/IDToName.json' });
+                expect(fetcher.mock.calls.length).toEqual(1);
+                return [2 /*return*/];
+        }
+    });
+}); });
 //# sourceMappingURL=url_data_loader.test.js.map

@@ -203,7 +203,7 @@ const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function search
           flexGrow: '0',
         }}
         >
-          <FilterText maps={['IDToName', 'NameToID']} visible={true} loader={props.loader}
+          <FilterText maps={['IDToName']} visible={true} loader={props.loader}
             value={filterData.name} setValue={filterDataSetter('name')}>
             <IconSearch />&nbsp;Name
           </FilterText>

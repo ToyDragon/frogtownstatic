@@ -5,6 +5,7 @@ export class UrlDataLoader {
   private mapLoadPromise: Record<string, Promise<any>> = {};
   private loadedMaps: Record<string, any> = {};
   private jsonRequestHelper!: (url: string) => Promise<any>;
+  private waitingFor: Promise<unknown> | null = null;
 
   /**
    * @param baseUrl String containing {MapName}, like
@@ -20,7 +21,10 @@ export class UrlDataLoader {
     return this.getMapData(mapName as any);
   }
 
-  public getMapData<K extends keyof MapData>(mapName: K): Promise<MapData[K] | null> {
+  public async getMapData<K extends keyof MapData>(mapName: K): Promise<MapData[K] | null> {
+    if (this.waitingFor) {
+      await this.waitingFor;
+    }
     if (!this.mapLoadPromise[mapName]) {
       this.mapLoadPromise[mapName] = new Promise((resolve) => {
         this.jsonRequestHelper(this.baseUrl.replace(/\{MapName\}/g, mapName)).then((result) => {
@@ -29,10 +33,14 @@ export class UrlDataLoader {
         });
       });
     }
-    return this.mapLoadPromise[mapName];
+    return await this.mapLoadPromise[mapName];
   }
 
   public getMapDataSync<K extends keyof MapData>(mapName: K): MapData[K] | null {
     return this.loadedMaps[mapName];
+  }
+
+  public holdUntil(until: Promise<unknown>): void {
+    this.waitingFor = until;
   }
 }

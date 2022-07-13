@@ -285,7 +285,7 @@ var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
                     backgroundColor: '#303b4c',
                     flexGrow: '0',
                 } },
-                react_1.default.createElement(filter_text_1.default, { maps: ['IDToName', 'NameToID'], visible: true, loader: props.loader, value: filterData.name, setValue: filterDataSetter('name') },
+                react_1.default.createElement(filter_text_1.default, { maps: ['IDToName'], visible: true, loader: props.loader, value: filterData.name, setValue: filterDataSetter('name') },
                     react_1.default.createElement(icon_search_1.default, null),
                     "\u00A0Name"),
                 react_1.default.createElement(filter_text_1.default, { maps: ['IDToText'], loader: props.loader, visible: enabledFilters['text'], value: filterData.text, setValue: filterDataSetter('text') },

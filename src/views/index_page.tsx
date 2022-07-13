@@ -13,7 +13,7 @@ import LoadingWindow from './components/loading_window';
 import {DataLoader} from '../data/data_loader';
 import ConfirmDeleteWindow, {ConfirmDeleteWindowHandle} from './components/confirm_delete_window';
 import DeckDropHandler from './components/deck_drop_handler';
-import InfoWindow, { InfoWindowHandle } from './components/info_window';
+import InfoWindow, {InfoWindowHandle} from './components/info_window';
 
 function createNewDeck(num: number) {
   return {
@@ -42,6 +42,15 @@ export default function indexPage(props: {
   urlLoader: URLLoader,
   imageLoadTracker: ImageLoadTracker,
 }) {
+  // Call getMapData with the maps required to display the page, to ensure they always start loading first.
+  const priorityMaps = [
+    props.loader.getMapData('IDToName'),
+    props.loader.getMapData('IDToText'),
+    props.loader.getMapData('IDToLargeImageURI'),
+    props.loader.getMapData('IDToCropImageURI'),
+  ];
+  props.loader.holdUntil(Promise.all(priorityMaps));
+
   const searchRef = useRef<SearchAreaHandle>(null);
   const [backgroundUrl, setBackgroundUrl] = useState(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg');
   const [deckIndex, setDeckIndex] = useState<number>(Number(localStorage.getItem('deck_index') || '0'));
