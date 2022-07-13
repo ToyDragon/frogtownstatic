@@ -131,7 +131,7 @@ export default function CardArea(props: {
   tryStartLazyBackgroundLoader(props.imageLoadTracker);
   const setImageMapLoaded = useState(false)[1];
   useEffect(() => {
-    props.loader.getMapData('IDToLargeImageURI').then(() => {
+    props.loader.getMapData('IDToNormalImageURI').then(() => {
       setImageMapLoaded(true);
     });
   }, []);

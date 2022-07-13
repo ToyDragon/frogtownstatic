@@ -84,6 +84,7 @@ var MapData = /** @class */ (function () {
         this.TokenIDToName = {};
         this.IDToCollectorsNumber = {};
         this.IDToCost = {};
+        this.IDToNormalImageURI = {};
         this.IDToLargeImageURI = {};
         this.IDToCropImageURI = {};
         this.IDToTokenStrings = {};

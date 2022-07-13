@@ -38,7 +38,7 @@ function countCards(cardIds) {
 exports.countCards = countCards;
 ;
 function CardGroup(props) {
-    var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     if (props.displayMode === display_dropdown_1.DisplayMode.Grid ||
         props.displayMode === display_dropdown_1.DisplayMode.CompactGrid ||
         props.displayMode === display_dropdown_1.DisplayMode.SingleGrid) {

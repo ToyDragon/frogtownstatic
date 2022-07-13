@@ -103,6 +103,7 @@ export class MapData {
 
   public IDToCollectorsNumber: CardIDMap<string> = {};
   public IDToCost: CardIDMap<string> = {};
+  public IDToNormalImageURI: CardIDMap<string> = {};
   public IDToLargeImageURI: CardIDMap<string> = {};
   public IDToCropImageURI: CardIDMap<string> = {};
   public IDToTokenStrings: CardIDMap<string> = {};

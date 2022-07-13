@@ -10,7 +10,7 @@ function hoverCardHandler(props) {
     (0, react_2.useEffect)(function () {
         document.getElementsByTagName('body')[0].addEventListener('mousemove', function (e) {
             var hoverCard = document.getElementById(id);
-            var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+            var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
             if (!hoverCard || !idToImageUri) {
                 return;
             }

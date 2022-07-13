@@ -106,8 +106,8 @@ function DeckDropHandler(props) {
         }, onDrop: function (e) {
             setShowingIndicator(false);
             e.preventDefault();
-            var idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-            if (!idToLargeImageURI) {
+            var IDToNormalImageURI = props.loader.getMapDataSync('IDToNormalImageURI');
+            if (!IDToNormalImageURI) {
                 return;
             }
             var filesToRead = [];
@@ -185,7 +185,7 @@ function DeckDropHandler(props) {
                                         if (!id) {
                                             throw new Error("Couldn't parse id from url ".concat(stack.CustomDeck[localId].FaceURL));
                                         }
-                                        if (!idToLargeImageURI[id]) {
+                                        if (!IDToNormalImageURI[id]) {
                                             // Ignore tokens and double faced cards.
                                             continue;
                                         }

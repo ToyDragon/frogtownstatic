@@ -42,7 +42,7 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
   }
 
   const idToText = props.loader.getMapDataSync('IDToText')!;
-  const idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI')!;
+  const idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI')!;
   const bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
   return (
     <div style={{

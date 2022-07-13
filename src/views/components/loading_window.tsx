@@ -13,13 +13,13 @@ export default function loadingWindow(props: {loader: DataLoader}) {
   useEffect(() => {
     props.loader.getMapData('IDToName').then(() => setNameLoaded(true));
     props.loader.getMapData('IDToText').then(() => setTextLoaded(true));
-    props.loader.getMapData('IDToLargeImageURI').then(() => setImagesLoaded(true));
+    props.loader.getMapData('IDToNormalImageURI').then(() => setImagesLoaded(true));
     props.loader.getMapData('IDToCropImageURI').then(() => setCropsLoaded(true));
 
     Promise.all([
       props.loader.getMapData('IDToName'),
       props.loader.getMapData('IDToText'),
-      props.loader.getMapData('IDToLargeImageURI'),
+      props.loader.getMapData('IDToNormalImageURI'),
       props.loader.getMapData('IDToCropImageURI'),
     ]).then(() => {
       setIsOpen(false);

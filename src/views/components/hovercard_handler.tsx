@@ -8,7 +8,7 @@ export default function hoverCardHandler(props: {loader: DataLoader}) {
   useEffect(() => {
     document.getElementsByTagName('body')[0].addEventListener('mousemove', (e) => {
       const hoverCard = document.getElementById(id);
-      const idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+      const idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
       if (!hoverCard || !idToImageUri) {
         return;
       }

@@ -459,6 +459,7 @@ var MapData = /** @class */ (function () {
         this.TokenIDToName = {};
         this.IDToCollectorsNumber = {};
         this.IDToCost = {};
+        this.IDToNormalImageURI = {};
         this.IDToLargeImageURI = {};
         this.IDToCropImageURI = {};
         this.IDToTokenStrings = {};
@@ -1205,7 +1206,7 @@ function CardArea(props) {
     (0, lazy_background_loader_1.default)(props.imageLoadTracker);
     var setImageMapLoaded = (0, react_1.useState)(false)[1];
     (0, react_1.useEffect)(function () {
-        props.loader.getMapData('IDToLargeImageURI').then(function () {
+        props.loader.getMapData('IDToNormalImageURI').then(function () {
             setImageMapLoaded(true);
         });
     }, []);
@@ -1321,7 +1322,7 @@ function countCards(cardIds) {
 exports.countCards = countCards;
 ;
 function CardGroup(props) {
-    var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     if (props.displayMode === display_dropdown_1.DisplayMode.Grid ||
         props.displayMode === display_dropdown_1.DisplayMode.CompactGrid ||
         props.displayMode === display_dropdown_1.DisplayMode.SingleGrid) {
@@ -1500,7 +1501,7 @@ function CompactDetailsCard(props) {
         rarityColor = '#e24d23';
     }
     var idToText = props.loader.getMapDataSync('IDToText');
-    var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',
@@ -2180,8 +2181,8 @@ function DeckDropHandler(props) {
         }, onDrop: function (e) {
             setShowingIndicator(false);
             e.preventDefault();
-            var idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-            if (!idToLargeImageURI) {
+            var IDToNormalImageURI = props.loader.getMapDataSync('IDToNormalImageURI');
+            if (!IDToNormalImageURI) {
                 return;
             }
             var filesToRead = [];
@@ -2259,7 +2260,7 @@ function DeckDropHandler(props) {
                                         if (!id) {
                                             throw new Error("Couldn't parse id from url ".concat(stack.CustomDeck[localId].FaceURL));
                                         }
-                                        if (!idToLargeImageURI[id]) {
+                                        if (!IDToNormalImageURI[id]) {
                                             // Ignore tokens and double faced cards.
                                             continue;
                                         }
@@ -2404,7 +2405,7 @@ function DetailsCard(props) {
         rarityColor = '#e24d23';
     }
     var idToText = props.loader.getMapDataSync('IDToText');
-    var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',
@@ -3450,7 +3451,7 @@ function hoverCardHandler(props) {
     (0, react_2.useEffect)(function () {
         document.getElementsByTagName('body')[0].addEventListener('mousemove', function (e) {
             var hoverCard = document.getElementById(id);
-            var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+            var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
             if (!hoverCard || !idToImageUri) {
                 return;
             }
@@ -3851,12 +3852,12 @@ function loadingWindow(props) {
     (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToName').then(function () { return setNameLoaded(true); });
         props.loader.getMapData('IDToText').then(function () { return setTextLoaded(true); });
-        props.loader.getMapData('IDToLargeImageURI').then(function () { return setImagesLoaded(true); });
+        props.loader.getMapData('IDToNormalImageURI').then(function () { return setImagesLoaded(true); });
         props.loader.getMapData('IDToCropImageURI').then(function () { return setCropsLoaded(true); });
         Promise.all([
             props.loader.getMapData('IDToName'),
             props.loader.getMapData('IDToText'),
-            props.loader.getMapData('IDToLargeImageURI'),
+            props.loader.getMapData('IDToNormalImageURI'),
             props.loader.getMapData('IDToCropImageURI'),
         ]).then(function () {
             setIsOpen(false);
@@ -4400,18 +4401,19 @@ function loadingWindow(props) {
     var _m = (0, react_2.useState)(false), isIDToSetCodeLoaded = _m[0], setIDToSetCodeLoaded = _m[1];
     var _o = (0, react_2.useState)(false), isSetCodeToReleaseLoaded = _o[0], setSetCodeToReleaseLoaded = _o[1];
     var _p = (0, react_2.useState)(false), isIDToTokenStringsLoaded = _p[0], setIDToTokenStringsLoaded = _p[1];
-    var _q = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _q[0], setTokenIDToTokenStringLoaded = _q[1];
-    var _r = (0, react_2.useState)(false), isTokenIDToNameLoaded = _r[0], setTokenIDToNameLoaded = _r[1];
-    var _s = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _s[0], setTokenIDToLargeImageURILoaded = _s[1];
-    var _t = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _t[0], setFrontIDToBackIDLoaded = _t[1];
-    var _u = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _u[0], setBackIDToLargeImageURILoaded = _u[1];
-    var _v = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _v[0], setSetCodeToSetNameLoaded = _v[1];
-    var _w = (0, react_2.useState)(false), isIDToCostLoaded = _w[0], setIDToCostLoaded = _w[1];
+    var _q = (0, react_2.useState)(false), isIDToLargeImageURILoaded = _q[0], setIDToLargeImageURILoaded = _q[1];
+    var _r = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _r[0], setTokenIDToTokenStringLoaded = _r[1];
+    var _s = (0, react_2.useState)(false), isTokenIDToNameLoaded = _s[0], setTokenIDToNameLoaded = _s[1];
+    var _t = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _t[0], setTokenIDToLargeImageURILoaded = _t[1];
+    var _u = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _u[0], setFrontIDToBackIDLoaded = _u[1];
+    var _v = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _v[0], setBackIDToLargeImageURILoaded = _v[1];
+    var _w = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _w[0], setSetCodeToSetNameLoaded = _w[1];
+    var _x = (0, react_2.useState)(false), isIDToCostLoaded = _x[0], setIDToCostLoaded = _x[1];
     (0, react_1.useEffect)(function () {
         Promise.all([
             props.loader.getMapData('IDToName'),
             props.loader.getMapData('IDToText'),
-            props.loader.getMapData('IDToLargeImageURI'),
+            props.loader.getMapData('IDToNormalImageURI'),
             props.loader.getMapData('IDToCropImageURI'),
         ]).then(function () {
             setIsOpen(true);
@@ -4430,6 +4432,7 @@ function loadingWindow(props) {
             remainingPromises.push(props.loader.getMapData('IDToSetCode').then(function () { return setIDToSetCodeLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('SetCodeToRelease').then(function () { return setSetCodeToReleaseLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToTokenStrings').then(function () { return setIDToTokenStringsLoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('IDToLargeImageURI').then(function () { return setIDToLargeImageURILoaded(true); }));
             remainingPromises.push(props.loader.getMapData('TokenIDToTokenString').then(function () { return setTokenIDToTokenStringLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('TokenIDToName').then(function () { return setTokenIDToNameLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('TokenIDToLargeImageURI').then(function () { return setTokenIDToLargeImageURILoaded(true); }));
@@ -4480,6 +4483,7 @@ function loadingWindow(props) {
         createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode'),
         createLoadingIndicator(isSetCodeToReleaseLoaded, 'SetCodeToRelease'),
         createLoadingIndicator(isIDToTokenStringsLoaded, 'IDToTokenStrings'),
+        createLoadingIndicator(isIDToLargeImageURILoaded, 'IDToLargeImageURI'),
         createLoadingIndicator(isTokenIDToTokenStringLoaded, 'TokenIDToTokenString'),
         createLoadingIndicator(isTokenIDToNameLoaded, 'TokenIDToName'),
         createLoadingIndicator(isTokenIDToLargeImageURILoaded, 'TokenIDToLargeImageURI'),
@@ -5069,7 +5073,7 @@ function indexPage(props) {
     var priorityMaps = [
         props.loader.getMapData('IDToName'),
         props.loader.getMapData('IDToText'),
-        props.loader.getMapData('IDToLargeImageURI'),
+        props.loader.getMapData('IDToNormalImageURI'),
         props.loader.getMapData('IDToCropImageURI'),
     ];
     props.loader.holdUntil(Promise.all(priorityMaps));

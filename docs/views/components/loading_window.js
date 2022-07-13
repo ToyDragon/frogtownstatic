@@ -38,12 +38,12 @@ function loadingWindow(props) {
     (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToName').then(function () { return setNameLoaded(true); });
         props.loader.getMapData('IDToText').then(function () { return setTextLoaded(true); });
-        props.loader.getMapData('IDToLargeImageURI').then(function () { return setImagesLoaded(true); });
+        props.loader.getMapData('IDToNormalImageURI').then(function () { return setImagesLoaded(true); });
         props.loader.getMapData('IDToCropImageURI').then(function () { return setCropsLoaded(true); });
         Promise.all([
             props.loader.getMapData('IDToName'),
             props.loader.getMapData('IDToText'),
-            props.loader.getMapData('IDToLargeImageURI'),
+            props.loader.getMapData('IDToNormalImageURI'),
             props.loader.getMapData('IDToCropImageURI'),
         ]).then(function () {
             setIsOpen(false);

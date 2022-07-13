@@ -33,7 +33,7 @@ export default function CardGroup(props: {
     onStar?: (cardId: string) => void,
   }
 }) {
-  const idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+  const idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
   if (props.displayMode === DisplayMode.Grid ||
     props.displayMode === DisplayMode.CompactGrid ||
     props.displayMode === DisplayMode.SingleGrid) {

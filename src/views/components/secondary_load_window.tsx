@@ -18,6 +18,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
   const [isIDToSetCodeLoaded, setIDToSetCodeLoaded] = useState(false);
   const [isSetCodeToReleaseLoaded, setSetCodeToReleaseLoaded] = useState(false);
   const [isIDToTokenStringsLoaded, setIDToTokenStringsLoaded] = useState(false);
+  const [isIDToLargeImageURILoaded, setIDToLargeImageURILoaded] = useState(false);
   const [isTokenIDToTokenStringLoaded, setTokenIDToTokenStringLoaded] = useState(false);
   const [isTokenIDToNameLoaded, setTokenIDToNameLoaded] = useState(false);
   const [isTokenIDToLargeImageURILoaded, setTokenIDToLargeImageURILoaded] = useState(false);
@@ -30,7 +31,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     Promise.all([
       props.loader.getMapData('IDToName'),
       props.loader.getMapData('IDToText'),
-      props.loader.getMapData('IDToLargeImageURI'),
+      props.loader.getMapData('IDToNormalImageURI'),
       props.loader.getMapData('IDToCropImageURI'),
     ]).then(() => {
       setIsOpen(true);
@@ -49,6 +50,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
       remainingPromises.push(props.loader.getMapData('IDToSetCode').then(() => setIDToSetCodeLoaded(true)));
       remainingPromises.push(props.loader.getMapData('SetCodeToRelease').then(() => setSetCodeToReleaseLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToTokenStrings').then(() => setIDToTokenStringsLoaded(true)));
+      remainingPromises.push(props.loader.getMapData('IDToLargeImageURI').then(() => setIDToLargeImageURILoaded(true)));
       remainingPromises.push(props.loader.getMapData('TokenIDToTokenString').then(() => setTokenIDToTokenStringLoaded(true)));
       remainingPromises.push(props.loader.getMapData('TokenIDToName').then(() => setTokenIDToNameLoaded(true)));
       remainingPromises.push(props.loader.getMapData('TokenIDToLargeImageURI').then(() => setTokenIDToLargeImageURILoaded(true)));
@@ -100,6 +102,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     {createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode')}
     {createLoadingIndicator(isSetCodeToReleaseLoaded, 'SetCodeToRelease')}
     {createLoadingIndicator(isIDToTokenStringsLoaded, 'IDToTokenStrings')}
+    {createLoadingIndicator(isIDToLargeImageURILoaded, 'IDToLargeImageURI')}
     {createLoadingIndicator(isTokenIDToTokenStringLoaded, 'TokenIDToTokenString')}
     {createLoadingIndicator(isTokenIDToNameLoaded, 'TokenIDToName')}
     {createLoadingIndicator(isTokenIDToLargeImageURILoaded, 'TokenIDToLargeImageURI')}

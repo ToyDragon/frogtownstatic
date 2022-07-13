@@ -143,7 +143,7 @@ function CardArea(props) {
     (0, lazy_background_loader_1.default)(props.imageLoadTracker);
     var setImageMapLoaded = (0, react_1.useState)(false)[1];
     (0, react_1.useEffect)(function () {
-        props.loader.getMapData('IDToLargeImageURI').then(function () {
+        props.loader.getMapData('IDToNormalImageURI').then(function () {
             setImageMapLoaded(true);
         });
     }, []);

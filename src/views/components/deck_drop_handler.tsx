@@ -45,8 +45,8 @@ export default function DeckDropHandler(
     setShowingIndicator(false);
     e.preventDefault();
 
-    const idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
-    if (!idToLargeImageURI) {
+    const IDToNormalImageURI = props.loader.getMapDataSync('IDToNormalImageURI');
+    if (!IDToNormalImageURI) {
       return;
     }
     const filesToRead: File[] = [];
@@ -117,7 +117,7 @@ export default function DeckDropHandler(
                   if (!id) {
                     throw new Error(`Couldn't parse id from url ${stack.CustomDeck[localId].FaceURL}`);
                   }
-                  if (!idToLargeImageURI[id]) {
+                  if (!IDToNormalImageURI[id]) {
                     // Ignore tokens and double faced cards.
                     continue;
                   }

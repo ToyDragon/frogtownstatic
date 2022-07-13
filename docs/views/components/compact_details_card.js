@@ -76,7 +76,7 @@ function CompactDetailsCard(props) {
         rarityColor = '#e24d23';
     }
     var idToText = props.loader.getMapDataSync('IDToText');
-    var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
+    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',

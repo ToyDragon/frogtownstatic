@@ -65,7 +65,7 @@ function indexPage(props) {
     var priorityMaps = [
         props.loader.getMapData('IDToName'),
         props.loader.getMapData('IDToText'),
-        props.loader.getMapData('IDToLargeImageURI'),
+        props.loader.getMapData('IDToNormalImageURI'),
         props.loader.getMapData('IDToCropImageURI'),
     ];
     props.loader.holdUntil(Promise.all(priorityMaps));
