@@ -42,8 +42,10 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
   }
 
   const idToText = props.loader.getMapDataSync('IDToText')!;
-  const idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI')!;
+  const idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
+  const idToArtist = props.loader.getMapDataSync('IDToArtist');
   const bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+  const artist = (idToArtist && idToArtist[props.cardId] && `Artist: ${idToArtist[props.cardId]}`) || '';
   return (
     <div style={{
       width: 'calc(100% - 8px)',
@@ -55,7 +57,7 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
       borderTopRightRadius: props.index === 0 ? '8px' : '',
       fontSize: '19px',
     }}>
-      <div data-hovercardid={props.cardId} style={{
+      <div data-hovercardid={props.cardId} title={artist} style={{
         display: 'inline-block',
         width: '160px',
         height: '225px',

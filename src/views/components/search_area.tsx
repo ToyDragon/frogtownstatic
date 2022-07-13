@@ -20,6 +20,7 @@ function initFilterData(): FilterData {
     name: '',
     text: '',
     rarity: {mode: 'all', values: {}, no_others: false},
+    artist: '',
     color: {mode: 'all', values: {}, no_others: false},
     color_identity: {mode: 'all', values: {}, no_others: true},
     super_type: {mode: 'any', values: {}, no_others: false},
@@ -68,6 +69,7 @@ function initEnabledFilters(): Record<'misc' | keyof FilterData, boolean> {
     name: true,
     text: true,
     rarity: false,
+    artist: false,
     color: false,
     color_identity: false,
     super_type: false,
@@ -220,6 +222,10 @@ const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function search
             visible={enabledFilters['set']} value={filterData.set} setValue={filterDataSetter('set')}>
           Set
           </FilterDatalist>
+          <FilterText maps={['IDToArtist']} loader={props.loader} visible={enabledFilters['artist']}
+            value={filterData.artist} setValue={filterDataSetter('artist')}>
+            <IconPageText />&nbsp;Artist
+          </FilterText>
           <FilterMapCategory map={'IDToColor'} loader={props.loader} visible={enabledFilters['color']}
             value={filterData.color} setValue={filterDataSetter('color')} multiSelect={true} categories={[
               {value: 'W', display: <><img src="icons/ManaW.jpg" style={{marginTop: '-5px'}} /> White</>},
@@ -311,6 +317,7 @@ const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function search
               {createToggleFilterItem('Text', 'text')}
               {createToggleFilterItem('Rarity', 'rarity')}
               {createToggleFilterItem('Set', 'set')}
+              {createToggleFilterItem('Artist', 'artist')}
               {createToggleFilterItem('Color', 'color')}
               {createToggleFilterItem('Color Identity', 'color_identity')}
               {createToggleFilterItem('SuperType', 'super_type')}

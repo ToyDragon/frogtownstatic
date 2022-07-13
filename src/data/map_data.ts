@@ -90,6 +90,7 @@ export class MapData {
   public SupertypeToID: StringValueMap<string[]> = {};
   public IDToType: CardIDMap<string[]> = {};
   public TypeToID: StringValueMap<string[]> = {};
+  public IDToArtist: CardIDMap<string> = {};
 
   public IDToLegalFormat: CardIDMap<string[]> = {};
   public LegalFormatToID: StringValueMap<string[]> = {};

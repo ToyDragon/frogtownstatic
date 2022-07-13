@@ -30,24 +30,25 @@ function loadingWindow(props) {
     var _b = (0, react_2.useState)(false), isIDToRarityLoaded = _b[0], setIDToRarityLoaded = _b[1];
     var _c = (0, react_2.useState)(false), isIDToColorLoaded = _c[0], setIDToColorLoaded = _c[1];
     var _d = (0, react_2.useState)(false), isIDToColorIdentityLoaded = _d[0], setIDToColorIdentityLoaded = _d[1];
-    var _e = (0, react_2.useState)(false), isIDToSupertypeLoaded = _e[0], setIDToSupertypeLoaded = _e[1];
-    var _f = (0, react_2.useState)(false), isIDToTypeLoaded = _f[0], setIDToTypeLoaded = _f[1];
-    var _g = (0, react_2.useState)(false), isIDToSubtypeLoaded = _g[0], setIDToSubtypeLoaded = _g[1];
-    var _h = (0, react_2.useState)(false), isIDToPowerLoaded = _h[0], setIDToPowerLoaded = _h[1];
-    var _j = (0, react_2.useState)(false), isIDToToughnessLoaded = _j[0], setIDToToughnessLoaded = _j[1];
-    var _k = (0, react_2.useState)(false), isIDToCMCLoaded = _k[0], setIDToCMCLoaded = _k[1];
-    var _l = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _l[0], setIDToLegalFormatLoaded = _l[1];
-    var _m = (0, react_2.useState)(false), isIDToSetCodeLoaded = _m[0], setIDToSetCodeLoaded = _m[1];
-    var _o = (0, react_2.useState)(false), isSetCodeToReleaseLoaded = _o[0], setSetCodeToReleaseLoaded = _o[1];
-    var _p = (0, react_2.useState)(false), isIDToTokenStringsLoaded = _p[0], setIDToTokenStringsLoaded = _p[1];
-    var _q = (0, react_2.useState)(false), isIDToLargeImageURILoaded = _q[0], setIDToLargeImageURILoaded = _q[1];
-    var _r = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _r[0], setTokenIDToTokenStringLoaded = _r[1];
-    var _s = (0, react_2.useState)(false), isTokenIDToNameLoaded = _s[0], setTokenIDToNameLoaded = _s[1];
-    var _t = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _t[0], setTokenIDToLargeImageURILoaded = _t[1];
-    var _u = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _u[0], setFrontIDToBackIDLoaded = _u[1];
-    var _v = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _v[0], setBackIDToLargeImageURILoaded = _v[1];
-    var _w = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _w[0], setSetCodeToSetNameLoaded = _w[1];
-    var _x = (0, react_2.useState)(false), isIDToCostLoaded = _x[0], setIDToCostLoaded = _x[1];
+    var _e = (0, react_2.useState)(false), isIDToArtistLoaded = _e[0], setIDToArtistLoaded = _e[1];
+    var _f = (0, react_2.useState)(false), isIDToSupertypeLoaded = _f[0], setIDToSupertypeLoaded = _f[1];
+    var _g = (0, react_2.useState)(false), isIDToTypeLoaded = _g[0], setIDToTypeLoaded = _g[1];
+    var _h = (0, react_2.useState)(false), isIDToSubtypeLoaded = _h[0], setIDToSubtypeLoaded = _h[1];
+    var _j = (0, react_2.useState)(false), isIDToPowerLoaded = _j[0], setIDToPowerLoaded = _j[1];
+    var _k = (0, react_2.useState)(false), isIDToToughnessLoaded = _k[0], setIDToToughnessLoaded = _k[1];
+    var _l = (0, react_2.useState)(false), isIDToCMCLoaded = _l[0], setIDToCMCLoaded = _l[1];
+    var _m = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _m[0], setIDToLegalFormatLoaded = _m[1];
+    var _o = (0, react_2.useState)(false), isIDToSetCodeLoaded = _o[0], setIDToSetCodeLoaded = _o[1];
+    var _p = (0, react_2.useState)(false), isSetCodeToReleaseLoaded = _p[0], setSetCodeToReleaseLoaded = _p[1];
+    var _q = (0, react_2.useState)(false), isIDToTokenStringsLoaded = _q[0], setIDToTokenStringsLoaded = _q[1];
+    var _r = (0, react_2.useState)(false), isIDToLargeImageURILoaded = _r[0], setIDToLargeImageURILoaded = _r[1];
+    var _s = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _s[0], setTokenIDToTokenStringLoaded = _s[1];
+    var _t = (0, react_2.useState)(false), isTokenIDToNameLoaded = _t[0], setTokenIDToNameLoaded = _t[1];
+    var _u = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _u[0], setTokenIDToLargeImageURILoaded = _u[1];
+    var _v = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _v[0], setFrontIDToBackIDLoaded = _v[1];
+    var _w = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _w[0], setBackIDToLargeImageURILoaded = _w[1];
+    var _x = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _x[0], setSetCodeToSetNameLoaded = _x[1];
+    var _y = (0, react_2.useState)(false), isIDToCostLoaded = _y[0], setIDToCostLoaded = _y[1];
     (0, react_1.useEffect)(function () {
         Promise.all([
             props.loader.getMapData('IDToName'),
@@ -61,6 +62,7 @@ function loadingWindow(props) {
             remainingPromises.push(props.loader.getMapData('IDToRarity').then(function () { return setIDToRarityLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToColor').then(function () { return setIDToColorLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToColorIdentity').then(function () { return setIDToColorIdentityLoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('IDToArtist').then(function () { return setIDToArtistLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToSupertype').then(function () { return setIDToSupertypeLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToType').then(function () { return setIDToTypeLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToSubtype').then(function () { return setIDToSubtypeLoaded(true); }));
@@ -112,6 +114,7 @@ function loadingWindow(props) {
         createLoadingIndicator(isIDToRarityLoaded, 'IDToRarity'),
         createLoadingIndicator(isIDToColorLoaded, 'IDToColor'),
         createLoadingIndicator(isIDToColorIdentityLoaded, 'IDToColorIdentity'),
+        createLoadingIndicator(isIDToArtistLoaded, 'IDToArtist'),
         createLoadingIndicator(isIDToSupertypeLoaded, 'IDToSupertype'),
         createLoadingIndicator(isIDToTypeLoaded, 'IDToType'),
         createLoadingIndicator(isIDToSubtypeLoaded, 'IDToSubtype'),

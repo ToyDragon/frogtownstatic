@@ -77,7 +77,9 @@ function CompactDetailsCard(props) {
     }
     var idToText = props.loader.getMapDataSync('IDToText');
     var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
+    var idToArtist = props.loader.getMapDataSync('IDToArtist');
     var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+    var artist = (idToArtist && idToArtist[props.cardId] && "Artist: ".concat(idToArtist[props.cardId])) || '';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',
             height: '225px',
@@ -88,7 +90,7 @@ function CompactDetailsCard(props) {
             borderTopRightRadius: props.index === 0 ? '8px' : '',
             fontSize: '19px',
         } },
-        react_1.default.createElement("div", { "data-hovercardid": props.cardId, style: {
+        react_1.default.createElement("div", { "data-hovercardid": props.cardId, title: artist, style: {
                 display: 'inline-block',
                 width: '160px',
                 height: '225px',

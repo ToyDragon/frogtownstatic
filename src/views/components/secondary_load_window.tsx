@@ -8,6 +8,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
   const [isIDToRarityLoaded, setIDToRarityLoaded] = useState(false);
   const [isIDToColorLoaded, setIDToColorLoaded] = useState(false);
   const [isIDToColorIdentityLoaded, setIDToColorIdentityLoaded] = useState(false);
+  const [isIDToArtistLoaded, setIDToArtistLoaded] = useState(false);
   const [isIDToSupertypeLoaded, setIDToSupertypeLoaded] = useState(false);
   const [isIDToTypeLoaded, setIDToTypeLoaded] = useState(false);
   const [isIDToSubtypeLoaded, setIDToSubtypeLoaded] = useState(false);
@@ -40,6 +41,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
       remainingPromises.push(props.loader.getMapData('IDToRarity').then(() => setIDToRarityLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToColor').then(() => setIDToColorLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToColorIdentity').then(() => setIDToColorIdentityLoaded(true)));
+      remainingPromises.push(props.loader.getMapData('IDToArtist').then(() => setIDToArtistLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToSupertype').then(() => setIDToSupertypeLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToType').then(() => setIDToTypeLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToSubtype').then(() => setIDToSubtypeLoaded(true)));
@@ -92,6 +94,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     {createLoadingIndicator(isIDToRarityLoaded, 'IDToRarity')}
     {createLoadingIndicator(isIDToColorLoaded, 'IDToColor')}
     {createLoadingIndicator(isIDToColorIdentityLoaded, 'IDToColorIdentity')}
+    {createLoadingIndicator(isIDToArtistLoaded, 'IDToArtist')}
     {createLoadingIndicator(isIDToSupertypeLoaded, 'IDToSupertype')}
     {createLoadingIndicator(isIDToTypeLoaded, 'IDToType')}
     {createLoadingIndicator(isIDToSubtypeLoaded, 'IDToSubtype')}

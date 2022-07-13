@@ -11,6 +11,7 @@ export interface FilterData {
   name: string;
   text: string;
   rarity: MultiValue;
+  artist: string;
   color: MultiValue;
   color_identity: MultiValue;
   super_type: MultiValue;
@@ -194,6 +195,7 @@ export default async function executeFilter(
   tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim()));
   tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
+  tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColor'), data.color));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColorIdentity'), data.color_identity));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToType'), data.type));

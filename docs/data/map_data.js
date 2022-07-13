@@ -75,6 +75,7 @@ var MapData = /** @class */ (function () {
         this.SupertypeToID = {};
         this.IDToType = {};
         this.TypeToID = {};
+        this.IDToArtist = {};
         this.IDToLegalFormat = {};
         this.LegalFormatToID = {};
         this.IDToText = {};
