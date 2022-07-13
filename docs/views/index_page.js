@@ -34,6 +34,7 @@ var hovercard_handler_1 = __importDefault(require("./components/hovercard_handle
 var edit_name_window_1 = __importDefault(require("./components/edit_name_window"));
 var bulk_import_window_1 = __importDefault(require("./components/bulk_import_window"));
 var settings_window_1 = __importDefault(require("./components/settings_window"));
+var secondary_load_window_1 = __importDefault(require("./components/secondary_load_window"));
 var loading_window_1 = __importDefault(require("./components/loading_window"));
 var confirm_delete_window_1 = __importDefault(require("./components/confirm_delete_window"));
 var deck_drop_handler_1 = __importDefault(require("./components/deck_drop_handler"));
@@ -264,6 +265,7 @@ function indexPage(props) {
         react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
         react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
         react_1.default.createElement(info_window_1.default, { ref: infoWindowRef }),
+        react_1.default.createElement(secondary_load_window_1.default, { loader: props.loader }),
         react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {
                 for (var i = 0; i < decks.length; i++) {
                     var existingDeck = decks[i];

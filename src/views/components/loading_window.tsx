@@ -40,22 +40,22 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     zIndex: '6',
   }}>
     <div style={{
-      width: '400px',
-      height: '200px',
+      width: '550px',
+      height: '170px',
       position: 'absolute',
-      left: 'calc(50% - 200px)',
-      top: 'calc(50% - 100px)',
+      left: 'calc(50% - 275px)',
+      top: 'calc(50% - 85px)',
       backgroundColor: 'white',
       borderRadius: '12px',
       border: '3px solid #cdd6e4',
       padding: '18px',
       fontSize: '18px',
     }} onMouseUp={(e) => e.stopPropagation()}>
-      <div style={{fontSize: '24px'}}>Loading</div>
-      <div style={{paddingLeft: '18px'}}>name data... {nameLoaded ? <IconCheck /> : <></>}</div>
-      <div style={{paddingLeft: '18px'}}>text data... {textLoaded ? <IconCheck /> : <></>}</div>
-      <div style={{paddingLeft: '18px'}}>image data... {imagesLoaded ? <IconCheck /> : <></>}</div>
-      <div style={{paddingLeft: '18px'}}>crop data... {cropsLoaded ? <IconCheck /> : <></>}</div>
+      <div style={{fontWeight: 'bold'}}>Loading data required for displaying your existing decks.</div>
+      <div style={{paddingLeft: '12px'}}>Loading name data... {nameLoaded ? <IconCheck /> : <></>}</div>
+      <div style={{paddingLeft: '12px'}}>Loading text data... {textLoaded ? <IconCheck /> : <></>}</div>
+      <div style={{paddingLeft: '12px'}}>Loading image data... {imagesLoaded ? <IconCheck /> : <></>}</div>
+      <div style={{paddingLeft: '12px'}}>Loading crop data... {cropsLoaded ? <IconCheck /> : <></>}</div>
     </div>
   </div>;
 }

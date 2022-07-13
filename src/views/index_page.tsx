@@ -9,6 +9,7 @@ import HoverCardHandler from './components/hovercard_handler';
 import EditNameWindow, {EditNameWindowHandle} from './components/edit_name_window';
 import BulkImportWindow, {BulkImportWindowHandle} from './components/bulk_import_window';
 import SettingsWindow, {SettingsWindowHandle} from './components/settings_window';
+import SecondaryLoadWindow from './components/secondary_load_window';
 import LoadingWindow from './components/loading_window';
 import {DataLoader} from '../data/data_loader';
 import ConfirmDeleteWindow, {ConfirmDeleteWindowHandle} from './components/confirm_delete_window';
@@ -260,6 +261,7 @@ export default function indexPage(props: {
     <LoadingWindow loader={props.loader} />
     <ConfirmDeleteWindow deleteConfirmed={deleteConfirmed} ref={confirmDeleteWindowRef} />
     <InfoWindow ref={infoWindowRef} />
+    <SecondaryLoadWindow loader={props.loader} />
     <DeckDropHandler loader={props.loader} addDeck={(deck: Deck) => {
       for (let i = 0; i < decks.length; i++) {
         const existingDeck = decks[i];
