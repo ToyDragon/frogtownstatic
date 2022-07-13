@@ -1,16 +1,17 @@
 import {MapData} from './map_data';
 
-export class UrlDataLoader {
-  public baseUrl!: string;
+export class MemoryDataLoader {
   private mapLoadPromise: Record<string, Promise<any>> = {};
   private loadedMaps: Record<string, any> = {};
 
-  /**
-   * @param baseUrl String containing {MapName}, like
-   * "https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json"
-   */
-  public constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  private mapLoadResolvers: Record<string, (val: any) => void> = {};
+
+  public constructor() {}
+
+
+  public setMapDataLoaded(mapName: string, data: any): void {
+    this.getAnyMapData(mapName); // Ensure the resolver has been initialized.
+    this.mapLoadResolvers[mapName](data);
   }
 
   public getAnyMapData(mapName: string): Promise<Record<string, unknown> | null> {
@@ -21,12 +22,11 @@ export class UrlDataLoader {
   public getMapData<K extends keyof MapData>(mapName: K): Promise<MapData[K] | null> {
     if (!this.mapLoadPromise[mapName]) {
       this.mapLoadPromise[mapName] = new Promise((resolve) => {
-        fetch(this.baseUrl.replace(/\{MapName\}/g, mapName)).then((response) => {
-          response.json().then((jsonResponse) => {
-            this.loadedMaps[mapName] = jsonResponse;
-            resolve(jsonResponse);
-          });
-        });
+        this.mapLoadResolvers[mapName] = (data) => {
+          delete this.mapLoadResolvers[mapName];
+          this.loadedMaps[mapName] = data;
+          resolve(data);
+        };
       });
     }
     return this.mapLoadPromise[mapName];

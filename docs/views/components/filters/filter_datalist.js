@@ -10,11 +10,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 function FilterDatalist(props) {
     var _a = react_1.useState([]), mapValues = _a[0], setMapValues = _a[1];
-    if (mapValues.length === 0) {
+    react_1.useEffect(function () {
         var mapPromises = [];
         mapPromises.push(props.loader.getMapData(props.map));
-        for (var _i = 0, _b = props.otherRequiredMaps; _i < _b.length; _i++) {
-            var map = _b[_i];
+        for (var _i = 0, _a = props.otherRequiredMaps; _i < _a.length; _i++) {
+            var map = _a[_i];
             mapPromises.push(props.loader.getMapData(map));
         }
         Promise.all(mapPromises).then(function () {
@@ -31,7 +31,7 @@ function FilterDatalist(props) {
             }
             setMapValues(allValues);
         });
-    }
+    }, []);
     var id = react_1.useId();
     return (react_1.default.createElement("div", { style: {
             display: props.visible ? 'inline-block' : 'none',

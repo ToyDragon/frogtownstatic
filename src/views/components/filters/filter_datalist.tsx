@@ -1,4 +1,4 @@
-import React, {useId, useState} from 'react';
+import React, {useEffect, useId, useState} from 'react';
 import {DataLoader} from '../../../data/data_loader';
 import {CardIDMap, MapData} from '../../../data/map_data';
 
@@ -15,7 +15,7 @@ export default function FilterDatalist(props: {
     value: string,
     display: string,
   }[]>([]);
-  if (mapValues.length === 0) {
+  useEffect(() => {
     const mapPromises: Promise<any>[] = [];
     mapPromises.push(props.loader.getMapData(props.map));
     for (const map of props.otherRequiredMaps) {
@@ -33,9 +33,10 @@ export default function FilterDatalist(props: {
           display: (mapData as CardIDMap<string>)[id],
         });
       }
+
       setMapValues(allValues);
     });
-  }
+  }, []);
 
   const id = useId();
   return (
