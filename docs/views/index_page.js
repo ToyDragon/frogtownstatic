@@ -35,6 +35,8 @@ var edit_name_window_1 = __importDefault(require("./components/edit_name_window"
 var bulk_import_window_1 = __importDefault(require("./components/bulk_import_window"));
 var settings_window_1 = __importDefault(require("./components/settings_window"));
 var loading_window_1 = __importDefault(require("./components/loading_window"));
+var confirm_delete_window_1 = __importDefault(require("./components/confirm_delete_window"));
+var deck_drop_handler_1 = __importDefault(require("./components/deck_drop_handler"));
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -76,6 +78,7 @@ function indexPage(props) {
     var editNameWindowRef = (0, react_1.useRef)(null);
     var bulkImportWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
+    var confirmDeleteWindowRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
@@ -190,6 +193,18 @@ function indexPage(props) {
         setDecks(newDecks);
         setDeckIndex(newDecks.length - 1);
     };
+    var deleteConfirmed = function () {
+        var newDecks = copyDecks(decks);
+        newDecks.splice(deckIndex, 1);
+        if (newDecks.length === 0) {
+            newDecks.push(createNewDeck(1));
+            setDeckIndex(0);
+        }
+        else if (deckIndex >= newDecks.length) {
+            setDeckIndex(newDecks.length - 1);
+        }
+        setDecks(newDecks);
+    };
     var deck = decks[deckIndex];
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
@@ -223,7 +238,7 @@ function indexPage(props) {
                 width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
-            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
+            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
                     if (searchRef.current) {
                         searchRef.current.onSimilar(cardId);
                     }
@@ -236,7 +251,23 @@ function indexPage(props) {
         react_1.default.createElement(bulk_import_window_1.default, { ref: bulkImportWindowRef, loader: props.loader, addCards: addCards }),
         react_1.default.createElement(settings_window_1.default, { ref: settingsWindowRef, loader: props.loader, setBackgroundUrl: setBackgroundUrl }),
         react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
-        react_1.default.createElement(loading_window_1.default, { loader: props.loader }));
+        react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
+        react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
+        react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {
+                for (var i = 0; i < decks.length; i++) {
+                    var existingDeck = decks[i];
+                    if (deck.mainboard.sort().join(',') === existingDeck.mainboard.sort().join(',') &&
+                        deck.sideboard.sort().join(',') === existingDeck.sideboard.sort().join(',')) {
+                        setDeckIndex(i);
+                        console.log('Selected existing ' + i);
+                        return;
+                    }
+                }
+                var newDecks = copyDecks(decks);
+                newDecks.push(deck);
+                setDecks(newDecks);
+                setDeckIndex(newDecks.length - 1);
+            } }));
 }
 exports.default = indexPage;
 //# sourceMappingURL=index_page.js.map

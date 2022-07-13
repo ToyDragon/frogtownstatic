@@ -108,4 +108,6 @@ export class MapData {
   public IDToTokenStrings: CardIDMap<string> = {};
   public TokenStringToTokenID: CardIDMap<string> = {};
   public TokenIDToTokenString: CardIDMap<string> = {};
+  public TokenIDToLargeImageURI: CardIDMap<string> = {};
+  public BackIDToLargeImageURI: CardIDMap<string> = {};
 }

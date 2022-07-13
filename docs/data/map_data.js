@@ -89,6 +89,8 @@ var MapData = /** @class */ (function () {
         this.IDToTokenStrings = {};
         this.TokenStringToTokenID = {};
         this.TokenIDToTokenString = {};
+        this.TokenIDToLargeImageURI = {};
+        this.BackIDToLargeImageURI = {};
     }
     return MapData;
 }());

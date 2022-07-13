@@ -38,7 +38,9 @@ var TableTopSimulator = /** @class */ (function () {
             dl.getMapData('IDToLargeImageURI'),
             dl.getMapData('TokenIDToTokenString'),
             dl.getMapData('TokenIDToName'),
+            dl.getMapData('TokenIDToLargeImageURI'),
             dl.getMapData('FrontIDToBackID'),
+            dl.getMapData('BackIDToLargeImageURI'),
         ]).then(function () {
             setTimeout(resolver, 0);
         });
@@ -73,14 +75,13 @@ var TableTopSimulator = /** @class */ (function () {
                 }
             }
         }
-        if (tokens.length) {
-            console.log("Added tokens ".concat(tokens.length, " tokens"));
-        }
         return tokens;
     };
     TableTopSimulator.prototype.exportDeck = function (mainboardIds, sideboardIds, backURL) {
         var _this = this;
         var idToLargeImageURI = this.dl.getMapDataSync('IDToLargeImageURI');
+        var tokenIDToLargeImageURI = this.dl.getMapDataSync('TokenIDToLargeImageURI');
+        var backIDToLargeImageURI = this.dl.getMapDataSync('BackIDToLargeImageURI');
         var tokenCardIds = this.getTokens(mainboardIds, sideboardIds);
         var mainboard = {
             cards: [],
@@ -131,7 +132,11 @@ var TableTopSimulator = /** @class */ (function () {
                 return b.cards.length > 0;
             }),
             backURL: backURL,
-        }, idToLargeImageURI);
+        }, function (id) {
+            return idToLargeImageURI[id] ||
+                tokenIDToLargeImageURI[id] ||
+                backIDToLargeImageURI[id];
+        });
         return JSON.stringify(compiledDeck);
     };
     TableTopSimulator.prototype.getCardName = function (cardId) {

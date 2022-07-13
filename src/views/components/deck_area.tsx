@@ -26,6 +26,7 @@ export default function deckArea(props: {
     onEditName: () => void,
     onBulkImport: () => void,
     onSettings: () => void,
+    onDelete: () => void,
 }) {
   const [displayMode, setDisplayMode] = useState(DisplayMode.Grid);
   const [grouper, setGrouper] = useState<Grouper | null>(null);
@@ -197,6 +198,8 @@ export default function deckArea(props: {
                 padding: '2px 5px 8px 5px',
               }} href="#" onMouseUp={(e) => e.button === 0 && props.onSettings()}><IconGear /></a></li>
             <li><a className="dropdown-item" href={tcgplayerLink} target="_blank" rel="noreferrer">TCG Player</a></li>
+            <li><a className="dropdown-item" href="#"
+              onMouseUp={(e) => e.button === 0 && props.onDelete()}>Delete Deck</a></li>
           </ul>
         </div>
       </div>

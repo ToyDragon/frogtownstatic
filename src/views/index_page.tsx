@@ -11,6 +11,8 @@ import BulkImportWindow, {BulkImportWindowHandle} from './components/bulk_import
 import SettingsWindow, {SettingsWindowHandle} from './components/settings_window';
 import LoadingWindow from './components/loading_window';
 import {DataLoader} from '../data/data_loader';
+import ConfirmDeleteWindow, {ConfirmDeleteWindowHandle} from './components/confirm_delete_window';
+import DeckDropHandler from './components/deck_drop_handler';
 
 function createNewDeck(num: number) {
   return {
@@ -59,6 +61,7 @@ export default function indexPage(props: {
   const editNameWindowRef = useRef<EditNameWindowHandle>(null);
   const bulkImportWindowRef = useRef<BulkImportWindowHandle>(null);
   const settingsWindowRef = useRef<SettingsWindowHandle>(null);
+  const confirmDeleteWindowRef = useRef<ConfirmDeleteWindowHandle>(null);
 
   useEffect(() => {
     for (let i = 0; i < decks.length; i++) {
@@ -176,6 +179,18 @@ export default function indexPage(props: {
     setDeckIndex(newDecks.length - 1);
   };
 
+  const deleteConfirmed = () => {
+    const newDecks = copyDecks(decks);
+    newDecks.splice(deckIndex, 1);
+    if (newDecks.length === 0) {
+      newDecks.push(createNewDeck(1));
+      setDeckIndex(0);
+    } else if (deckIndex >= newDecks.length) {
+      setDeckIndex(newDecks.length - 1);
+    }
+    setDecks(newDecks);
+  };
+
   const deck = decks[deckIndex];
   return <>
     <HeaderBar loader={props.loader} decks={decks} changeDeck={(i: number) => {
@@ -216,6 +231,7 @@ export default function indexPage(props: {
         onEditName={() => editNameWindowRef.current?.open(deck.name)}
         onBulkImport={() => bulkImportWindowRef.current?.open()}
         onSettings={() => settingsWindowRef.current?.open(backgroundUrl)}
+        onDelete={() => confirmDeleteWindowRef.current?.open(deck.name)}
         urlLoader={props.urlLoader} removeCard={removeCard} moveCard={moveCard} onSimilar={(cardId: string) => {
           if (searchRef.current) {
             searchRef.current.onSimilar(cardId);
@@ -231,5 +247,22 @@ export default function indexPage(props: {
     <SettingsWindow ref={settingsWindowRef} loader={props.loader} setBackgroundUrl={setBackgroundUrl} />
     <HoverCardHandler loader={props.loader} />
     <LoadingWindow loader={props.loader} />
+    <ConfirmDeleteWindow deleteConfirmed={deleteConfirmed} ref={confirmDeleteWindowRef} />
+    <DeckDropHandler loader={props.loader} addDeck={(deck: Deck) => {
+      for (let i = 0; i < decks.length; i++) {
+        const existingDeck = decks[i];
+        if (deck.mainboard.sort().join(',') === existingDeck.mainboard.sort().join(',') &&
+          deck.sideboard.sort().join(',') === existingDeck.sideboard.sort().join(',')) {
+          setDeckIndex(i);
+          console.log('Selected existing ' + i);
+          return;
+        }
+      }
+
+      const newDecks = copyDecks(decks);
+      newDecks.push(deck);
+      setDecks(newDecks);
+      setDeckIndex(newDecks.length - 1);
+    }} />
   </>;
 }

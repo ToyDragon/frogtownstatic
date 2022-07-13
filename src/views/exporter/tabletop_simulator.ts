@@ -20,7 +20,9 @@ export default class TableTopSimulator {
       dl.getMapData('IDToLargeImageURI'),
       dl.getMapData('TokenIDToTokenString'),
       dl.getMapData('TokenIDToName'),
+      dl.getMapData('TokenIDToLargeImageURI'),
       dl.getMapData('FrontIDToBackID'),
+      dl.getMapData('BackIDToLargeImageURI'),
     ]).then(() => {
       setTimeout(resolver, 0);
     });
@@ -58,14 +60,13 @@ export default class TableTopSimulator {
       }
     }
 
-    if (tokens.length) {
-      console.log(`Added tokens ${tokens.length} tokens`);
-    }
     return tokens;
   }
 
   public exportDeck(mainboardIds: string[], sideboardIds: string[], backURL: string): string {
     const idToLargeImageURI = this.dl.getMapDataSync('IDToLargeImageURI')!;
+    const tokenIDToLargeImageURI = this.dl.getMapDataSync('TokenIDToLargeImageURI')!;
+    const backIDToLargeImageURI = this.dl.getMapDataSync('BackIDToLargeImageURI')!;
     const tokenCardIds = this.getTokens(mainboardIds, sideboardIds);
     const mainboard: TTSExport.Board = {
       cards: [],
@@ -116,7 +117,11 @@ export default class TableTopSimulator {
         return b.cards.length > 0;
       }),
       backURL: backURL,
-    }, idToLargeImageURI);
+    }, (id) => {
+      return idToLargeImageURI[id] ||
+          tokenIDToLargeImageURI[id] ||
+          backIDToLargeImageURI[id];
+    });
 
     return JSON.stringify(compiledDeck);
   }

@@ -29,7 +29,7 @@ export class Exporter {
       backURL: string,
       board: Board,
       index: number,
-      idToLargeImageURI: Record<string, string>,
+      getImageUrl: (id: string) => string,
   ): TTSRootObjectState {
     let state: TTSRootObjectState;
     if (board.cards.length === 1) {
@@ -45,10 +45,10 @@ export class Exporter {
 
       let cardBackURL = backURL;
       if (board.cards[0].backCardId) {
-        cardBackURL = idToLargeImageURI[board.cards[0].backCardId];
+        cardBackURL = getImageUrl(board.cards[0].backCardId);
       }
       state.CustomDeck['1'] = {
-        FaceURL: idToLargeImageURI[board.cards[0].cardId],
+        FaceURL: getImageUrl(board.cards[0].cardId),
         BackURL: cardBackURL,
         NumHeight: 1,
         NumWidth: 1,
@@ -80,10 +80,10 @@ export class Exporter {
           let cardBackURL = backURL;
           const backCardId = board.cards[i].backCardId;
           if (backCardId) {
-            cardBackURL = idToLargeImageURI[backCardId];
+            cardBackURL = getImageUrl(backCardId);
           }
           state.CustomDeck[uniqueI.toString()] = {
-            FaceURL: idToLargeImageURI[board.cards[i].cardId],
+            FaceURL: getImageUrl(board.cards[i].cardId),
             BackURL: cardBackURL,
             NumHeight: 1,
             NumWidth: 1,
@@ -107,7 +107,7 @@ export class Exporter {
     return state;
   }
 
-  public export(request: DeckDetails, idToLargeImageURI: Record<string, string>): TTSDeck {
+  public export(request: DeckDetails, getImageUrl: (id: string) => string): TTSDeck {
     if (
       request.backURL === 'https://www.frogtown.me/Images/CardBack.jpg' ||
       request.backURL === 'https://www.frogtown.me/images/gatherer/CardBack.jpg'
@@ -117,7 +117,7 @@ export class Exporter {
     }
     return {
       ObjectStates: request.boards.map((a, i) => {
-        return this.boardToState(request.backURL, a, i, idToLargeImageURI);
+        return this.boardToState(request.backURL, a, i, getImageUrl);
       }),
     };
   }

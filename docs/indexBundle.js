@@ -464,6 +464,8 @@ var MapData = /** @class */ (function () {
         this.IDToTokenStrings = {};
         this.TokenStringToTokenID = {};
         this.TokenIDToTokenString = {};
+        this.TokenIDToLargeImageURI = {};
+        this.BackIDToLargeImageURI = {};
     }
     return MapData;
 }());
@@ -1697,6 +1699,104 @@ exports["default"] = CompactListCard;
 
 /***/ }),
 
+/***/ "./docs/views/components/confirm_delete_window.js":
+/*!********************************************************!*\
+  !*** ./docs/views/components/confirm_delete_window.js ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var ConfirmDeleteWindow = (0, react_1.forwardRef)(function ConfirmDeleteWindow(props, ref) {
+    var _a = (0, react_1.useState)(''), deckName = _a[0], setDeckName = _a[1];
+    var _b = (0, react_1.useState)(false), isOpen = _b[0], setIsOpen = _b[1];
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
+        open: function (deckName) {
+            setDeckName(deckName);
+            setIsOpen(true);
+        },
+    }); });
+    if (!isOpen) {
+        return null;
+    }
+    return react_1.default.createElement("div", { style: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0',
+            left: '0',
+            backgroundColor: '#00000070',
+            zIndex: '6',
+        }, onMouseUp: function (e) {
+            if (e.button === 0) {
+                setIsOpen(false);
+            }
+        } },
+        react_1.default.createElement("div", { style: {
+                width: '600px',
+                height: '160px',
+                position: 'absolute',
+                left: 'calc(50% - 300px)',
+                top: 'calc(50% - 80px)',
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                border: '3px solid #cdd6e4',
+                padding: '16px',
+            }, onMouseUp: function (e) { return e.stopPropagation(); } },
+            react_1.default.createElement("div", { style: {
+                    fontSize: '24px',
+                } }, "Delete Deck \"".concat(deckName, "\"?")),
+            react_1.default.createElement("div", { style: { marginLeft: '383px', marginTop: '51px' } },
+                react_1.default.createElement("button", { className: 'btn btn-secondary', onMouseUp: function (e) {
+                        if (e.button === 0) {
+                            setIsOpen(false);
+                        }
+                    }, onKeyDown: function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            setIsOpen(false);
+                        }
+                    } }, "Cancel"),
+                react_1.default.createElement("button", { style: { marginLeft: '32px' }, className: 'btn btn-primary', onMouseUp: function (e) {
+                        if (e.button === 0) {
+                            props.deleteConfirmed();
+                            setIsOpen(false);
+                        }
+                    }, onKeyDown: function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            props.deleteConfirmed();
+                            setIsOpen(false);
+                        }
+                    } }, "Delete"))));
+});
+exports["default"] = ConfirmDeleteWindow;
+//# sourceMappingURL=confirm_delete_window.js.map
+
+/***/ }),
+
 /***/ "./docs/views/components/deck_area.js":
 /*!********************************************!*\
   !*** ./docs/views/components/deck_area.js ***!
@@ -1903,10 +2003,266 @@ function deckArea(props) {
                             }, href: "#", onMouseUp: function (e) { return e.button === 0 && props.onSettings(); } },
                             react_1.default.createElement(icon_gear_1.default, null))),
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")))))));
+                        react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")),
+                    react_1.default.createElement("li", null,
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onDelete(); } }, "Delete Deck")))))));
 }
 exports["default"] = deckArea;
 //# sourceMappingURL=deck_area.js.map
+
+/***/ }),
+
+/***/ "./docs/views/components/deck_drop_handler.js":
+/*!****************************************************!*\
+  !*** ./docs/views/components/deck_drop_handler.js ***!
+  \****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var debouncer_1 = __importDefault(__webpack_require__(/*! ../../data/debouncer */ "./docs/data/debouncer.js"));
+function DeckDropHandler(props) {
+    var _this = this;
+    var _a = (0, react_1.useState)(false), showingIndicator = _a[0], setShowingIndicator = _a[1];
+    (0, react_1.useEffect)(function () {
+        var debouncer = new debouncer_1.default(200, document);
+        document.body.addEventListener('dragover', function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        document.body.classList.add('dragging');
+                        return [4 /*yield*/, debouncer.waitAndShouldAct()];
+                    case 1:
+                        if (_a.sent()) {
+                            document.body.classList.remove('dragging');
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        var styleEle = document.createElement('style');
+        styleEle.innerHTML = "\n      .dragtarget {\n        pointer-events: none;\n      }\n      body.dragging .dragtarget {\n        pointer-events: all;\n      }",
+            document.body.append(styleEle);
+    }, []);
+    return react_1.default.createElement("div", { className: "dragtarget", style: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            zIndex: '9999',
+            top: '0',
+            left: '0',
+        }, onDrop: function (e) {
+            setShowingIndicator(false);
+            e.preventDefault();
+            var idToLargeImageURI = props.loader.getMapDataSync('IDToLargeImageURI');
+            if (!idToLargeImageURI) {
+                return;
+            }
+            var filesToRead = [];
+            if (e.dataTransfer.items) {
+                for (var i = 0; i < e.dataTransfer.items.length; i++) {
+                    if (e.dataTransfer.items[i].kind === 'file') {
+                        var file = e.dataTransfer.items[i].getAsFile();
+                        if (file && file.name.endsWith('.json')) {
+                            filesToRead.push(file);
+                        }
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < e.dataTransfer.files.length; i++) {
+                    var file = e.dataTransfer.files[i];
+                    if (file && file.name.endsWith('.json')) {
+                        filesToRead.push(file);
+                    }
+                }
+            }
+            var fileReadPromises = [];
+            var _loop_1 = function (file) {
+                fileReadPromises.push(new Promise(function (resolve) {
+                    var reader = new FileReader();
+                    reader.readAsText(file);
+                    reader.onloadend = function () {
+                        var _a;
+                        resolve({
+                            name: file.name.replace(/\.json$/, ''),
+                            contents: (((_a = reader.result) === null || _a === void 0 ? void 0 : _a.toString()) || ''),
+                        });
+                    };
+                }));
+            };
+            for (var _i = 0, filesToRead_1 = filesToRead; _i < filesToRead_1.length; _i++) {
+                var file = filesToRead_1[_i];
+                _loop_1(file);
+            }
+            var idRegex = /([a-z0-9-]{36})/;
+            Promise.all(fileReadPromises).then(function (fileDatas) {
+                for (var _i = 0, fileDatas_1 = fileDatas; _i < fileDatas_1.length; _i++) {
+                    var fileData = fileDatas_1[_i];
+                    console.log('Parsing ' + fileData.name);
+                    try {
+                        var parsedDeck = JSON.parse(fileData.contents);
+                        var mainboard = [];
+                        var sideboard = [];
+                        for (var _a = 0, _b = parsedDeck.ObjectStates; _a < _b.length; _a++) {
+                            var stack = _b[_a];
+                            var localIdToCount = {};
+                            if (stack.ContainedObjects) {
+                                for (var _c = 0, _d = stack.ContainedObjects; _c < _d.length; _c++) {
+                                    var card = _d[_c];
+                                    if (card.CardID % 100 !== 0) {
+                                        throw new Error("Invalid card id ".concat(card.CardID));
+                                    }
+                                    var localId = Math.floor(card.CardID / 100);
+                                    localIdToCount[localId] = (localIdToCount[localId] || 0) + 1;
+                                }
+                            }
+                            else if (stack.CardID) {
+                                if (stack.CardID % 100 !== 0) {
+                                    throw new Error("Invalid card id ".concat(stack.CardID));
+                                }
+                                var localId = Math.floor(stack.CardID / 100);
+                                localIdToCount[localId] = (localIdToCount[localId] || 0) + 1;
+                            }
+                            var localIdToId = {};
+                            if (stack.CustomDeck) {
+                                for (var localId in stack.CustomDeck) {
+                                    if (stack.CustomDeck[localId]) {
+                                        var parseResult = idRegex.exec(stack.CustomDeck[localId].FaceURL);
+                                        var id = (parseResult && parseResult[1]) || '';
+                                        if (!id) {
+                                            throw new Error("Couldn't parse id from url ".concat(stack.CustomDeck[localId].FaceURL));
+                                        }
+                                        if (!idToLargeImageURI[id]) {
+                                            // Ignore tokens and double faced cards.
+                                            continue;
+                                        }
+                                        localIdToId[Number(localId)] = id;
+                                    }
+                                }
+                            }
+                            var boardToAddTo = mainboard.length === 0 ? mainboard : sideboard;
+                            for (var localId in localIdToCount) {
+                                if (!localIdToId[localId]) {
+                                    // ID won't be present for tokens or double faced cards.
+                                    continue;
+                                }
+                                var newCards = new Array(localIdToCount[localId]).fill(localIdToId[localId]);
+                                boardToAddTo.splice.apply(boardToAddTo, __spreadArray([boardToAddTo.length, 0], newCards, false));
+                            }
+                        }
+                        console.log(mainboard);
+                        console.log(sideboard);
+                        if (mainboard.length > 0) {
+                            props.addDeck({
+                                keycard: mainboard[0],
+                                mainboard: mainboard,
+                                sideboard: sideboard,
+                                name: fileData.name || 'new deck',
+                            });
+                        }
+                    }
+                    catch (e) {
+                        console.error(e);
+                    }
+                }
+            });
+        }, onDragOver: function (e) { return e.preventDefault(); }, onDragEnter: function () { return setShowingIndicator(true); }, onDragEnd: function () { return setShowingIndicator(false); }, onDragExit: function () { return setShowingIndicator(false); }, onDragLeave: function () { return setShowingIndicator(false); } }, !showingIndicator ? null :
+        react_1.default.createElement("div", { style: {
+                pointerEvents: 'none',
+                width: '100%',
+                height: '100%',
+                backgroundColor: '#000000aa',
+            } },
+            react_1.default.createElement("div", { style: {
+                    pointerEvents: 'none',
+                    width: '1000px',
+                    height: '300px',
+                    position: 'absolute',
+                    top: 'calc(50% - 150px)',
+                    left: 'calc(50% - 500px)',
+                    color: 'white',
+                    backgroundColor: '#000000aa',
+                    borderRadius: '18px',
+                    fontSize: '64px',
+                } },
+                react_1.default.createElement("div", { style: { textAlign: 'center', marginTop: '64px' } }, "DROP .JSON FILES ANYWHERE"),
+                react_1.default.createElement("div", { style: { textAlign: 'center' } }, "TO IMPORT EXISTING DECKS"))));
+}
+exports["default"] = DeckDropHandler;
+//# sourceMappingURL=deck_drop_handler.js.map
 
 /***/ }),
 
@@ -4006,7 +4362,7 @@ var tts_deck_1 = __webpack_require__(/*! ./tts_deck */ "./docs/views/exporter/tt
 var Exporter = /** @class */ (function () {
     function Exporter() {
     }
-    Exporter.prototype.boardToState = function (backURL, board, index, idToLargeImageURI) {
+    Exporter.prototype.boardToState = function (backURL, board, index, getImageUrl) {
         var state;
         if (board.cards.length === 1) {
             state = {
@@ -4020,10 +4376,10 @@ var Exporter = /** @class */ (function () {
             }
             var cardBackURL = backURL;
             if (board.cards[0].backCardId) {
-                cardBackURL = idToLargeImageURI[board.cards[0].backCardId];
+                cardBackURL = getImageUrl(board.cards[0].backCardId);
             }
             state.CustomDeck['1'] = {
-                FaceURL: idToLargeImageURI[board.cards[0].cardId],
+                FaceURL: getImageUrl(board.cards[0].cardId),
                 BackURL: cardBackURL,
                 NumHeight: 1,
                 NumWidth: 1,
@@ -4055,10 +4411,10 @@ var Exporter = /** @class */ (function () {
                     var cardBackURL = backURL;
                     var backCardId = board.cards[i].backCardId;
                     if (backCardId) {
-                        cardBackURL = idToLargeImageURI[backCardId];
+                        cardBackURL = getImageUrl(backCardId);
                     }
                     state.CustomDeck[uniqueI.toString()] = {
-                        FaceURL: idToLargeImageURI[board.cards[i].cardId],
+                        FaceURL: getImageUrl(board.cards[i].cardId),
                         BackURL: cardBackURL,
                         NumHeight: 1,
                         NumWidth: 1,
@@ -4078,7 +4434,7 @@ var Exporter = /** @class */ (function () {
         }
         return state;
     };
-    Exporter.prototype.export = function (request, idToLargeImageURI) {
+    Exporter.prototype.export = function (request, getImageUrl) {
         var _this = this;
         if (request.backURL === 'https://www.frogtown.me/Images/CardBack.jpg' ||
             request.backURL === 'https://www.frogtown.me/images/gatherer/CardBack.jpg') {
@@ -4087,7 +4443,7 @@ var Exporter = /** @class */ (function () {
         }
         return {
             ObjectStates: request.boards.map(function (a, i) {
-                return _this.boardToState(request.backURL, a, i, idToLargeImageURI);
+                return _this.boardToState(request.backURL, a, i, getImageUrl);
             }),
         };
     };
@@ -4144,7 +4500,9 @@ var TableTopSimulator = /** @class */ (function () {
             dl.getMapData('IDToLargeImageURI'),
             dl.getMapData('TokenIDToTokenString'),
             dl.getMapData('TokenIDToName'),
+            dl.getMapData('TokenIDToLargeImageURI'),
             dl.getMapData('FrontIDToBackID'),
+            dl.getMapData('BackIDToLargeImageURI'),
         ]).then(function () {
             setTimeout(resolver, 0);
         });
@@ -4179,14 +4537,13 @@ var TableTopSimulator = /** @class */ (function () {
                 }
             }
         }
-        if (tokens.length) {
-            console.log("Added tokens ".concat(tokens.length, " tokens"));
-        }
         return tokens;
     };
     TableTopSimulator.prototype.exportDeck = function (mainboardIds, sideboardIds, backURL) {
         var _this = this;
         var idToLargeImageURI = this.dl.getMapDataSync('IDToLargeImageURI');
+        var tokenIDToLargeImageURI = this.dl.getMapDataSync('TokenIDToLargeImageURI');
+        var backIDToLargeImageURI = this.dl.getMapDataSync('BackIDToLargeImageURI');
         var tokenCardIds = this.getTokens(mainboardIds, sideboardIds);
         var mainboard = {
             cards: [],
@@ -4237,7 +4594,11 @@ var TableTopSimulator = /** @class */ (function () {
                 return b.cards.length > 0;
             }),
             backURL: backURL,
-        }, idToLargeImageURI);
+        }, function (id) {
+            return idToLargeImageURI[id] ||
+                tokenIDToLargeImageURI[id] ||
+                backIDToLargeImageURI[id];
+        });
         return JSON.stringify(compiledDeck);
     };
     TableTopSimulator.prototype.getCardName = function (cardId) {
@@ -4381,6 +4742,8 @@ var edit_name_window_1 = __importDefault(__webpack_require__(/*! ./components/ed
 var bulk_import_window_1 = __importDefault(__webpack_require__(/*! ./components/bulk_import_window */ "./docs/views/components/bulk_import_window.js"));
 var settings_window_1 = __importDefault(__webpack_require__(/*! ./components/settings_window */ "./docs/views/components/settings_window.js"));
 var loading_window_1 = __importDefault(__webpack_require__(/*! ./components/loading_window */ "./docs/views/components/loading_window.js"));
+var confirm_delete_window_1 = __importDefault(__webpack_require__(/*! ./components/confirm_delete_window */ "./docs/views/components/confirm_delete_window.js"));
+var deck_drop_handler_1 = __importDefault(__webpack_require__(/*! ./components/deck_drop_handler */ "./docs/views/components/deck_drop_handler.js"));
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -4422,6 +4785,7 @@ function indexPage(props) {
     var editNameWindowRef = (0, react_1.useRef)(null);
     var bulkImportWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
+    var confirmDeleteWindowRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
@@ -4536,6 +4900,18 @@ function indexPage(props) {
         setDecks(newDecks);
         setDeckIndex(newDecks.length - 1);
     };
+    var deleteConfirmed = function () {
+        var newDecks = copyDecks(decks);
+        newDecks.splice(deckIndex, 1);
+        if (newDecks.length === 0) {
+            newDecks.push(createNewDeck(1));
+            setDeckIndex(0);
+        }
+        else if (deckIndex >= newDecks.length) {
+            setDeckIndex(newDecks.length - 1);
+        }
+        setDecks(newDecks);
+    };
     var deck = decks[deckIndex];
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
@@ -4569,7 +4945,7 @@ function indexPage(props) {
                 width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
-            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
+            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
                     if (searchRef.current) {
                         searchRef.current.onSimilar(cardId);
                     }
@@ -4582,7 +4958,23 @@ function indexPage(props) {
         react_1.default.createElement(bulk_import_window_1.default, { ref: bulkImportWindowRef, loader: props.loader, addCards: addCards }),
         react_1.default.createElement(settings_window_1.default, { ref: settingsWindowRef, loader: props.loader, setBackgroundUrl: setBackgroundUrl }),
         react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
-        react_1.default.createElement(loading_window_1.default, { loader: props.loader }));
+        react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
+        react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
+        react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {
+                for (var i = 0; i < decks.length; i++) {
+                    var existingDeck = decks[i];
+                    if (deck.mainboard.sort().join(',') === existingDeck.mainboard.sort().join(',') &&
+                        deck.sideboard.sort().join(',') === existingDeck.sideboard.sort().join(',')) {
+                        setDeckIndex(i);
+                        console.log('Selected existing ' + i);
+                        return;
+                    }
+                }
+                var newDecks = copyDecks(decks);
+                newDecks.push(deck);
+                setDecks(newDecks);
+                setDeckIndex(newDecks.length - 1);
+            } }));
 }
 exports["default"] = indexPage;
 //# sourceMappingURL=index_page.js.map

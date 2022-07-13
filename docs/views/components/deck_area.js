@@ -198,7 +198,9 @@ function deckArea(props) {
                             }, href: "#", onMouseUp: function (e) { return e.button === 0 && props.onSettings(); } },
                             react_1.default.createElement(icon_gear_1.default, null))),
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")))))));
+                        react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")),
+                    react_1.default.createElement("li", null,
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onDelete(); } }, "Delete Deck")))))));
 }
 exports.default = deckArea;
 //# sourceMappingURL=deck_area.js.map

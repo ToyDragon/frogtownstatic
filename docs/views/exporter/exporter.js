@@ -5,7 +5,7 @@ var tts_deck_1 = require("./tts_deck");
 var Exporter = /** @class */ (function () {
     function Exporter() {
     }
-    Exporter.prototype.boardToState = function (backURL, board, index, idToLargeImageURI) {
+    Exporter.prototype.boardToState = function (backURL, board, index, getImageUrl) {
         var state;
         if (board.cards.length === 1) {
             state = {
@@ -19,10 +19,10 @@ var Exporter = /** @class */ (function () {
             }
             var cardBackURL = backURL;
             if (board.cards[0].backCardId) {
-                cardBackURL = idToLargeImageURI[board.cards[0].backCardId];
+                cardBackURL = getImageUrl(board.cards[0].backCardId);
             }
             state.CustomDeck['1'] = {
-                FaceURL: idToLargeImageURI[board.cards[0].cardId],
+                FaceURL: getImageUrl(board.cards[0].cardId),
                 BackURL: cardBackURL,
                 NumHeight: 1,
                 NumWidth: 1,
@@ -54,10 +54,10 @@ var Exporter = /** @class */ (function () {
                     var cardBackURL = backURL;
                     var backCardId = board.cards[i].backCardId;
                     if (backCardId) {
-                        cardBackURL = idToLargeImageURI[backCardId];
+                        cardBackURL = getImageUrl(backCardId);
                     }
                     state.CustomDeck[uniqueI.toString()] = {
-                        FaceURL: idToLargeImageURI[board.cards[i].cardId],
+                        FaceURL: getImageUrl(board.cards[i].cardId),
                         BackURL: cardBackURL,
                         NumHeight: 1,
                         NumWidth: 1,
@@ -77,7 +77,7 @@ var Exporter = /** @class */ (function () {
         }
         return state;
     };
-    Exporter.prototype.export = function (request, idToLargeImageURI) {
+    Exporter.prototype.export = function (request, getImageUrl) {
         var _this = this;
         if (request.backURL === 'https://www.frogtown.me/Images/CardBack.jpg' ||
             request.backURL === 'https://www.frogtown.me/images/gatherer/CardBack.jpg') {
@@ -86,7 +86,7 @@ var Exporter = /** @class */ (function () {
         }
         return {
             ObjectStates: request.boards.map(function (a, i) {
-                return _this.boardToState(request.backURL, a, i, idToLargeImageURI);
+                return _this.boardToState(request.backURL, a, i, getImageUrl);
             }),
         };
     };
