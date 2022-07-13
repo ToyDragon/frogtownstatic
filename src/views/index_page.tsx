@@ -9,6 +9,7 @@ import HoverCardHandler from './components/hovercard_handler';
 import EditNameWindow, {EditNameWindowHandle} from './components/edit_name_window';
 import BulkImportWindow, {BulkImportWindowHandle} from './components/bulk_import_window';
 import SettingsWindow, {SettingsWindowHandle} from './components/settings_window';
+import LoadingWindow from './components/loading_window';
 import {DataLoader} from '../data/data_loader';
 
 function createNewDeck(num: number) {
@@ -229,5 +230,6 @@ export default function indexPage(props: {
     <BulkImportWindow ref={bulkImportWindowRef} loader={props.loader} addCards={addCards} />
     <SettingsWindow ref={settingsWindowRef} loader={props.loader} setBackgroundUrl={setBackgroundUrl} />
     <HoverCardHandler loader={props.loader} />
+    <LoadingWindow loader={props.loader} />
   </>;
 }

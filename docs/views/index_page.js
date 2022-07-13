@@ -34,6 +34,7 @@ var hovercard_handler_1 = __importDefault(require("./components/hovercard_handle
 var edit_name_window_1 = __importDefault(require("./components/edit_name_window"));
 var bulk_import_window_1 = __importDefault(require("./components/bulk_import_window"));
 var settings_window_1 = __importDefault(require("./components/settings_window"));
+var loading_window_1 = __importDefault(require("./components/loading_window"));
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -234,7 +235,8 @@ function indexPage(props) {
             } }),
         react_1.default.createElement(bulk_import_window_1.default, { ref: bulkImportWindowRef, loader: props.loader, addCards: addCards }),
         react_1.default.createElement(settings_window_1.default, { ref: settingsWindowRef, loader: props.loader, setBackgroundUrl: setBackgroundUrl }),
-        react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }));
+        react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
+        react_1.default.createElement(loading_window_1.default, { loader: props.loader }));
 }
 exports.default = indexPage;
 //# sourceMappingURL=index_page.js.map
