@@ -119,6 +119,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.rankStringMatch = void 0;
 var execute_number_range_filter_1 = __importDefault(__webpack_require__(/*! ./execute_number_range_filter */ "./docs/data/execute_number_range_filter.js"));
 function cleanName(name) {
     return name.replace(/[,_-]/g, '').toLowerCase();
@@ -274,9 +275,9 @@ function executeFilter(data, loader) {
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
                     tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
-                    tryApplyFilter(execute_number_range_filter_1.default(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
-                    tryApplyFilter(execute_number_range_filter_1.default(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
-                    tryApplyFilter(execute_number_range_filter_1.default(cardIds, loader.getMapDataSync('IDToCMC'), data.cmc.trim()));
+                    tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
+                    tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
+                    tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToCMC'), data.cmc.trim()));
                     tryApplyFilter(exactStringFilter(cardIds, loader.getMapDataSync('IDToSetCode'), data.set.trim()));
                     /* eslint-enable max-len */
                     if (!anyFilterApplied) {
@@ -374,6 +375,7 @@ exports["default"] = executeNumberRangeFilter;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.MapData = exports.MTGCostType = void 0;
 /**
  * String values for all of the available cost symbols.
  */
@@ -478,6 +480,7 @@ exports.MapData = MapData;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UrlDataLoader = void 0;
 var UrlDataLoader = /** @class */ (function () {
     /**
      * @param baseUrl String containing {MapName}, like
@@ -522,11 +525,27 @@ exports.UrlDataLoader = UrlDataLoader;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
@@ -551,11 +570,27 @@ exports["default"] = IconCheck;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
@@ -577,11 +612,27 @@ exports["default"] = IconFilter;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
@@ -604,11 +655,27 @@ exports["default"] = IconPageText;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
@@ -630,14 +697,31 @@ exports["default"] = IconSearch;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseCards = void 0;
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var execute_filter_1 = __webpack_require__(/*! ../../data/execute_filter */ "./docs/data/execute_filter.js");
 function parseCards(loader, input) {
@@ -663,7 +747,7 @@ function parseCards(loader, input) {
                 }
             }
             else {
-                uniqueErrors["ID \"" + matchResult[2] + "\" not found."] = true;
+                uniqueErrors["ID \"".concat(matchResult[2], "\" not found.")] = true;
             }
             continue;
         }
@@ -687,7 +771,7 @@ function parseCards(loader, input) {
             if (info.setCode && idToSetCode[id] !== info.setCode) {
                 continue;
             }
-            var rank = execute_filter_1.rankStringMatch(name_1, info.text);
+            var rank = (0, execute_filter_1.rankStringMatch)(name_1, info.text);
             if (rank > 0 && (info.matchedName === '' || info.matchedNameRank > rank)) {
                 info.matchedId = id;
                 info.matchedName = name_1;
@@ -699,11 +783,11 @@ function parseCards(loader, input) {
     for (var _e = 0, namesToMatch_2 = namesToMatch; _e < namesToMatch_2.length; _e++) {
         var info = namesToMatch_2[_e];
         if (!info.matchedName) {
-            uniqueErrors["Card \"" + info.text + "\" not found."] = true;
+            uniqueErrors["Card \"".concat(info.text, "\" not found.")] = true;
             continue;
         }
         if (info.matchedNameRank > 2) {
-            uniqueErrors["Card \"" + info.text + "\" not found, maybe \"" + info.matchedName + "\"?"] = true;
+            uniqueErrors["Card \"".concat(info.text, "\" not found, maybe \"").concat(info.matchedName, "\"?")] = true;
             continue;
         }
         for (var i = 0; i < info.quantity; i++) {
@@ -714,12 +798,12 @@ function parseCards(loader, input) {
     return result;
 }
 exports.parseCards = parseCards;
-var BulkImportWindow = react_1.forwardRef(function BulkImportWindow(props, ref) {
-    var _a = react_1.useState(''), inputValue = _a[0], setInputValue = _a[1];
-    var _b = react_1.useState([]), errors = _b[0], setErrors = _b[1];
-    var _c = react_1.useState(false), isOpen = _c[0], setIsOpen = _c[1];
-    var inputRef = react_1.useRef(null);
-    react_1.useImperativeHandle(ref, function () { return ({
+var BulkImportWindow = (0, react_1.forwardRef)(function BulkImportWindow(props, ref) {
+    var _a = (0, react_1.useState)(''), inputValue = _a[0], setInputValue = _a[1];
+    var _b = (0, react_1.useState)([]), errors = _b[0], setErrors = _b[1];
+    var _c = (0, react_1.useState)(false), isOpen = _c[0], setIsOpen = _c[1];
+    var inputRef = (0, react_1.useRef)(null);
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
         open: function () {
             setInputValue('');
             setIsOpen(true);
@@ -879,17 +963,34 @@ exports["default"] = CardActions;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.groupModeCompactGrid = exports.groupModeGrid = exports.groupModeSingleGrid = void 0;
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_group_1 = __importDefault(__webpack_require__(/*! ./card_group */ "./docs/views/components/card_group.js"));
 var display_dropdown_1 = __webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js");
@@ -1003,15 +1104,15 @@ function splitByGroups(loader, grouper, cardIds) {
     return result;
 }
 function CardArea(props) {
-    lazy_background_loader_1.default(props.imageLoadTracker);
-    var setImageMapLoaded = react_1.useState(false)[1];
-    react_1.useEffect(function () {
+    (0, lazy_background_loader_1.default)(props.imageLoadTracker);
+    var setImageMapLoaded = (0, react_1.useState)(false)[1];
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToLargeImageURI').then(function () {
             setImageMapLoaded(true);
         });
     }, []);
-    var setNameMapLoaded = react_1.useState(false)[1];
-    react_1.useEffect(function () {
+    var setNameMapLoaded = (0, react_1.useState)(false)[1];
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToName').then(function () {
             setNameMapLoaded(true);
         });
@@ -1052,7 +1153,7 @@ function CardArea(props) {
             maxWidth: (props.displayMode === display_dropdown_1.DisplayMode.List || props.displayMode === display_dropdown_1.DisplayMode.Details) ? '1000px' : '100%',
         } }, groups.map(function (group) {
         return [
-            group.name ? react_1.default.createElement("div", { key: "key " + group.name, style: {
+            group.name ? react_1.default.createElement("div", { key: "key ".concat(group.name), style: {
                     width: '100%',
                     fontSize: '32px',
                     paddingLeft: '24px',
@@ -1148,7 +1249,7 @@ function CardGroup(props) {
                             react_1.default.createElement(card_actions_1.default, __assign({ top: multipleCardsInStacks_1, cardId: cardId }, props.actionHandlers)) :
                             null,
                         react_1.default.createElement("div", __assign({ className: 'hoverToTop' }, bgProp, { style: {
-                                backgroundImage: props.imageLoadTracker.getURLIsLoaded(bg) ? "url(\"" + bg + "\")" : '',
+                                backgroundImage: props.imageLoadTracker.getURLIsLoaded(bg) ? "url(\"".concat(bg, "\")") : '',
                                 width: '223px',
                                 height: '312px',
                                 borderRadius: '15px',
@@ -1189,10 +1290,10 @@ function CardGroup(props) {
         var idToSetCode_1 = props.loader.getMapDataSync('IDToSetCode');
         return react_1.default.createElement("textarea", { readOnly: true, style: {
                 width: '600px',
-                height: (countedCards.length + 1) * 26 + "px",
+                height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
                 console.log(idAndCount);
-                return idAndCount.count + " " + idToNameMap_1[idAndCount.id] + " <" + idToSetCode_1[idAndCount.id] + ">\n";
+                return "".concat(idAndCount.count, " ").concat(idToNameMap_1[idAndCount.id], " <").concat(idToSetCode_1[idAndCount.id], ">\n");
             }).join('') });
     }
     if (props.displayMode === display_dropdown_1.DisplayMode.TextIDs) {
@@ -1200,11 +1301,11 @@ function CardGroup(props) {
         var idToSetCode_2 = props.loader.getMapDataSync('IDToSetCode');
         return react_1.default.createElement("textarea", { readOnly: true, style: {
                 width: '800px',
-                height: (countedCards.length + 1) * 26 + "px",
+                height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
                 console.log(idAndCount);
-                return idAndCount.count + " " + idAndCount.id + " // " + idToNameMap_2[idAndCount.id] +
-                    (" <" + idToSetCode_2[idAndCount.id] + ">\n");
+                return "".concat(idAndCount.count, " ").concat(idAndCount.id, " // ").concat(idToNameMap_2[idAndCount.id]) +
+                    " <".concat(idToSetCode_2[idAndCount.id], ">\n");
             }).join('') });
     }
     console.error('Unsupported display mode: ' + props.displayMode);
@@ -1233,19 +1334,37 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -1255,20 +1374,20 @@ var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/reac
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function CompactDetailsCard(props) {
-    var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
+    var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
     if (idToSetCode[props.cardId]) {
-        react_1.useEffect(function () {
-            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/" + idToSetCode[props.cardId] + ".svg").then(setSvgText);
+        (0, react_1.useEffect)(function () {
+            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/".concat(idToSetCode[props.cardId], ".svg")).then(setSvgText);
         }, []);
     }
     var types = [];
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || []), false));
     if (types.length > 0) {
         types.splice(0, 0, '-');
     }
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || [])));
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || []), false));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || []), false));
     var rarity = props.loader.getMapDataSync('IDToRarity')[props.cardId];
     var rarityColor = 'black';
     if (rarity === 'uncommon') {
@@ -1298,7 +1417,7 @@ function CompactDetailsCard(props) {
                 width: '160px',
                 height: '225px',
                 backgroundSize: '100% 100%',
-                backgroundImage: "url(" + bg + ")",
+                backgroundImage: "url(".concat(bg, ")"),
                 borderRadius: '8px',
             } }),
         react_1.default.createElement("div", { className: 'actionContainer', style: {
@@ -1339,7 +1458,7 @@ function CompactDetailsCard(props) {
                         top: '14px',
                     }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                         __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                            .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
+                            .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1'))
                             .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                     } })),
             react_1.default.createElement("div", { style: {
@@ -1375,7 +1494,7 @@ function CompactDetailsCard(props) {
                     marginTop: '-6px',
                 }, dangerouslySetInnerHTML: {
                     __html: (idToText[props.cardId] || '')
-                        .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
+                        .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1'))
                         .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                 } }),
             react_1.default.createElement(card_actions_1.default, __assign({ top: false, cardId: props.cardId }, props.actionHandlers)))));
@@ -1403,19 +1522,37 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -1425,20 +1562,20 @@ var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/reac
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function CompactListCard(props) {
-    var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
+    var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
     if (idToSetCode[props.cardId]) {
-        react_1.useEffect(function () {
-            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/" + idToSetCode[props.cardId] + ".svg").then(setSvgText);
+        (0, react_1.useEffect)(function () {
+            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/".concat(idToSetCode[props.cardId], ".svg")).then(setSvgText);
         }, []);
     }
     var types = [];
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || []), false));
     if (types.length > 0) {
         types.splice(0, 0, '-');
     }
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || [])));
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || []), false));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || []), false));
     var rarity = props.loader.getMapDataSync('IDToRarity')[props.cardId];
     var rarityColor = 'black';
     if (rarity === 'uncommon') {
@@ -1498,7 +1635,7 @@ function CompactListCard(props) {
                 paddingRight: '4px',
             }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                 __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                    .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+                    .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
             } }),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',
@@ -1533,11 +1670,27 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -1550,12 +1703,12 @@ var card_area_1 = __importDefault(__webpack_require__(/*! ./card_area */ "./docs
 var display_dropdown_1 = __importStar(__webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js"));
 var grouper_dropdown_1 = __importDefault(__webpack_require__(/*! ./grouper_dropdown */ "./docs/views/components/grouper_dropdown.js"));
 function deckArea(props) {
-    var _a = react_1.useState(display_dropdown_1.DisplayMode.Grid), displayMode = _a[0], setDisplayMode = _a[1];
-    var _b = react_1.useState(null), grouper = _b[0], setGrouper = _b[1];
-    var _c = react_1.useState(false), exportReady = _c[0], setExportReady = _c[1];
-    var setImageMapLoaded = react_1.useState(false)[1];
-    var tabletopSimManager = react_1.useRef(new tabletop_simulator_1.default(props.loader));
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.Grid), displayMode = _a[0], setDisplayMode = _a[1];
+    var _b = (0, react_1.useState)(null), grouper = _b[0], setGrouper = _b[1];
+    var _c = (0, react_1.useState)(false), exportReady = _c[0], setExportReady = _c[1];
+    var setImageMapLoaded = (0, react_1.useState)(false)[1];
+    var tabletopSimManager = (0, react_1.useRef)(new tabletop_simulator_1.default(props.loader));
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToCropImageURI').then(function () {
             setImageMapLoaded(true);
         });
@@ -1566,13 +1719,13 @@ function deckArea(props) {
     var keycardImageUrl = '';
     var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
     if (idToCropImageURI) {
-        keycardImageUrl = "url(\"" + idToCropImageURI[props.keycard] + "\")";
+        keycardImageUrl = "url(\"".concat(idToCropImageURI[props.keycard], "\")");
     }
     var downloadProps = {
         href: !exportReady ? '#' :
             'data:text/json,' +
                 encodeURIComponent(tabletopSimManager.current.exportDeck(props.mainboardCards, props.sideboardCards, props.backUrl)),
-        download: !exportReady ? '' : props.name + ".json",
+        download: !exportReady ? '' : "".concat(props.name, ".json"),
     };
     return (react_1.default.createElement("div", { style: {
             position: 'relative',
@@ -1712,19 +1865,37 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -1734,20 +1905,20 @@ var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/reac
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function DetailsCard(props) {
-    var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
+    var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
     if (idToSetCode[props.cardId]) {
-        react_1.useEffect(function () {
-            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/" + idToSetCode[props.cardId] + ".svg").then(setSvgText);
+        (0, react_1.useEffect)(function () {
+            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/".concat(idToSetCode[props.cardId], ".svg")).then(setSvgText);
         }, []);
     }
     var types = [];
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || []), false));
     if (types.length > 0) {
         types.splice(0, 0, '-');
     }
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || [])));
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || []), false));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || []), false));
     var rarity = props.loader.getMapDataSync('IDToRarity')[props.cardId];
     var rarityColor = 'black';
     if (rarity === 'uncommon') {
@@ -1777,7 +1948,7 @@ function DetailsCard(props) {
                 width: '160px',
                 height: '225px',
                 backgroundSize: '100% 100%',
-                backgroundImage: "url(" + bg + ")",
+                backgroundImage: "url(".concat(bg, ")"),
                 borderRadius: '8px',
             } }),
         react_1.default.createElement("div", { className: 'actionContainer', style: {
@@ -1821,7 +1992,7 @@ function DetailsCard(props) {
                         top: '14px',
                     }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                         __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                            .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
+                            .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1'))
                             .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                     } })),
             react_1.default.createElement("div", { style: {
@@ -1857,7 +2028,7 @@ function DetailsCard(props) {
                     marginTop: '-6px',
                 }, dangerouslySetInnerHTML: {
                     __html: (idToText[props.cardId] || '')
-                        .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
+                        .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1'))
                         .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                 } }),
             react_1.default.createElement(card_actions_1.default, __assign({ top: false, cardId: props.cardId }, props.actionHandlers)))));
@@ -1874,17 +2045,34 @@ exports["default"] = DetailsCard;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.DisplayMode = void 0;
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./docs/views/bootstrap_icons/icon_check.js"));
 /* eslint-disable no-unused-vars */
@@ -1927,10 +2115,10 @@ function displayModeName(displayMode) {
     return '';
 }
 function DisplayDropdown(props) {
-    var _a = react_1.useState(false), listEnabled = _a[0], setListEnabled = _a[1];
-    var _b = react_1.useState(false), detailsEnabled = _b[0], setDetailsEnabled = _b[1];
-    var _c = react_1.useState(false), textEnabled = _c[0], setTextEnabled = _c[1];
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)(false), listEnabled = _a[0], setListEnabled = _a[1];
+    var _b = (0, react_1.useState)(false), detailsEnabled = _b[0], setDetailsEnabled = _b[1];
+    var _c = (0, react_1.useState)(false), textEnabled = _c[0], setTextEnabled = _c[1];
+    (0, react_1.useEffect)(function () {
         Promise.all([
             props.loader.getMapData('IDToName'),
             props.loader.getMapData('IDToText'),
@@ -2011,21 +2199,37 @@ exports["default"] = DisplayDropdown;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var EditNameWindow = react_1.forwardRef(function EditNameWindow(props, ref) {
-    var _a = react_1.useState(''), inputValue = _a[0], setInputValue = _a[1];
-    var _b = react_1.useState(''), errorText = _b[0], setErrorText = _b[1];
-    var _c = react_1.useState(false), isOpen = _c[0], setIsOpen = _c[1];
-    var inputRef = react_1.useRef(null);
-    react_1.useImperativeHandle(ref, function () { return ({
+var EditNameWindow = (0, react_1.forwardRef)(function EditNameWindow(props, ref) {
+    var _a = (0, react_1.useState)(''), inputValue = _a[0], setInputValue = _a[1];
+    var _b = (0, react_1.useState)(''), errorText = _b[0], setErrorText = _b[1];
+    var _c = (0, react_1.useState)(false), isOpen = _c[0], setIsOpen = _c[1];
+    var inputRef = (0, react_1.useRef)(null);
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
         open: function (newValue) {
             setInputValue(newValue);
             setIsOpen(true);
@@ -2106,18 +2310,34 @@ exports["default"] = EditNameWindow;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function FilterDatalist(props) {
-    var _a = react_1.useState([]), mapValues = _a[0], setMapValues = _a[1];
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)([]), mapValues = _a[0], setMapValues = _a[1];
+    (0, react_1.useEffect)(function () {
         var mapPromises = [];
         mapPromises.push(props.loader.getMapData(props.map));
         for (var _i = 0, _a = props.otherRequiredMaps; _i < _a.length; _i++) {
@@ -2139,7 +2359,7 @@ function FilterDatalist(props) {
             setMapValues(allValues);
         });
     }, []);
-    var id = react_1.useId();
+    var id = (0, react_1.useId)();
     return (react_1.default.createElement("div", { style: {
             display: props.visible ? 'inline-block' : 'none',
             width: '250px',
@@ -2169,11 +2389,27 @@ exports["default"] = FilterDatalist;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -2183,7 +2419,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var icon_check_1 = __importDefault(__webpack_require__(/*! ../../bootstrap_icons/icon_check */ "./docs/views/bootstrap_icons/icon_check.js"));
 function FilterMapCategory(props) {
-    var _a = react_1.useState([]), mapValues = _a[0], setMapValues = _a[1];
+    var _a = (0, react_1.useState)([]), mapValues = _a[0], setMapValues = _a[1];
     if (mapValues.length === 0) {
         props.loader.getMapData(props.map).then(function (mapData) {
             var seenValues = {};
@@ -2337,17 +2573,33 @@ exports["default"] = FilterMapCategory;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 function FilterText(props) {
-    var _a = react_1.useState(true), disabled = _a[0], setDisabled = _a[1];
+    var _a = (0, react_1.useState)(true), disabled = _a[0], setDisabled = _a[1];
     if (disabled) {
         var mapPromises = [];
         for (var _i = 0, _b = props.maps; _i < _b.length; _i++) {
@@ -2384,17 +2636,34 @@ exports["default"] = FilterText;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Grouper = void 0;
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var icon_check_1 = __importDefault(__webpack_require__(/*! ../bootstrap_icons/icon_check */ "./docs/views/bootstrap_icons/icon_check.js"));
 /* eslint-disable no-unused-vars */
@@ -2407,10 +2676,10 @@ var Grouper;
 ;
 /* eslint-enable no-unused-vars */
 function GrouperDropdown(props) {
-    var _a = react_1.useState(false), colorEnabled = _a[0], setColorEnabled = _a[1];
-    var _b = react_1.useState(false), typeEnabled = _b[0], setTypeEnabled = _b[1];
-    var _c = react_1.useState(false), cmcEnabled = _c[0], setCMCEnabled = _c[1];
-    react_1.useEffect(function () {
+    var _a = (0, react_1.useState)(false), colorEnabled = _a[0], setColorEnabled = _a[1];
+    var _b = (0, react_1.useState)(false), typeEnabled = _b[0], setTypeEnabled = _b[1];
+    var _c = (0, react_1.useState)(false), cmcEnabled = _c[0], setCMCEnabled = _c[1];
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToColor').then(function () {
             setColorEnabled(true);
         });
@@ -2537,19 +2806,35 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var map_data_1 = __webpack_require__(/*! ../../data/map_data */ "./docs/data/map_data.js");
 function ColorBlock(props) {
-    var setColorMapLoaded = react_1.useState(false)[1];
-    react_1.useEffect(function () {
+    var setColorMapLoaded = (0, react_1.useState)(false)[1];
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToColorIdentity').then(function () {
             setColorMapLoaded(true);
         });
@@ -2579,13 +2864,13 @@ function ColorBlock(props) {
             transform: 'skew(20deg)',
             border: '1px solid',
             marginLeft: '3px',
-            background: "linear-gradient(90deg, " + props.color + ", #3e3f2b)",
+            background: "linear-gradient(90deg, ".concat(props.color, ", #3e3f2b)"),
             borderColor: '#3e3f2b',
         } });
 }
 function HeaderDeckPreview(props) {
-    var setImageMapLoaded = react_1.useState(false)[1];
-    react_1.useEffect(function () {
+    var setImageMapLoaded = (0, react_1.useState)(false)[1];
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToCropImageURI').then(function () {
             setImageMapLoaded(true);
         });
@@ -2593,7 +2878,7 @@ function HeaderDeckPreview(props) {
     var url = '';
     var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
     if (idToCropImageURI) {
-        url = "url(\"" + idToCropImageURI[props.deck.keycard] + "\")";
+        url = "url(\"".concat(idToCropImageURI[props.deck.keycard], "\")");
     }
     var fillParent = {
         width: '100%',
@@ -2684,8 +2969,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 function hoverCardHandler(props) {
-    var id = react_2.useId();
-    react_2.useEffect(function () {
+    var id = (0, react_2.useId)();
+    (0, react_2.useEffect)(function () {
         document.getElementsByTagName('body')[0].addEventListener('mousemove', function (e) {
             var hoverCard = document.getElementById(id);
             var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
@@ -2702,7 +2987,7 @@ function hoverCardHandler(props) {
                     if (bg) {
                         hoverCard.style.top = (e.pageY + 20) + 'px';
                         hoverCard.style.left = e.pageX + 'px';
-                        hoverCard.style.backgroundImage = "url(" + bg + ")";
+                        hoverCard.style.backgroundImage = "url(".concat(bg, ")");
                         found = true;
                         break;
                     }
@@ -2772,7 +3057,7 @@ function showImageIfOnScreen(imageLoadTracker, element) {
         rect.top < window.innerHeight + bufferSize) ||
         (rect.bottom > -bufferSize &&
             rect.bottom < window.innerHeight + bufferSize))) {
-        element.style.backgroundImage = "url(\"" + bg + "\")";
+        element.style.backgroundImage = "url(\"".concat(bg, "\")");
         imageLoadTracker.setURLIsLoaded(bg);
         element.removeAttribute('data-lazybackground');
     }
@@ -2811,19 +3096,37 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -2833,20 +3136,20 @@ var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/reac
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
 function ListCard(props) {
-    var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
+    var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
     if (idToSetCode[props.cardId]) {
-        react_1.useEffect(function () {
-            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/" + idToSetCode[props.cardId] + ".svg").then(setSvgText);
+        (0, react_1.useEffect)(function () {
+            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/".concat(idToSetCode[props.cardId], ".svg")).then(setSvgText);
         }, []);
     }
     var types = [];
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || []), false));
     if (types.length > 0) {
         types.splice(0, 0, '-');
     }
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || [])));
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || []), false));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || []), false));
     var rarity = props.loader.getMapDataSync('IDToRarity')[props.cardId];
     var rarityColor = 'black';
     if (rarity === 'uncommon') {
@@ -2910,7 +3213,7 @@ function ListCard(props) {
                 paddingRight: '4px',
             }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                 __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                    .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+                    .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
             } }),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',
@@ -2937,7 +3240,7 @@ exports["default"] = ListCard;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 function makeManaIcon(name) {
     // eslint-disable-next-line max-len
-    return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(icons/" + name + ".jpg)'></div>";
+    return "<div style='display: inline-block; margin-bottom: -2px; width: 15px; height: 15px; background-image: url(icons/".concat(name, ".jpg)'></div>");
 }
 exports["default"] = makeManaIcon;
 ;
@@ -2962,6 +3265,29 @@ var __assign = (this && this.__assign) || function () {
         return t;
     };
     return __assign.apply(this, arguments);
+};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2999,13 +3325,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -3042,7 +3361,7 @@ function initFilterData() {
     };
 }
 function MiscFilterOption(props) {
-    var _a = react_1.useState(true), disabled = _a[0], setDisabled = _a[1];
+    var _a = (0, react_1.useState)(true), disabled = _a[0], setDisabled = _a[1];
     if (disabled) {
         var mapPromises = [];
         for (var _i = 0, _b = props.maps; _i < _b.length; _i++) {
@@ -3086,12 +3405,12 @@ function initEnabledFilters() {
     };
 }
 var debouncer = new debouncer_1.default(150);
-var searchArea = react_1.forwardRef(function searchArea(props, ref) {
+var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
     var _this = this;
-    var _a = react_1.useState(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
-    var _b = react_1.useState(initFilterData()), filterData = _b[0], setFilterData = _b[1];
-    var _c = react_1.useState(initEnabledFilters()), enabledFilters = _c[0], setEnabledFilters = _c[1];
-    var _d = react_1.useState([]), results = _d[0], setResults = _d[1];
+    var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
+    var _b = (0, react_1.useState)(initFilterData()), filterData = _b[0], setFilterData = _b[1];
+    var _c = (0, react_1.useState)(initEnabledFilters()), enabledFilters = _c[0], setEnabledFilters = _c[1];
+    var _d = (0, react_1.useState)([]), results = _d[0], setResults = _d[1];
     var setFilterDataAndExecute = function (newFilterData) { return __awaiter(_this, void 0, void 0, function () {
         var _a;
         return __generator(this, function (_b) {
@@ -3102,7 +3421,7 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
                 case 1:
                     if (!_b.sent()) return [3 /*break*/, 3];
                     _a = setResults;
-                    return [4 /*yield*/, execute_filter_1.default(newFilterData, props.loader)];
+                    return [4 /*yield*/, (0, execute_filter_1.default)(newFilterData, props.loader)];
                 case 2:
                     _a.apply(void 0, [_b.sent()]);
                     _b.label = 3;
@@ -3118,7 +3437,7 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
                     setFilterData(newFilterData);
                     debouncer.forceAct();
                     _a = setResults;
-                    return [4 /*yield*/, execute_filter_1.default(newFilterData, props.loader)];
+                    return [4 /*yield*/, (0, execute_filter_1.default)(newFilterData, props.loader)];
                 case 1:
                     _a.apply(void 0, [_b.sent()]);
                     return [2 /*return*/];
@@ -3182,7 +3501,7 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
             }
         });
     }); };
-    react_1.useImperativeHandle(ref, function () { return ({
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
         onSimilar: function (cardId) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -3199,10 +3518,10 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
         filterData.sort_by_release ? 'Sort by Release' : '',
     ].filter(function (a) { return !!a; }).join(', ');
     if (miscValueDisplay.length) {
-        miscValueDisplay = " (" + miscValueDisplay + ")";
+        miscValueDisplay = " (".concat(miscValueDisplay, ")");
     }
     return (react_1.default.createElement("div", { style: {
-            width: props.width + "px",
+            width: "".concat(props.width, "px"),
             height: 'calc(100% - 64px)',
             overflowY: 'scroll',
             marginTop: '64px',
@@ -3365,21 +3684,37 @@ exports["default"] = searchArea;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var SettingsWindow = react_1.forwardRef(function SettingsWindow(props, ref) {
-    var _a = react_1.useState(''), inputValue = _a[0], setInputValue = _a[1];
-    var _b = react_1.useState([]), errors = _b[0], setErrors = _b[1];
-    var _c = react_1.useState(false), isOpen = _c[0], setIsOpen = _c[1];
-    var inputRef = react_1.useRef(null);
-    react_1.useImperativeHandle(ref, function () { return ({
+var SettingsWindow = (0, react_1.forwardRef)(function SettingsWindow(props, ref) {
+    var _a = (0, react_1.useState)(''), inputValue = _a[0], setInputValue = _a[1];
+    var _b = (0, react_1.useState)([]), errors = _b[0], setErrors = _b[1];
+    var _c = (0, react_1.useState)(false), isOpen = _c[0], setIsOpen = _c[1];
+    var inputRef = (0, react_1.useRef)(null);
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
         open: function (backgroundUrl) {
             setInputValue(backgroundUrl);
             setIsOpen(true);
@@ -3433,7 +3768,7 @@ var SettingsWindow = react_1.forwardRef(function SettingsWindow(props, ref) {
                         width: '223px',
                         height: '312px',
                         backgroundSize: '100% 100%',
-                        backgroundImage: "url(" + inputValue + ")",
+                        backgroundImage: "url(".concat(inputValue, ")"),
                     } }),
                 react_1.default.createElement("div", { style: {
                         width: 'calc(100% - 223px)',
@@ -3503,6 +3838,7 @@ exports["default"] = URLLoader;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Exporter = void 0;
 var tts_deck_1 = __webpack_require__(/*! ./tts_deck */ "./docs/views/exporter/tts_deck.js");
 var Exporter = /** @class */ (function () {
     function Exporter() {
@@ -3513,7 +3849,7 @@ var Exporter = /** @class */ (function () {
             state = {
                 Name: 'Card',
                 CustomDeck: {},
-                Transform: tts_deck_1.standardTTSTransformForDeck(),
+                Transform: (0, tts_deck_1.standardTTSTransformForDeck)(),
             };
             state.Transform.posX += index * 2.2;
             if (board.faceup) {
@@ -3540,7 +3876,7 @@ var Exporter = /** @class */ (function () {
                 ContainedObjects: [],
                 DeckIDs: [],
                 CustomDeck: {},
-                Transform: tts_deck_1.standardTTSTransformForDeck(),
+                Transform: (0, tts_deck_1.standardTTSTransformForDeck)(),
             };
             state.Transform.posX += index * 2.2;
             if (board.faceup) {
@@ -3573,7 +3909,7 @@ var Exporter = /** @class */ (function () {
                     CardID: ttsCardID,
                     Name: 'Card',
                     Nickname: board.cards[i].name,
-                    Transform: tts_deck_1.standardTTSTransformForCard(),
+                    Transform: (0, tts_deck_1.standardTTSTransformForCard)(),
                 });
             }
         }
@@ -3606,11 +3942,27 @@ exports.Exporter = Exporter;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
@@ -3665,7 +4017,7 @@ var TableTopSimulator = /** @class */ (function () {
             }
         }
         if (tokens.length) {
-            console.log("Added tokens " + tokens.length + " tokens");
+            console.log("Added tokens ".concat(tokens.length, " tokens"));
         }
         return tokens;
     };
@@ -3758,6 +4110,7 @@ exports["default"] = TableTopSimulator;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.standardTTSTransformForDeck = exports.standardTTSTransformForCard = void 0;
 function standardTTSTransformForCard() {
     return {
         posX: 0.0,
@@ -3814,7 +4167,7 @@ var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws
         });
     });
 });
-var root = client_1.createRoot(document.getElementById('content'));
+var root = (0, client_1.createRoot)(document.getElementById('content'));
 var imageLoadTracker = new image_load_tracker_1.default();
 var urlLoader = new url_loader_1.default();
 root.render(react_1.default.createElement(index_page_1.default, { imageLoadTracker: imageLoadTracker, loader: loader, urlLoader: urlLoader }));
@@ -3829,15 +4182,31 @@ root.render(react_1.default.createElement(index_page_1.default, { imageLoadTrack
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var header_bar_1 = __importDefault(__webpack_require__(/*! ./components/header_bar */ "./docs/views/components/header_bar.js"));
@@ -3851,7 +4220,7 @@ var settings_window_1 = __importDefault(__webpack_require__(/*! ./components/set
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
-        name: "Deck #" + num,
+        name: "Deck #".concat(num),
         mainboard: [],
         sideboard: [],
     };
@@ -3870,14 +4239,14 @@ function copyDecks(decks) {
     return newDecks;
 }
 function indexPage(props) {
-    var searchRef = react_1.useRef(null);
-    var _a = react_1.useState(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
-    var _b = react_1.useState(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];
-    var _c = react_1.useState(new Array(Number(localStorage.getItem('deck_count') || '1'))
+    var searchRef = (0, react_1.useRef)(null);
+    var _a = (0, react_1.useState)(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
+    var _b = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];
+    var _c = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
         .fill(null).map(function (_, i) {
         var deck = null;
         try {
-            deck = JSON.parse(localStorage.getItem("deck_" + i) || 'null');
+            deck = JSON.parse(localStorage.getItem("deck_".concat(i)) || 'null');
         }
         catch (_a) { }
         if (!deck) {
@@ -3885,23 +4254,23 @@ function indexPage(props) {
         }
         return deck;
     })), decks = _c[0], setDecks = _c[1];
-    var _d = react_1.useState(550), searchWidth = _d[0], setSearchWidth = _d[1];
-    var editNameWindowRef = react_1.useRef(null);
-    var bulkImportWindowRef = react_1.useRef(null);
-    var settingsWindowRef = react_1.useRef(null);
-    react_1.useEffect(function () {
+    var _d = (0, react_1.useState)(550), searchWidth = _d[0], setSearchWidth = _d[1];
+    var editNameWindowRef = (0, react_1.useRef)(null);
+    var bulkImportWindowRef = (0, react_1.useRef)(null);
+    var settingsWindowRef = (0, react_1.useRef)(null);
+    (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
-            localStorage.setItem("deck_" + i, JSON.stringify(decks[i]));
+            localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
         }
         localStorage.setItem("deck_count", decks.length.toString());
     }, [decks]);
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         localStorage.setItem("deck_index", deckIndex.toString());
     }, [deckIndex]);
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         localStorage.setItem("background_url", backgroundUrl);
     }, [backgroundUrl]);
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         var body = document.getElementsByTagName('body')[0];
         var dragging = false;
         var dragStartX = -1;
@@ -4013,7 +4382,7 @@ function indexPage(props) {
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
         react_1.default.createElement("div", { id: 'searchDragBar', style: {
                 position: 'fixed',
-                left: searchWidth + "px",
+                left: "".concat(searchWidth, "px"),
                 top: 'calc(50% - 32px)',
                 width: '16px',
                 height: '64px',
@@ -4033,7 +4402,7 @@ function indexPage(props) {
                 } })),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',
-                width: "calc(100% - " + searchWidth + "px)",
+                width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
             react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {

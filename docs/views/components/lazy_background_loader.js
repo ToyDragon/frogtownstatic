@@ -9,7 +9,7 @@ function showImageIfOnScreen(imageLoadTracker, element) {
         rect.top < window.innerHeight + bufferSize) ||
         (rect.bottom > -bufferSize &&
             rect.bottom < window.innerHeight + bufferSize))) {
-        element.style.backgroundImage = "url(\"" + bg + "\")";
+        element.style.backgroundImage = "url(\"".concat(bg, "\")");
         imageLoadTracker.setURLIsLoaded(bg);
         element.removeAttribute('data-lazybackground');
     }

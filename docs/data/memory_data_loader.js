@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MemoryDataLoader = void 0;
 var MemoryDataLoader = /** @class */ (function () {
     function MemoryDataLoader() {
         this.mapLoadPromise = {};

@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importDefault(require("react"));
 var react_2 = require("react");
 function hoverCardHandler(props) {
-    var id = react_2.useId();
-    react_2.useEffect(function () {
+    var id = (0, react_2.useId)();
+    (0, react_2.useEffect)(function () {
         document.getElementsByTagName('body')[0].addEventListener('mousemove', function (e) {
             var hoverCard = document.getElementById(id);
             var idToImageUri = props.loader.getMapDataSync('IDToLargeImageURI');
@@ -24,7 +24,7 @@ function hoverCardHandler(props) {
                     if (bg) {
                         hoverCard.style.top = (e.pageY + 20) + 'px';
                         hoverCard.style.left = e.pageX + 'px';
-                        hoverCard.style.backgroundImage = "url(" + bg + ")";
+                        hoverCard.style.backgroundImage = "url(".concat(bg, ")");
                         found = true;
                         break;
                     }

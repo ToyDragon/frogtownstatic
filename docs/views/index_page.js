@@ -1,13 +1,29 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var header_bar_1 = __importDefault(require("./components/header_bar"));
@@ -21,7 +37,7 @@ var settings_window_1 = __importDefault(require("./components/settings_window"))
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
-        name: "Deck #" + num,
+        name: "Deck #".concat(num),
         mainboard: [],
         sideboard: [],
     };
@@ -40,14 +56,14 @@ function copyDecks(decks) {
     return newDecks;
 }
 function indexPage(props) {
-    var searchRef = react_1.useRef(null);
-    var _a = react_1.useState(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
-    var _b = react_1.useState(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];
-    var _c = react_1.useState(new Array(Number(localStorage.getItem('deck_count') || '1'))
+    var searchRef = (0, react_1.useRef)(null);
+    var _a = (0, react_1.useState)(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
+    var _b = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];
+    var _c = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
         .fill(null).map(function (_, i) {
         var deck = null;
         try {
-            deck = JSON.parse(localStorage.getItem("deck_" + i) || 'null');
+            deck = JSON.parse(localStorage.getItem("deck_".concat(i)) || 'null');
         }
         catch (_a) { }
         if (!deck) {
@@ -55,23 +71,23 @@ function indexPage(props) {
         }
         return deck;
     })), decks = _c[0], setDecks = _c[1];
-    var _d = react_1.useState(550), searchWidth = _d[0], setSearchWidth = _d[1];
-    var editNameWindowRef = react_1.useRef(null);
-    var bulkImportWindowRef = react_1.useRef(null);
-    var settingsWindowRef = react_1.useRef(null);
-    react_1.useEffect(function () {
+    var _d = (0, react_1.useState)(550), searchWidth = _d[0], setSearchWidth = _d[1];
+    var editNameWindowRef = (0, react_1.useRef)(null);
+    var bulkImportWindowRef = (0, react_1.useRef)(null);
+    var settingsWindowRef = (0, react_1.useRef)(null);
+    (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
-            localStorage.setItem("deck_" + i, JSON.stringify(decks[i]));
+            localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
         }
         localStorage.setItem("deck_count", decks.length.toString());
     }, [decks]);
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         localStorage.setItem("deck_index", deckIndex.toString());
     }, [deckIndex]);
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         localStorage.setItem("background_url", backgroundUrl);
     }, [backgroundUrl]);
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         var body = document.getElementsByTagName('body')[0];
         var dragging = false;
         var dragStartX = -1;
@@ -183,7 +199,7 @@ function indexPage(props) {
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
         react_1.default.createElement("div", { id: 'searchDragBar', style: {
                 position: 'fixed',
-                left: searchWidth + "px",
+                left: "".concat(searchWidth, "px"),
                 top: 'calc(50% - 32px)',
                 width: '16px',
                 height: '64px',
@@ -203,7 +219,7 @@ function indexPage(props) {
                 } })),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',
-                width: "calc(100% - " + searchWidth + "px)",
+                width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
             react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {

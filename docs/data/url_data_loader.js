@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UrlDataLoader = void 0;
 var UrlDataLoader = /** @class */ (function () {
     /**
      * @param baseUrl String containing {MapName}, like

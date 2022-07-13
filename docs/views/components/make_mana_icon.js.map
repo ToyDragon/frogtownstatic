@@ -1,1 +1,1 @@
-{"version":3,"file":"make_mana_icon.js","sourceRoot":"","sources":["../../../src/views/components/make_mana_icon.tsx"],"names":[],"mappings":";;AAAA,SAAwB,YAAY,CAAC,IAAY;IAC/C,mCAAmC;IACnC,OAAO,oHAAkH,IAAI,kBAAe,CAAC;AAC/I,CAAC;AAHD,+BAGC;AAAA,CAAC"}
+{"version":3,"file":"make_mana_icon.js","sourceRoot":"","sources":["../../../src/views/components/make_mana_icon.tsx"],"names":[],"mappings":";;AAAA,SAAwB,YAAY,CAAC,IAAY;IAC/C,mCAAmC;IACnC,OAAO,yHAAkH,IAAI,kBAAe,CAAC;AAC/I,CAAC;AAHD,+BAGC;AAAA,CAAC"}

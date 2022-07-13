@@ -16,7 +16,7 @@ var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws
         });
     });
 });
-var root = client_1.createRoot(document.getElementById('content'));
+var root = (0, client_1.createRoot)(document.getElementById('content'));
 var imageLoadTracker = new image_load_tracker_1.default();
 var urlLoader = new url_loader_1.default();
 root.render(react_1.default.createElement(index_page_1.default, { imageLoadTracker: imageLoadTracker, loader: loader, urlLoader: urlLoader }));

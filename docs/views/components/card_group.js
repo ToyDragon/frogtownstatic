@@ -64,7 +64,7 @@ function CardGroup(props) {
                             react_1.default.createElement(card_actions_1.default, __assign({ top: multipleCardsInStacks_1, cardId: cardId }, props.actionHandlers)) :
                             null,
                         react_1.default.createElement("div", __assign({ className: 'hoverToTop' }, bgProp, { style: {
-                                backgroundImage: props.imageLoadTracker.getURLIsLoaded(bg) ? "url(\"" + bg + "\")" : '',
+                                backgroundImage: props.imageLoadTracker.getURLIsLoaded(bg) ? "url(\"".concat(bg, "\")") : '',
                                 width: '223px',
                                 height: '312px',
                                 borderRadius: '15px',
@@ -105,10 +105,10 @@ function CardGroup(props) {
         var idToSetCode_1 = props.loader.getMapDataSync('IDToSetCode');
         return react_1.default.createElement("textarea", { readOnly: true, style: {
                 width: '600px',
-                height: (countedCards.length + 1) * 26 + "px",
+                height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
                 console.log(idAndCount);
-                return idAndCount.count + " " + idToNameMap_1[idAndCount.id] + " <" + idToSetCode_1[idAndCount.id] + ">\n";
+                return "".concat(idAndCount.count, " ").concat(idToNameMap_1[idAndCount.id], " <").concat(idToSetCode_1[idAndCount.id], ">\n");
             }).join('') });
     }
     if (props.displayMode === display_dropdown_1.DisplayMode.TextIDs) {
@@ -116,11 +116,11 @@ function CardGroup(props) {
         var idToSetCode_2 = props.loader.getMapDataSync('IDToSetCode');
         return react_1.default.createElement("textarea", { readOnly: true, style: {
                 width: '800px',
-                height: (countedCards.length + 1) * 26 + "px",
+                height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
                 console.log(idAndCount);
-                return idAndCount.count + " " + idAndCount.id + " // " + idToNameMap_2[idAndCount.id] +
-                    (" <" + idToSetCode_2[idAndCount.id] + ">\n");
+                return "".concat(idAndCount.count, " ").concat(idAndCount.id, " // ").concat(idToNameMap_2[idAndCount.id]) +
+                    " <".concat(idToSetCode_2[idAndCount.id], ">\n");
             }).join('') });
     }
     console.error('Unsupported display mode: ' + props.displayMode);

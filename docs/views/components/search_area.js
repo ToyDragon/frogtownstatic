@@ -10,6 +10,29 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,13 +68,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
-};
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -89,7 +105,7 @@ function initFilterData() {
     };
 }
 function MiscFilterOption(props) {
-    var _a = react_1.useState(true), disabled = _a[0], setDisabled = _a[1];
+    var _a = (0, react_1.useState)(true), disabled = _a[0], setDisabled = _a[1];
     if (disabled) {
         var mapPromises = [];
         for (var _i = 0, _b = props.maps; _i < _b.length; _i++) {
@@ -133,12 +149,12 @@ function initEnabledFilters() {
     };
 }
 var debouncer = new debouncer_1.default(150);
-var searchArea = react_1.forwardRef(function searchArea(props, ref) {
+var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
     var _this = this;
-    var _a = react_1.useState(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
-    var _b = react_1.useState(initFilterData()), filterData = _b[0], setFilterData = _b[1];
-    var _c = react_1.useState(initEnabledFilters()), enabledFilters = _c[0], setEnabledFilters = _c[1];
-    var _d = react_1.useState([]), results = _d[0], setResults = _d[1];
+    var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
+    var _b = (0, react_1.useState)(initFilterData()), filterData = _b[0], setFilterData = _b[1];
+    var _c = (0, react_1.useState)(initEnabledFilters()), enabledFilters = _c[0], setEnabledFilters = _c[1];
+    var _d = (0, react_1.useState)([]), results = _d[0], setResults = _d[1];
     var setFilterDataAndExecute = function (newFilterData) { return __awaiter(_this, void 0, void 0, function () {
         var _a;
         return __generator(this, function (_b) {
@@ -149,7 +165,7 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
                 case 1:
                     if (!_b.sent()) return [3 /*break*/, 3];
                     _a = setResults;
-                    return [4 /*yield*/, execute_filter_1.default(newFilterData, props.loader)];
+                    return [4 /*yield*/, (0, execute_filter_1.default)(newFilterData, props.loader)];
                 case 2:
                     _a.apply(void 0, [_b.sent()]);
                     _b.label = 3;
@@ -165,7 +181,7 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
                     setFilterData(newFilterData);
                     debouncer.forceAct();
                     _a = setResults;
-                    return [4 /*yield*/, execute_filter_1.default(newFilterData, props.loader)];
+                    return [4 /*yield*/, (0, execute_filter_1.default)(newFilterData, props.loader)];
                 case 1:
                     _a.apply(void 0, [_b.sent()]);
                     return [2 /*return*/];
@@ -229,7 +245,7 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
             }
         });
     }); };
-    react_1.useImperativeHandle(ref, function () { return ({
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
         onSimilar: function (cardId) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -246,10 +262,10 @@ var searchArea = react_1.forwardRef(function searchArea(props, ref) {
         filterData.sort_by_release ? 'Sort by Release' : '',
     ].filter(function (a) { return !!a; }).join(', ');
     if (miscValueDisplay.length) {
-        miscValueDisplay = " (" + miscValueDisplay + ")";
+        miscValueDisplay = " (".concat(miscValueDisplay, ")");
     }
     return (react_1.default.createElement("div", { style: {
-            width: props.width + "px",
+            width: "".concat(props.width, "px"),
             height: 'calc(100% - 64px)',
             overflowY: 'scroll',
             marginTop: '64px',

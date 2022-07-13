@@ -7,7 +7,7 @@ fi
 
 tmux new-session -d -s $folder_name
 
-tmux split-window -t $folder_name:0 "bash --init-file <(echo ""tsc -w"")"
+tmux split-window -t $folder_name:0 "bash --init-file <(echo ""npx tsc -w"")"
 tmux split-window -h -t $folder_name:0 "bash --init-file <(echo ""webpack --config docs/webpack.watch.config.js"")"
 tmux split-window -h -t $folder_name:0 "bash --init-file <(echo ""npm start"")"
 

@@ -10,19 +10,37 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -32,20 +50,20 @@ var react_1 = __importStar(require("react"));
 var card_actions_1 = __importDefault(require("./card_actions"));
 var make_mana_icon_1 = __importDefault(require("./make_mana_icon"));
 function CompactDetailsCard(props) {
-    var _a = react_1.useState(''), svgText = _a[0], setSvgText = _a[1];
+    var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
     if (idToSetCode[props.cardId]) {
-        react_1.useEffect(function () {
-            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/" + idToSetCode[props.cardId] + ".svg").then(setSvgText);
+        (0, react_1.useEffect)(function () {
+            props.urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.apricot.setsvgs/".concat(idToSetCode[props.cardId], ".svg")).then(setSvgText);
         }, []);
     }
     var types = [];
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSubtype')[props.cardId] || []), false));
     if (types.length > 0) {
         types.splice(0, 0, '-');
     }
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || [])));
-    types.splice.apply(types, __spreadArrays([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || [])));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToType')[props.cardId] || []), false));
+    types.splice.apply(types, __spreadArray([0, 0], (props.loader.getMapDataSync('IDToSupertype')[props.cardId] || []), false));
     var rarity = props.loader.getMapDataSync('IDToRarity')[props.cardId];
     var rarityColor = 'black';
     if (rarity === 'uncommon') {
@@ -75,7 +93,7 @@ function CompactDetailsCard(props) {
                 width: '160px',
                 height: '225px',
                 backgroundSize: '100% 100%',
-                backgroundImage: "url(" + bg + ")",
+                backgroundImage: "url(".concat(bg, ")"),
                 borderRadius: '8px',
             } }),
         react_1.default.createElement("div", { className: 'actionContainer', style: {
@@ -116,7 +134,7 @@ function CompactDetailsCard(props) {
                         top: '14px',
                     }, title: props.loader.getMapDataSync('IDToCost')[props.cardId], dangerouslySetInnerHTML: {
                         __html: (props.loader.getMapDataSync('IDToCost')[props.cardId] || '')
-                            .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
+                            .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1'))
                             .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                     } })),
             react_1.default.createElement("div", { style: {
@@ -152,7 +170,7 @@ function CompactDetailsCard(props) {
                     marginTop: '-6px',
                 }, dangerouslySetInnerHTML: {
                     __html: (idToText[props.cardId] || '')
-                        .replace(/{([0-9/A-Z]+)}/g, make_mana_icon_1.default('Mana$1'))
+                        .replace(/{([0-9/A-Z]+)}/g, (0, make_mana_icon_1.default)('Mana$1'))
                         .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
                 } }),
             react_1.default.createElement(card_actions_1.default, __assign({ top: false, cardId: props.cardId }, props.actionHandlers)))));

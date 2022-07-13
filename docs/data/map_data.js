@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MapData = exports.MTGCostType = void 0;
 /**
  * String values for all of the available cost symbols.
  */

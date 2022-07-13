@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Exporter = void 0;
 var tts_deck_1 = require("./tts_deck");
 var Exporter = /** @class */ (function () {
     function Exporter() {
@@ -10,7 +11,7 @@ var Exporter = /** @class */ (function () {
             state = {
                 Name: 'Card',
                 CustomDeck: {},
-                Transform: tts_deck_1.standardTTSTransformForDeck(),
+                Transform: (0, tts_deck_1.standardTTSTransformForDeck)(),
             };
             state.Transform.posX += index * 2.2;
             if (board.faceup) {
@@ -37,7 +38,7 @@ var Exporter = /** @class */ (function () {
                 ContainedObjects: [],
                 DeckIDs: [],
                 CustomDeck: {},
-                Transform: tts_deck_1.standardTTSTransformForDeck(),
+                Transform: (0, tts_deck_1.standardTTSTransformForDeck)(),
             };
             state.Transform.posX += index * 2.2;
             if (board.faceup) {
@@ -70,7 +71,7 @@ var Exporter = /** @class */ (function () {
                     CardID: ttsCardID,
                     Name: 'Card',
                     Nickname: board.cards[i].name,
-                    Transform: tts_deck_1.standardTTSTransformForCard(),
+                    Transform: (0, tts_deck_1.standardTTSTransformForCard)(),
                 });
             }
         }

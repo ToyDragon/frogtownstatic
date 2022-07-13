@@ -10,19 +10,35 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var map_data_1 = require("../../data/map_data");
 function ColorBlock(props) {
-    var setColorMapLoaded = react_1.useState(false)[1];
-    react_1.useEffect(function () {
+    var setColorMapLoaded = (0, react_1.useState)(false)[1];
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToColorIdentity').then(function () {
             setColorMapLoaded(true);
         });
@@ -52,13 +68,13 @@ function ColorBlock(props) {
             transform: 'skew(20deg)',
             border: '1px solid',
             marginLeft: '3px',
-            background: "linear-gradient(90deg, " + props.color + ", #3e3f2b)",
+            background: "linear-gradient(90deg, ".concat(props.color, ", #3e3f2b)"),
             borderColor: '#3e3f2b',
         } });
 }
 function HeaderDeckPreview(props) {
-    var setImageMapLoaded = react_1.useState(false)[1];
-    react_1.useEffect(function () {
+    var setImageMapLoaded = (0, react_1.useState)(false)[1];
+    (0, react_1.useEffect)(function () {
         props.loader.getMapData('IDToCropImageURI').then(function () {
             setImageMapLoaded(true);
         });
@@ -66,7 +82,7 @@ function HeaderDeckPreview(props) {
     var url = '';
     var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
     if (idToCropImageURI) {
-        url = "url(\"" + idToCropImageURI[props.deck.keycard] + "\")";
+        url = "url(\"".concat(idToCropImageURI[props.deck.keycard], "\")");
     }
     var fillParent = {
         width: '100%',

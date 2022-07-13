@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.standardTTSTransformForDeck = exports.standardTTSTransformForCard = void 0;
 function standardTTSTransformForCard() {
     return {
         posX: 0.0,

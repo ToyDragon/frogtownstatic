@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rankStringMatch = void 0;
 var execute_number_range_filter_1 = __importDefault(require("./execute_number_range_filter"));
 function cleanName(name) {
     return name.replace(/[,_-]/g, '').toLowerCase();
@@ -194,9 +195,9 @@ function executeFilter(data, loader) {
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
                     tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
-                    tryApplyFilter(execute_number_range_filter_1.default(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
-                    tryApplyFilter(execute_number_range_filter_1.default(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
-                    tryApplyFilter(execute_number_range_filter_1.default(cardIds, loader.getMapDataSync('IDToCMC'), data.cmc.trim()));
+                    tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
+                    tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
+                    tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToCMC'), data.cmc.trim()));
                     tryApplyFilter(exactStringFilter(cardIds, loader.getMapDataSync('IDToSetCode'), data.set.trim()));
                     /* eslint-enable max-len */
                     if (!anyFilterApplied) {
