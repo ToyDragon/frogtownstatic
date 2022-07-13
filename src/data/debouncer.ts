@@ -4,12 +4,14 @@ export default class Debouncer {
   private waiting = false;
   private inProgressRequest: ((shouldAct: boolean) => void) | null = null;
 
-  public constructor(delay: number) {
+  public constructor(delay: number, unloadable: {
+    addEventListener: (event: 'onbeforeunload', cb: () => void) => void,
+  }) {
     this.delay = delay;
     this.lastAction = new Date();
     this.lastAction.setFullYear(1990);
 
-    document.addEventListener('onbeforeunload', () => {
+    unloadable.addEventListener('onbeforeunload', () => {
       if (this.inProgressRequest) {
         this.inProgressRequest(true);
         this.inProgressRequest = null;

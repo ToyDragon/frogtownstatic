@@ -96,7 +96,7 @@ type SearchAreaProps = {
   addCard: (id: string) => void
 };
 
-const debouncer = new Debouncer(150);
+const debouncer = new Debouncer(150, document);
 const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function searchArea(
     props: SearchAreaProps, ref: ForwardedRef<SearchAreaHandle>) {
   const [displayMode, setDisplayMode] = useState(DisplayMode.SingleGrid);

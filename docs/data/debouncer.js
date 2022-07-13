@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Debouncer = /** @class */ (function () {
-    function Debouncer(delay) {
+    function Debouncer(delay, unloadable) {
         var _this = this;
         this.waiting = false;
         this.inProgressRequest = null;
         this.delay = delay;
         this.lastAction = new Date();
         this.lastAction.setFullYear(1990);
-        document.addEventListener('onbeforeunload', function () {
+        unloadable.addEventListener('onbeforeunload', function () {
             if (_this.inProgressRequest) {
                 _this.inProgressRequest(true);
                 _this.inProgressRequest = null;

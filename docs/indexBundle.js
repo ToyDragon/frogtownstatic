@@ -11,14 +11,14 @@
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var Debouncer = /** @class */ (function () {
-    function Debouncer(delay) {
+    function Debouncer(delay, unloadable) {
         var _this = this;
         this.waiting = false;
         this.inProgressRequest = null;
         this.delay = delay;
         this.lastAction = new Date();
         this.lastAction.setFullYear(1990);
-        document.addEventListener('onbeforeunload', function () {
+        unloadable.addEventListener('onbeforeunload', function () {
             if (_this.inProgressRequest) {
                 _this.inProgressRequest(true);
                 _this.inProgressRequest = null;
@@ -3404,7 +3404,7 @@ function initEnabledFilters() {
         misc: false,
     };
 }
-var debouncer = new debouncer_1.default(150);
+var debouncer = new debouncer_1.default(150, document);
 var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
     var _this = this;
     var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];

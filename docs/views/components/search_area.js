@@ -148,7 +148,7 @@ function initEnabledFilters() {
         misc: false,
     };
 }
-var debouncer = new debouncer_1.default(150);
+var debouncer = new debouncer_1.default(150, document);
 var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
     var _this = this;
     var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
