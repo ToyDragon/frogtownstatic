@@ -1882,6 +1882,7 @@ function deckArea(props) {
             encodeURIComponent((0, card_group_1.countCards)(props.mainboardCards.concat(props.sideboardCards))
                 .map(function (a) { return "".concat(a.count, " ").concat(idToName[a.id]); }).join('||'));
     }
+    var cardCount = props.mainboardCards.length + props.sideboardCards.length;
     return (react_1.default.createElement("div", { style: {
             position: 'relative',
             width: '100%',
@@ -1991,7 +1992,7 @@ function deckArea(props) {
                     react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onBulkImport(); } }, "Bulk Import")),
                     react_1.default.createElement("li", { style: { position: 'relative', marginRight: '26px', width: '222px' } },
-                        react_1.default.createElement("a", __assign({ className: 'dropdown-item ' + (!exportReady ? 'disabled' : '') }, downloadProps), "Export to Tabletop Simulator"),
+                        react_1.default.createElement("a", __assign({ className: 'dropdown-item ' + ((!exportReady || cardCount === 0) ? 'disabled' : '') }, downloadProps), "Export to Tabletop Simulator"),
                         react_1.default.createElement("a", { className: "dropdown-item", style: {
                                 position: 'absolute',
                                 top: '0',
@@ -2003,7 +2004,7 @@ function deckArea(props) {
                             }, href: "#", onMouseUp: function (e) { return e.button === 0 && props.onSettings(); } },
                             react_1.default.createElement(icon_gear_1.default, null))),
                     react_1.default.createElement("li", null,
-                        react_1.default.createElement("a", { className: "dropdown-item", href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")),
+                        react_1.default.createElement("a", { className: 'dropdown-item ' + (tcgplayerLink === '' ? 'disabled' : ''), href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")),
                     react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onDelete(); } }, "Delete Deck")))))));
 }

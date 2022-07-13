@@ -67,6 +67,8 @@ export default function deckArea(props: {
           .map((a) => `${a.count} ${idToName[a.id]}`).join('||'));
   }
 
+  const cardCount = props.mainboardCards.length + props.sideboardCards.length;
+
   return (
     <div style={{
       position: 'relative',
@@ -186,8 +188,8 @@ export default function deckArea(props: {
             <li><a className="dropdown-item" href="#"
               onMouseUp={(e) => e.button === 0 && props.onBulkImport()}>Bulk Import</a></li>
             <li style={{position: 'relative', marginRight: '26px', width: '222px'}}>
-              <a className={'dropdown-item ' + (!exportReady ? 'disabled' : '')} {...downloadProps}>
-                  Export to Tabletop Simulator</a>
+              <a className={'dropdown-item ' + ((!exportReady || cardCount === 0) ? 'disabled' : '')}
+                {...downloadProps}>Export to Tabletop Simulator</a>
               <a className="dropdown-item" style={{
                 position: 'absolute',
                 top: '0',
@@ -197,7 +199,8 @@ export default function deckArea(props: {
                 height: '32px',
                 padding: '2px 5px 8px 5px',
               }} href="#" onMouseUp={(e) => e.button === 0 && props.onSettings()}><IconGear /></a></li>
-            <li><a className="dropdown-item" href={tcgplayerLink} target="_blank" rel="noreferrer">TCG Player</a></li>
+            <li><a className={'dropdown-item ' + (tcgplayerLink === '' ? 'disabled' : '')}
+              href={tcgplayerLink} target="_blank" rel="noreferrer">TCG Player</a></li>
             <li><a className="dropdown-item" href="#"
               onMouseUp={(e) => e.button === 0 && props.onDelete()}>Delete Deck</a></li>
           </ul>
