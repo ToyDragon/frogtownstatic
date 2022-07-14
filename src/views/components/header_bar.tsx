@@ -15,7 +15,7 @@ export default function HeaderBar(props: {
       position: 'absolute',
       width: '100%',
     }}>
-      <a href={window.location.href} className="active header-item" onMouseUp={(e) => {
+      <a href="#" className="active header-item" onMouseUp={(e) => {
         if (e.button === 0) {
           props.onInfo();
         }

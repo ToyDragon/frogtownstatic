@@ -10,7 +10,7 @@ function HeaderBar(props) {
             position: 'absolute',
             width: '100%',
         } },
-        react_1.default.createElement("a", { href: window.location.href, className: "active header-item", onMouseUp: function (e) {
+        react_1.default.createElement("a", { href: "#", className: "active header-item", onMouseUp: function (e) {
                 if (e.button === 0) {
                     props.onInfo();
                 }
