@@ -1,7 +1,7 @@
 import HeaderBar from './components/header_bar';
 import React, {useEffect, useRef, useState} from 'react';
 import {Deck} from '../data/deck';
-import SearchArea, {SearchAreaHandle} from './components/search_area';
+import SearchArea from './components/search_area';
 import DeckArea from './components/deck_area';
 import ImageLoadTracker from './components/image_load_tracker';
 import URLLoader from './components/url_loader';
@@ -53,7 +53,6 @@ export default function indexPage(props: {
   ];
   props.loader.holdUntil(Promise.all(priorityMaps));
 
-  const searchRef = useRef<SearchAreaHandle>(null);
   const [backgroundUrl, setBackgroundUrl] = useState(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg');
   const [deckIndex, setDeckIndex] = useState<number>(Number(localStorage.getItem('deck_index') || '0'));
   const [decks, setDecks] = useState<Deck[]>(
@@ -218,7 +217,7 @@ export default function indexPage(props: {
     <HeaderBar loader={props.loader} decks={decks} changeDeck={(i: number) => {
       setDeckIndex(i);
     }} newDeck={addDeck} onInfo={() => infoWindowRef.current!.open()} />
-    <SearchArea ref={searchRef} loader={props.loader} urlLoader={props.urlLoader} addCard={(cardId: string) => {
+    <SearchArea loader={props.loader} urlLoader={props.urlLoader} addCard={(cardId: string) => {
       addCard(cardId, false);
     }} imageLoadTracker={props.imageLoadTracker} width={searchWidth} />
     <div id='searchDragBar' style={{

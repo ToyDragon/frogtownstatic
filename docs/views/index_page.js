@@ -70,7 +70,6 @@ function indexPage(props) {
         props.loader.getMapData('IDToCropImageURI'),
     ];
     props.loader.holdUntil(Promise.all(priorityMaps));
-    var searchRef = (0, react_1.useRef)(null);
     var _a = (0, react_1.useState)(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
     var _b = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];
     var _c = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
@@ -230,7 +229,7 @@ function indexPage(props) {
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
             }, newDeck: addDeck, onInfo: function () { return infoWindowRef.current.open(); } }),
-        react_1.default.createElement(search_area_1.default, { ref: searchRef, loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
+        react_1.default.createElement(search_area_1.default, { loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
                 addCard(cardId, false);
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
         react_1.default.createElement("div", { id: 'searchDragBar', style: {

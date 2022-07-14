@@ -4090,7 +4090,7 @@ function initEnabledFilters() {
     };
 }
 var debouncer = new debouncer_1.default(150, document);
-var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
+function searchArea(props) {
     var _this = this;
     var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
     var _b = (0, react_1.useState)(initFilterData()), filterData = _b[0], setFilterData = _b[1];
@@ -4186,18 +4186,6 @@ var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
             }
         });
     }); };
-    (0, react_1.useImperativeHandle)(ref, function () { return ({
-        onSimilar: function (cardId) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, onSimilar(cardId)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        }); },
-    }); });
     var miscValueDisplay = [
         filterData.show_duplicates ? 'Show Duplicates' : '',
         filterData.sort_by_release ? 'Sort by Release' : '',
@@ -4360,7 +4348,7 @@ var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
                         },
                         onSimilar: onSimilar,
                     } })))));
-});
+}
 exports["default"] = searchArea;
 //# sourceMappingURL=search_area.js.map
 
@@ -5208,7 +5196,6 @@ function indexPage(props) {
         props.loader.getMapData('IDToCropImageURI'),
     ];
     props.loader.holdUntil(Promise.all(priorityMaps));
-    var searchRef = (0, react_1.useRef)(null);
     var _a = (0, react_1.useState)(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
     var _b = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];
     var _c = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
@@ -5368,7 +5355,7 @@ function indexPage(props) {
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
             }, newDeck: addDeck, onInfo: function () { return infoWindowRef.current.open(); } }),
-        react_1.default.createElement(search_area_1.default, { ref: searchRef, loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
+        react_1.default.createElement(search_area_1.default, { loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
                 addCard(cardId, false);
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
         react_1.default.createElement("div", { id: 'searchDragBar', style: {

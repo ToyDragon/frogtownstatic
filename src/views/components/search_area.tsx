@@ -1,4 +1,4 @@
-import React, {ForwardedRef, forwardRef, useImperativeHandle, useState} from 'react';
+import React, {useState} from 'react';
 import {DataLoader} from '../../data/data_loader';
 import Debouncer from '../../data/debouncer';
 import executeFilter, {FilterData} from '../../data/execute_filter';
@@ -86,21 +86,14 @@ function initEnabledFilters(): Record<'misc' | keyof FilterData, boolean> {
   };
 }
 
-export type SearchAreaHandle = {
-  onSimilar: (cardId: string) => Promise<void>,
-};
-
-type SearchAreaProps = {
+const debouncer = new Debouncer(150, document);
+export default function searchArea(props: {
   imageLoadTracker: ImageLoadTracker,
   loader: DataLoader,
   urlLoader: URLLoader,
   width: number,
   addCard: (id: string) => void
-};
-
-const debouncer = new Debouncer(150, document);
-const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function searchArea(
-    props: SearchAreaProps, ref: ForwardedRef<SearchAreaHandle>) {
+}) {
   const [displayMode, setDisplayMode] = useState(DisplayMode.SingleGrid);
   const [filterData, setFilterData] = useState<FilterData>(initFilterData());
   const [enabledFilters, setEnabledFilters] =
@@ -166,12 +159,6 @@ const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function search
     newEnabledFilters['misc'] = true;
     setEnabledFilters(newEnabledFilters);
   };
-
-  useImperativeHandle(ref, () => ({
-    onSimilar: async (cardId: string) => {
-      await onSimilar(cardId);
-    },
-  }));
 
   let miscValueDisplay = [
     filterData.show_duplicates ? 'Show Duplicates' : '',
@@ -368,6 +355,4 @@ const searchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function search
       </div>
     </div>
   );
-});
-
-export default searchArea;
+}

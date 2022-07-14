@@ -151,7 +151,7 @@ function initEnabledFilters() {
     };
 }
 var debouncer = new debouncer_1.default(150, document);
-var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
+function searchArea(props) {
     var _this = this;
     var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
     var _b = (0, react_1.useState)(initFilterData()), filterData = _b[0], setFilterData = _b[1];
@@ -247,18 +247,6 @@ var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
             }
         });
     }); };
-    (0, react_1.useImperativeHandle)(ref, function () { return ({
-        onSimilar: function (cardId) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, onSimilar(cardId)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        }); },
-    }); });
     var miscValueDisplay = [
         filterData.show_duplicates ? 'Show Duplicates' : '',
         filterData.sort_by_release ? 'Sort by Release' : '',
@@ -421,6 +409,6 @@ var searchArea = (0, react_1.forwardRef)(function searchArea(props, ref) {
                         },
                         onSimilar: onSimilar,
                     } })))));
-});
+}
 exports.default = searchArea;
 //# sourceMappingURL=search_area.js.map
