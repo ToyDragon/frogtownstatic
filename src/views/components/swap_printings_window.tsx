@@ -76,7 +76,8 @@ const SwapPrintingsWindow = forwardRef<SwapPrintingsWindowHandle, SwapPrintingsW
             fontSize: '24px',
           }}>{`Printings of "${cardName}"`}</div>
           <div style={{
-            height: 'calc(100% - 200px)',
+            height: 'calc(100% - 85px)',
+            overflowY: 'scroll',
           }}>
             <CardArea cardIds={cardIds} displayMode={DisplayMode.SingleGrid} imageLoadTracker={props.imageLoadTracker}
               loader={props.loader} urlLoader={props.urlLoader} actionHandlers={{

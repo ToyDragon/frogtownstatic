@@ -81,7 +81,8 @@ var SwapPrintingsWindow = (0, react_1.forwardRef)(function SwapPrintingsWindow(p
                     fontSize: '24px',
                 } }, "Printings of \"".concat(cardName, "\"")),
             react_1.default.createElement("div", { style: {
-                    height: 'calc(100% - 200px)',
+                    height: 'calc(100% - 85px)',
+                    overflowY: 'scroll',
                 } },
                 react_1.default.createElement(card_area_1.default, { cardIds: cardIds, displayMode: display_dropdown_1.DisplayMode.SingleGrid, imageLoadTracker: props.imageLoadTracker, loader: props.loader, urlLoader: props.urlLoader, actionHandlers: {
                         onAdd: props.addCard,
