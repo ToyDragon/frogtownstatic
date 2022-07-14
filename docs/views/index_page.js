@@ -39,6 +39,7 @@ var loading_window_1 = __importDefault(require("./components/loading_window"));
 var confirm_delete_window_1 = __importDefault(require("./components/confirm_delete_window"));
 var deck_drop_handler_1 = __importDefault(require("./components/deck_drop_handler"));
 var info_window_1 = __importDefault(require("./components/info_window"));
+var swap_printings_window_1 = __importDefault(require("./components/swap_printings_window"));
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -90,6 +91,7 @@ function indexPage(props) {
     var settingsWindowRef = (0, react_1.useRef)(null);
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
     var infoWindowRef = (0, react_1.useRef)(null);
+    var swapPrintingsWindowRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
@@ -204,6 +206,13 @@ function indexPage(props) {
         setDecks(newDecks);
         setDeckIndex(newDecks.length - 1);
     };
+    var swapCard = function (fromId, toId) {
+        var newDecks = copyDecks(decks);
+        console.log('Swap from ', fromId, toId);
+        newDecks[deckIndex].mainboard = newDecks[deckIndex].mainboard.map(function (id) { return (id === fromId ? toId : id); });
+        newDecks[deckIndex].sideboard = newDecks[deckIndex].sideboard.map(function (id) { return (id === fromId ? toId : id); });
+        setDecks(newDecks);
+    };
     var deleteConfirmed = function () {
         var newDecks = copyDecks(decks);
         newDecks.splice(deckIndex, 1);
@@ -250,8 +259,8 @@ function indexPage(props) {
                 height: '100%',
             } },
             react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
-                    if (searchRef.current) {
-                        searchRef.current.onSimilar(cardId);
+                    if (swapPrintingsWindowRef.current) {
+                        swapPrintingsWindowRef.current.open(cardId);
                     }
                 } })),
         react_1.default.createElement(edit_name_window_1.default, { ref: editNameWindowRef, nameChanged: function (newName) {
@@ -266,6 +275,7 @@ function indexPage(props) {
         react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
         react_1.default.createElement(info_window_1.default, { ref: infoWindowRef }),
         react_1.default.createElement(secondary_load_window_1.default, { loader: props.loader }),
+        react_1.default.createElement(swap_printings_window_1.default, { ref: swapPrintingsWindowRef, addCard: function (id) { return addCard(id, false); }, loader: props.loader, imageLoadTracker: props.imageLoadTracker, urlLoader: props.urlLoader, swapCard: swapCard }),
         react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {
                 for (var i = 0; i < decks.length; i++) {
                     var existingDeck = decks[i];

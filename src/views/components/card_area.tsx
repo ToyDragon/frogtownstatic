@@ -126,6 +126,7 @@ export default function CardArea(props: {
     onSideboard?: (cardId: string) => void,
     onMainboard?: (cardId: string) => void,
     onStar?: (cardId: string) => void,
+    onSwap?: (cardId: string) => void,
   }
 }) {
   tryStartLazyBackgroundLoader(props.imageLoadTracker);

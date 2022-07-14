@@ -15,6 +15,7 @@ import {DataLoader} from '../data/data_loader';
 import ConfirmDeleteWindow, {ConfirmDeleteWindowHandle} from './components/confirm_delete_window';
 import DeckDropHandler from './components/deck_drop_handler';
 import InfoWindow, {InfoWindowHandle} from './components/info_window';
+import SwapPrintingsWindow, {SwapPrintingsWindowHandle} from './components/swap_printings_window';
 
 function createNewDeck(num: number) {
   return {
@@ -74,6 +75,7 @@ export default function indexPage(props: {
   const settingsWindowRef = useRef<SettingsWindowHandle>(null);
   const confirmDeleteWindowRef = useRef<ConfirmDeleteWindowHandle>(null);
   const infoWindowRef = useRef<InfoWindowHandle>(null);
+  const swapPrintingsWindowRef = useRef<SwapPrintingsWindowHandle>(null);
 
   useEffect(() => {
     for (let i = 0; i < decks.length; i++) {
@@ -191,6 +193,14 @@ export default function indexPage(props: {
     setDeckIndex(newDecks.length - 1);
   };
 
+  const swapCard = (fromId: string, toId: string) => {
+    const newDecks = copyDecks(decks);
+    console.log('Swap from ', fromId, toId);
+    newDecks[deckIndex].mainboard = newDecks[deckIndex].mainboard.map((id) => (id === fromId ? toId : id));
+    newDecks[deckIndex].sideboard = newDecks[deckIndex].sideboard.map((id) => (id === fromId ? toId : id));
+    setDecks(newDecks);
+  };
+
   const deleteConfirmed = () => {
     const newDecks = copyDecks(decks);
     newDecks.splice(deckIndex, 1);
@@ -245,8 +255,8 @@ export default function indexPage(props: {
         onSettings={() => settingsWindowRef.current?.open(backgroundUrl)}
         onDelete={() => confirmDeleteWindowRef.current?.open(deck.name)}
         urlLoader={props.urlLoader} removeCard={removeCard} moveCard={moveCard} onSimilar={(cardId: string) => {
-          if (searchRef.current) {
-            searchRef.current.onSimilar(cardId);
+          if (swapPrintingsWindowRef.current) {
+            swapPrintingsWindowRef.current.open(cardId);
           }
         }} />
     </div>
@@ -262,6 +272,8 @@ export default function indexPage(props: {
     <ConfirmDeleteWindow deleteConfirmed={deleteConfirmed} ref={confirmDeleteWindowRef} />
     <InfoWindow ref={infoWindowRef} />
     <SecondaryLoadWindow loader={props.loader} />
+    <SwapPrintingsWindow ref={swapPrintingsWindowRef} addCard={(id) => addCard(id, false)} loader={props.loader}
+      imageLoadTracker={props.imageLoadTracker} urlLoader={props.urlLoader} swapCard={swapCard} />
     <DeckDropHandler loader={props.loader} addDeck={(deck: Deck) => {
       for (let i = 0; i < decks.length; i++) {
         const existingDeck = decks[i];

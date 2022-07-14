@@ -41,6 +41,9 @@ function CardActions(props) {
         !props.onRemove ? null :
             react_1.default.createElement("div", { className: "action", title: "Remove card from deck", style: __assign({ backgroundImage: "url(\"icons/remove card32.png\")" }, position()), onMouseUp: function () { return props.onRemove(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),
+        !props.onSwap ? null :
+            react_1.default.createElement("div", { className: "action", title: "Swap card into deck", style: __assign({ backgroundImage: "url(\"icons/replace all32.png\")" }, position()), onMouseUp: function () { return props.onSwap(props.cardId); } },
+                react_1.default.createElement("a", { href: "#" })),
         !props.onSimilar ? null :
             react_1.default.createElement("div", { className: "action", title: "Find other printings of this card", style: __assign({ backgroundImage: "url(\"icons/misc card32.png\")" }, position()), onMouseUp: function () { return props.onSimilar(props.cardId); } },
                 react_1.default.createElement("a", { href: "#" })),

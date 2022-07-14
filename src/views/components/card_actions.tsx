@@ -9,6 +9,7 @@ export default function CardActions(props: {
   onSideboard?: (cardId: string) => void,
   onMainboard?: (cardId: string) => void,
   onStar?: (cardId: string) => void,
+  onSwap?: (cardId: string) => void,
 }) {
   let count = 0;
   const position = (): React.CSSProperties => {
@@ -39,6 +40,12 @@ export default function CardActions(props: {
         backgroundImage: `url("icons/remove card32.png")`,
         ...position(),
       }} onMouseUp={() => props.onRemove!(props.cardId)}><a href="#"></a></div>
+    }
+    {!props.onSwap ? null :
+      <div className="action" title="Swap card into deck" style={{
+        backgroundImage: `url("icons/replace all32.png")`,
+        ...position(),
+      }} onMouseUp={() => props.onSwap!(props.cardId)}><a href="#"></a></div>
     }
     {!props.onSimilar ? null :
       <div className="action" title="Find other printings of this card"
