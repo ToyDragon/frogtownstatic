@@ -45,8 +45,9 @@ export default function DeckDropHandler(
     setShowingIndicator(false);
     e.preventDefault();
 
-    const IDToNormalImageURI = props.loader.getMapDataSync('IDToNormalImageURI');
-    if (!IDToNormalImageURI) {
+    const idToNormalImageURI = props.loader.getMapDataSync('IDToNormalImageURI');
+    const idToName = props.loader.getMapDataSync('IDToName');
+    if (!idToNormalImageURI || !idToName) {
       return;
     }
     const filesToRead: File[] = [];
@@ -91,23 +92,32 @@ export default function DeckDropHandler(
           const mainboard: string[] = [];
           const sideboard: string[] = [];
           for (const stack of parsedDeck.ObjectStates) {
+            const nameToCount: Record<string, number> = {};
+            const nameToId: Record<string, string> = {};
             const localIdToCount: Record<number, number> = {};
             if (stack.ContainedObjects) {
               for (const card of stack.ContainedObjects) {
+                if (card.Nickname) {
+                  nameToCount[card.Nickname] = (nameToCount[card.Nickname] || 0) + 1;
+                }
                 if (card.CardID % 100 !== 0) {
-                  throw new Error(`Invalid card id ${card.CardID}`);
+                  continue;
                 }
                 const localId = Math.floor(card.CardID/100);
                 localIdToCount[localId] = (localIdToCount[localId] || 0) + 1;
               }
             } else if (stack.CardID) {
+              if (stack.Nickname) {
+                nameToCount[stack.Nickname] = (nameToCount[stack.Nickname] || 0) + 1;
+              }
               if (stack.CardID % 100 !== 0) {
-                throw new Error(`Invalid card id ${stack.CardID}`);
+                continue;
               }
               const localId = Math.floor(stack.CardID/100);
               localIdToCount[localId] = (localIdToCount[localId] || 0) + 1;
             }
 
+            // Find mapping from local ID to id.
             const localIdToId: Record<number, string> = {};
             if (stack.CustomDeck) {
               for (const localId in stack.CustomDeck) {
@@ -115,17 +125,30 @@ export default function DeckDropHandler(
                   const parseResult = idRegex.exec(stack.CustomDeck[localId].FaceURL);
                   const id = (parseResult && parseResult[1]) || '';
                   if (!id) {
-                    throw new Error(`Couldn't parse id from url ${stack.CustomDeck[localId].FaceURL}`);
+                    console.error(`Couldn't parse id from url ${stack.CustomDeck[localId].FaceURL}`);
                   }
-                  if (!IDToNormalImageURI[id]) {
+                  if (!idToNormalImageURI[id]) {
                     // Ignore tokens and double faced cards.
                     continue;
                   }
                   localIdToId[Number(localId)] = id;
+
+                  // If we have an ID for this card, don't also look it up by name.
+                  delete nameToCount[idToName[id]];
                 }
               }
             }
 
+            // Find mapping from name to id.
+            if (Object.keys(nameToCount).length > 0) {
+              for (const id in idToName) {
+                if (nameToCount[idToName[id]] && !nameToId[idToName[id]]) {
+                  nameToId[idToName[id]] = id;
+                }
+              }
+            }
+
+            // Add cards by ID.
             const boardToAddTo = mainboard.length === 0 ? mainboard : sideboard;
             for (const localId in localIdToCount) {
               if (!localIdToId[localId]) {
@@ -134,6 +157,13 @@ export default function DeckDropHandler(
               }
               const newCards = new Array(localIdToCount[localId]).fill(localIdToId[localId]);
               boardToAddTo.splice(boardToAddTo.length, 0, ...newCards);
+            }
+
+            // Add cards by name.
+            for (const name in nameToId) {
+              if (nameToCount[name]) {
+                boardToAddTo.splice(boardToAddTo.length, 0, ...new Array(nameToCount[name]).fill(nameToId[name]));
+              }
             }
           }
 

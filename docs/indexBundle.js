@@ -2188,8 +2188,9 @@ function DeckDropHandler(props) {
         }, onDrop: function (e) {
             setShowingIndicator(false);
             e.preventDefault();
-            var IDToNormalImageURI = props.loader.getMapDataSync('IDToNormalImageURI');
-            if (!IDToNormalImageURI) {
+            var idToNormalImageURI = props.loader.getMapDataSync('IDToNormalImageURI');
+            var idToName = props.loader.getMapDataSync('IDToName');
+            if (!idToNormalImageURI || !idToName) {
                 return;
             }
             var filesToRead = [];
@@ -2240,24 +2241,33 @@ function DeckDropHandler(props) {
                         var sideboard = [];
                         for (var _a = 0, _b = parsedDeck.ObjectStates; _a < _b.length; _a++) {
                             var stack = _b[_a];
+                            var nameToCount = {};
+                            var nameToId = {};
                             var localIdToCount = {};
                             if (stack.ContainedObjects) {
                                 for (var _c = 0, _d = stack.ContainedObjects; _c < _d.length; _c++) {
                                     var card = _d[_c];
+                                    if (card.Nickname) {
+                                        nameToCount[card.Nickname] = (nameToCount[card.Nickname] || 0) + 1;
+                                    }
                                     if (card.CardID % 100 !== 0) {
-                                        throw new Error("Invalid card id ".concat(card.CardID));
+                                        continue;
                                     }
                                     var localId = Math.floor(card.CardID / 100);
                                     localIdToCount[localId] = (localIdToCount[localId] || 0) + 1;
                                 }
                             }
                             else if (stack.CardID) {
+                                if (stack.Nickname) {
+                                    nameToCount[stack.Nickname] = (nameToCount[stack.Nickname] || 0) + 1;
+                                }
                                 if (stack.CardID % 100 !== 0) {
-                                    throw new Error("Invalid card id ".concat(stack.CardID));
+                                    continue;
                                 }
                                 var localId = Math.floor(stack.CardID / 100);
                                 localIdToCount[localId] = (localIdToCount[localId] || 0) + 1;
                             }
+                            // Find mapping from local ID to id.
                             var localIdToId = {};
                             if (stack.CustomDeck) {
                                 for (var localId in stack.CustomDeck) {
@@ -2265,16 +2275,27 @@ function DeckDropHandler(props) {
                                         var parseResult = idRegex.exec(stack.CustomDeck[localId].FaceURL);
                                         var id = (parseResult && parseResult[1]) || '';
                                         if (!id) {
-                                            throw new Error("Couldn't parse id from url ".concat(stack.CustomDeck[localId].FaceURL));
+                                            console.error("Couldn't parse id from url ".concat(stack.CustomDeck[localId].FaceURL));
                                         }
-                                        if (!IDToNormalImageURI[id]) {
+                                        if (!idToNormalImageURI[id]) {
                                             // Ignore tokens and double faced cards.
                                             continue;
                                         }
                                         localIdToId[Number(localId)] = id;
+                                        // If we have an ID for this card, don't also look it up by name.
+                                        delete nameToCount[idToName[id]];
                                     }
                                 }
                             }
+                            // Find mapping from name to id.
+                            if (Object.keys(nameToCount).length > 0) {
+                                for (var id in idToName) {
+                                    if (nameToCount[idToName[id]] && !nameToId[idToName[id]]) {
+                                        nameToId[idToName[id]] = id;
+                                    }
+                                }
+                            }
+                            // Add cards by ID.
                             var boardToAddTo = mainboard.length === 0 ? mainboard : sideboard;
                             for (var localId in localIdToCount) {
                                 if (!localIdToId[localId]) {
@@ -2283,6 +2304,12 @@ function DeckDropHandler(props) {
                                 }
                                 var newCards = new Array(localIdToCount[localId]).fill(localIdToId[localId]);
                                 boardToAddTo.splice.apply(boardToAddTo, __spreadArray([boardToAddTo.length, 0], newCards, false));
+                            }
+                            // Add cards by name.
+                            for (var name_1 in nameToId) {
+                                if (nameToCount[name_1]) {
+                                    boardToAddTo.splice.apply(boardToAddTo, __spreadArray([boardToAddTo.length, 0], new Array(nameToCount[name_1]).fill(nameToId[name_1]), false));
+                                }
                             }
                         }
                         console.log(mainboard);
