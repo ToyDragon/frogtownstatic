@@ -2,7 +2,7 @@ import React, {ForwardedRef, forwardRef, useImperativeHandle, useRef, useState} 
 import {DataLoader} from '../../data/data_loader';
 
 export type SettingsWindowHandle = {
-  open: (backgroundUrl: string) => void,
+  open: (existingUrls: string[], backgroundUrl: string) => void,
 };
 
 type SettingsWindowProps = {
@@ -15,13 +15,16 @@ const SettingsWindow = forwardRef<SettingsWindowHandle, SettingsWindowProps>(fun
     ref: ForwardedRef<SettingsWindowHandle>,
 ) {
   const [inputValue, setInputValue] = useState('');
+  const [existingUrls, setExistingUrls] = useState<string[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useImperativeHandle(ref, () => ({
-    open: (backgroundUrl: string) => {
-      setInputValue(backgroundUrl);
+    open: (existingUrls: string[], backgroundUrl: string) => {
+      console.log('Set existing urls to ', existingUrls);
+      setExistingUrls(existingUrls);
+      setInputValue(backgroundUrl || '');
       setIsOpen(true);
       setTimeout(() => inputRef.current?.select(), 0);
     },
@@ -61,11 +64,11 @@ const SettingsWindow = forwardRef<SettingsWindowHandle, SettingsWindowProps>(fun
     setIsOpen(false);
   }}>
     <div style={{
-      width: '600px',
-      height: '352px',
+      width: '800px',
+      height: '800px',
       position: 'absolute',
-      left: 'calc(50% - 300px)',
-      top: 'calc(50% - 125px)',
+      left: 'calc(50% - 400px)',
+      top: 'calc(50% - 400px)',
       backgroundColor: 'white',
       borderRadius: '12px',
       border: '3px solid #cdd6e4',
@@ -77,8 +80,16 @@ const SettingsWindow = forwardRef<SettingsWindowHandle, SettingsWindowProps>(fun
           width: '223px',
           height: '312px',
           backgroundSize: '100% 100%',
-          backgroundImage: `url(${inputValue})`,
-        }}></div>
+          backgroundImage: `url(https://i.imgur.com/Hg8CwwU.jpeg)`,
+        }}>
+          <div style={{
+            display: 'inline-block',
+            width: '223px',
+            height: '312px',
+            backgroundSize: '100% 100%',
+            backgroundImage: `url(${inputValue})`,
+          }}></div>
+        </div>
         <div style={{
           width: 'calc(100% - 223px)',
           display: 'inline-block',
@@ -94,17 +105,46 @@ const SettingsWindow = forwardRef<SettingsWindowHandle, SettingsWindowProps>(fun
             resize: 'none',
           }} value={inputValue} onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={submit(true)}></input>
+          <div style={{
+            display: 'inline-block',
+            color: 'red',
+            fontWeight: 'bold',
+            width: '380px',
+            height: '120px',
+            overflowY: 'auto',
+          }}>{errors.map((a) => (<div key={a}>{a}</div>))}</div>
         </div>
       </div>
-      <div style={{position: 'absolute', bottom: '12px'}}>
+      <div style={{
+        fontSize: '24px',
+      }}>{'Other Decks\' Cardbacks'}</div>
+      <div style={{
+        width: '100%',
+        overflowX: 'scroll',
+      }}>
         <div style={{
-          display: 'inline-block',
-          color: 'red',
-          fontWeight: 'bold',
-          width: '380px',
-          height: '120px',
-          overflowY: 'auto',
-        }}>{errors.map((a) => (<div key={a}>{a}</div>))}</div>
+          whiteSpace: 'nowrap',
+        }}>
+          {
+            existingUrls.map((url) => {
+              return <div key={url} style={{
+                display: 'inline-block',
+                width: '223px',
+                height: '312px',
+                marginLeft: '8px',
+                marginRight: '8px',
+                backgroundSize: '100% 100%',
+                backgroundImage: `url(${url})`,
+              }} onMouseUp={(e) => {
+                if (e.button === 0) {
+                  setInputValue(url);
+                }
+              }}></div>;
+            })
+          }
+        </div>
+      </div>
+      <div style={{position: 'absolute', bottom: '12px', right: '12px'}}>
         <button className='btn btn-secondary'
           onMouseUp={() => setIsOpen(false)}>Cancel</button>
         <button style={{marginLeft: '32px'}} className='btn btn-primary' onMouseUp={submit(false)}

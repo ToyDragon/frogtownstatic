@@ -53,6 +53,7 @@ export default function HeaderBar(props: {
                 name: 'New Deck',
                 mainboard: [],
                 sideboard: [],
+                backgroundUrl: '',
               }} loader={props.loader} changeToDeck={() => {
                 props.newDeck();
               }}/>

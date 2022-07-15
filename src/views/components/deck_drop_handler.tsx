@@ -88,6 +88,7 @@ export default function DeckDropHandler(
       for (const fileData of fileDatas) {
         console.log('Parsing ' + fileData.name);
         try {
+          let cardbackUrl = 'https://i.imgur.com/Hg8CwwU.jpeg';
           const parsedDeck: TTSDeck = JSON.parse(fileData.contents);
           const mainboard: string[] = [];
           const sideboard: string[] = [];
@@ -131,6 +132,15 @@ export default function DeckDropHandler(
                     // Ignore tokens and double faced cards.
                     continue;
                   }
+
+                  if (stack.CustomDeck[localId].BackURL &&
+                    stack.CustomDeck[localId].BackURL.indexOf('frogtown.me') === -1 &&
+                    stack.CustomDeck[localId].BackURL.indexOf('scryfall.com') === -1) {
+                    cardbackUrl = stack.CustomDeck[localId].BackURL;
+                  } else {
+                    console.log('Ignored back ' + stack.CustomDeck[localId].BackURL);
+                  }
+
                   localIdToId[Number(localId)] = id;
 
                   // If we have an ID for this card, don't also look it up by name.
@@ -175,6 +185,7 @@ export default function DeckDropHandler(
               mainboard,
               sideboard,
               name: fileData.name || 'new deck',
+              backgroundUrl: cardbackUrl,
             });
           }
         } catch (e) {

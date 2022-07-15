@@ -23,6 +23,7 @@ function createNewDeck(num: number) {
     name: `Deck #${num}`,
     mainboard: [],
     sideboard: [],
+    backgroundUrl: 'https://i.imgur.com/Hg8CwwU.jpeg',
   };
 }
 
@@ -34,9 +35,28 @@ function copyDecks(decks: Deck[]): Deck[] {
       keycard: deck.keycard,
       mainboard: deck.mainboard.slice(),
       sideboard: deck.sideboard.slice(),
+      backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
     });
   }
   return newDecks;
+}
+
+interface LegacyUserData {
+  cardbackUrl: string;
+  decks: {
+    name: string;
+    keycard: string;
+    mainboard: string[];
+    sideboard: string[];
+  }[];
+}
+
+function uniques(vals: string[]): string[] {
+  const obj: Record<string, boolean> = {};
+  for (const val of vals) {
+    obj[val] = true;
+  }
+  return Object.keys(obj);
 }
 
 export default function indexPage(props: {
@@ -53,7 +73,6 @@ export default function indexPage(props: {
   ];
   props.loader.holdUntil(Promise.all(priorityMaps));
 
-  const [backgroundUrl, setBackgroundUrl] = useState(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg');
   const [deckIndex, setDeckIndex] = useState<number>(Number(localStorage.getItem('deck_index') || '0'));
   const [decks, setDecks] = useState<Deck[]>(
       new Array(Number(localStorage.getItem('deck_count') || '1'))
@@ -88,10 +107,6 @@ export default function indexPage(props: {
   }, [deckIndex]);
 
   useEffect(() => {
-    localStorage.setItem(`background_url`, backgroundUrl);
-  }, [backgroundUrl]);
-
-  useEffect(() => {
     const body = document.getElementsByTagName('body')[0];
     let dragging = false;
     let dragStartX = -1;
@@ -120,6 +135,41 @@ export default function indexPage(props: {
         }
       }
     });
+
+    (async () => {
+      if (!localStorage.getItem('loaded_legacy_decks')) {
+        localStorage.setItem('loaded_legacy_decks', '1');
+        const legacyPublicId = document.cookie
+            .split(';')
+            .map((a) => ({key: a.split('=')[0].trim(), value: a.split('=')[1].trim()}))
+            .filter((a) => a.key === 'publicId')[0].value;
+        if (legacyPublicId) {
+          try {
+            const userData: LegacyUserData = await (await fetch(`https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/${legacyPublicId}.json`)).json();
+            console.log(userData);
+            let cardback = 'https://i.imgur.com/Hg8CwwU.jpeg';
+            if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
+              cardback = userData.cardbackUrl;
+            }
+            const newDecks = copyDecks(decks);
+            newDecks.splice(newDecks.length, 0, ...userData.decks.map((a) => {
+              // Ensure we don't let poorly formatted decks in.
+              return {
+                name: a.name,
+                keycard: a.keycard,
+                mainboard: a.mainboard,
+                sideboard: a.sideboard,
+                backgroundUrl: cardback,
+              };
+            }));
+            setDecks(newDecks);
+            // TODO: Toast about importing decks.
+          } catch (e) {
+            console.error('Unable to load decks from legacy account.');
+          }
+        }
+      }
+    })();
   }, []);
 
   const addCard = (cardId: string, toSideboard: boolean) => {
@@ -176,6 +226,12 @@ export default function indexPage(props: {
       }
       newDecks[deckIndex].mainboard.push(cardId);
     }
+    setDecks(newDecks);
+  };
+
+  const setBackgroundUrl = (newUrl: string) => {
+    const newDecks = copyDecks(decks);
+    newDecks[deckIndex].backgroundUrl = newUrl;
     setDecks(newDecks);
   };
 
@@ -248,10 +304,14 @@ export default function indexPage(props: {
     }}>
       <DeckArea imageLoadTracker={props.imageLoadTracker} mainboardCards={deck.mainboard} keycard={deck.keycard}
         name={deck.name} sideboardCards={deck.sideboard} loader={props.loader} addCard={addCard} onStar={onStar}
-        backUrl={backgroundUrl}
+        backUrl={deck.backgroundUrl}
         onEditName={() => editNameWindowRef.current?.open(deck.name)}
         onBulkImport={() => bulkImportWindowRef.current?.open()}
-        onSettings={() => settingsWindowRef.current?.open(backgroundUrl)}
+        onSettings={() => {
+          const existingUrls = decks.map((d) => d.backgroundUrl).filter((url) => !!url);
+          existingUrls.splice(0, 0, 'https://i.imgur.com/Hg8CwwU.jpeg');
+          return settingsWindowRef.current?.open(uniques(existingUrls), deck.backgroundUrl);
+        }}
         onDelete={() => confirmDeleteWindowRef.current?.open(deck.name)}
         urlLoader={props.urlLoader} removeCard={removeCard} moveCard={moveCard} onSimilar={(cardId: string) => {
           if (swapPrintingsWindowRef.current) {

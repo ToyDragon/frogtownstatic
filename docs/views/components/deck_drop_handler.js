@@ -154,6 +154,7 @@ function DeckDropHandler(props) {
                     var fileData = fileDatas_1[_i];
                     console.log('Parsing ' + fileData.name);
                     try {
+                        var cardbackUrl = 'https://i.imgur.com/Hg8CwwU.jpeg';
                         var parsedDeck = JSON.parse(fileData.contents);
                         var mainboard = [];
                         var sideboard = [];
@@ -199,6 +200,14 @@ function DeckDropHandler(props) {
                                             // Ignore tokens and double faced cards.
                                             continue;
                                         }
+                                        if (stack.CustomDeck[localId].BackURL &&
+                                            stack.CustomDeck[localId].BackURL.indexOf('frogtown.me') === -1 &&
+                                            stack.CustomDeck[localId].BackURL.indexOf('scryfall.com') === -1) {
+                                            cardbackUrl = stack.CustomDeck[localId].BackURL;
+                                        }
+                                        else {
+                                            console.log('Ignored back ' + stack.CustomDeck[localId].BackURL);
+                                        }
                                         localIdToId[Number(localId)] = id;
                                         // If we have an ID for this card, don't also look it up by name.
                                         delete nameToCount[idToName[id]];
@@ -238,6 +247,7 @@ function DeckDropHandler(props) {
                                 mainboard: mainboard,
                                 sideboard: sideboard,
                                 name: fileData.name || 'new deck',
+                                backgroundUrl: cardbackUrl,
                             });
                         }
                     }

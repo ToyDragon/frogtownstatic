@@ -45,6 +45,7 @@ function HeaderBar(props) {
                                 name: 'New Deck',
                                 mainboard: [],
                                 sideboard: [],
+                                backgroundUrl: '',
                             }, loader: props.loader, changeToDeck: function () {
                                 props.newDeck();
                             } })))))));

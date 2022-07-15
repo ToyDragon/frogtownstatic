@@ -4,4 +4,5 @@ export interface Deck {
   mainboard: string[];
   sideboard: string[];
   keycard: string;
+  backgroundUrl: string;
 }

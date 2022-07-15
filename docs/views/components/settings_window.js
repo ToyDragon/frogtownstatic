@@ -26,12 +26,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var SettingsWindow = (0, react_1.forwardRef)(function SettingsWindow(props, ref) {
     var _a = (0, react_1.useState)(''), inputValue = _a[0], setInputValue = _a[1];
-    var _b = (0, react_1.useState)([]), errors = _b[0], setErrors = _b[1];
-    var _c = (0, react_1.useState)(false), isOpen = _c[0], setIsOpen = _c[1];
+    var _b = (0, react_1.useState)([]), existingUrls = _b[0], setExistingUrls = _b[1];
+    var _c = (0, react_1.useState)([]), errors = _c[0], setErrors = _c[1];
+    var _d = (0, react_1.useState)(false), isOpen = _d[0], setIsOpen = _d[1];
     var inputRef = (0, react_1.useRef)(null);
     (0, react_1.useImperativeHandle)(ref, function () { return ({
-        open: function (backgroundUrl) {
-            setInputValue(backgroundUrl);
+        open: function (existingUrls, backgroundUrl) {
+            console.log('Set existing urls to ', existingUrls);
+            setExistingUrls(existingUrls);
+            setInputValue(backgroundUrl || '');
             setIsOpen(true);
             setTimeout(function () { var _a; return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.select(); }, 0);
         },
@@ -67,11 +70,11 @@ var SettingsWindow = (0, react_1.forwardRef)(function SettingsWindow(props, ref)
             setIsOpen(false);
         } },
         react_1.default.createElement("div", { style: {
-                width: '600px',
-                height: '352px',
+                width: '800px',
+                height: '800px',
                 position: 'absolute',
-                left: 'calc(50% - 300px)',
-                top: 'calc(50% - 125px)',
+                left: 'calc(50% - 400px)',
+                top: 'calc(50% - 400px)',
                 backgroundColor: 'white',
                 borderRadius: '12px',
                 border: '3px solid #cdd6e4',
@@ -83,8 +86,15 @@ var SettingsWindow = (0, react_1.forwardRef)(function SettingsWindow(props, ref)
                         width: '223px',
                         height: '312px',
                         backgroundSize: '100% 100%',
-                        backgroundImage: "url(".concat(inputValue, ")"),
-                    } }),
+                        backgroundImage: "url(https://i.imgur.com/Hg8CwwU.jpeg)",
+                    } },
+                    react_1.default.createElement("div", { style: {
+                            display: 'inline-block',
+                            width: '223px',
+                            height: '312px',
+                            backgroundSize: '100% 100%',
+                            backgroundImage: "url(".concat(inputValue, ")"),
+                        } })),
                 react_1.default.createElement("div", { style: {
                         width: 'calc(100% - 223px)',
                         display: 'inline-block',
@@ -98,16 +108,40 @@ var SettingsWindow = (0, react_1.forwardRef)(function SettingsWindow(props, ref)
                             fontSize: '18px',
                             width: 'calc(100% - 6px)',
                             resize: 'none',
-                        }, value: inputValue, onChange: function (e) { return setInputValue(e.target.value); }, onKeyDown: submit(true) }))),
-            react_1.default.createElement("div", { style: { position: 'absolute', bottom: '12px' } },
+                        }, value: inputValue, onChange: function (e) { return setInputValue(e.target.value); }, onKeyDown: submit(true) }),
+                    react_1.default.createElement("div", { style: {
+                            display: 'inline-block',
+                            color: 'red',
+                            fontWeight: 'bold',
+                            width: '380px',
+                            height: '120px',
+                            overflowY: 'auto',
+                        } }, errors.map(function (a) { return (react_1.default.createElement("div", { key: a }, a)); })))),
+            react_1.default.createElement("div", { style: {
+                    fontSize: '24px',
+                } }, 'Other Decks\' Cardbacks'),
+            react_1.default.createElement("div", { style: {
+                    width: '100%',
+                    overflowX: 'scroll',
+                } },
                 react_1.default.createElement("div", { style: {
-                        display: 'inline-block',
-                        color: 'red',
-                        fontWeight: 'bold',
-                        width: '380px',
-                        height: '120px',
-                        overflowY: 'auto',
-                    } }, errors.map(function (a) { return (react_1.default.createElement("div", { key: a }, a)); })),
+                        whiteSpace: 'nowrap',
+                    } }, existingUrls.map(function (url) {
+                    return react_1.default.createElement("div", { key: url, style: {
+                            display: 'inline-block',
+                            width: '223px',
+                            height: '312px',
+                            marginLeft: '8px',
+                            marginRight: '8px',
+                            backgroundSize: '100% 100%',
+                            backgroundImage: "url(".concat(url, ")"),
+                        }, onMouseUp: function (e) {
+                            if (e.button === 0) {
+                                setInputValue(url);
+                            }
+                        } });
+                }))),
+            react_1.default.createElement("div", { style: { position: 'absolute', bottom: '12px', right: '12px' } },
                 react_1.default.createElement("button", { className: 'btn btn-secondary', onMouseUp: function () { return setIsOpen(false); } }, "Cancel"),
                 react_1.default.createElement("button", { style: { marginLeft: '32px' }, className: 'btn btn-primary', onMouseUp: submit(false), onKeyDown: submit(false) }, "Submit"))));
 });

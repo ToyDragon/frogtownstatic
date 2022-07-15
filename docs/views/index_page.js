@@ -22,6 +22,51 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -46,6 +91,7 @@ function createNewDeck(num) {
         name: "Deck #".concat(num),
         mainboard: [],
         sideboard: [],
+        backgroundUrl: 'https://i.imgur.com/Hg8CwwU.jpeg',
     };
 }
 function copyDecks(decks) {
@@ -57,11 +103,21 @@ function copyDecks(decks) {
             keycard: deck.keycard,
             mainboard: deck.mainboard.slice(),
             sideboard: deck.sideboard.slice(),
+            backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
         });
     }
     return newDecks;
 }
+function uniques(vals) {
+    var obj = {};
+    for (var _i = 0, vals_1 = vals; _i < vals_1.length; _i++) {
+        var val = vals_1[_i];
+        obj[val] = true;
+    }
+    return Object.keys(obj);
+}
 function indexPage(props) {
+    var _this = this;
     // Call getMapData with the maps required to display the page, to ensure they always start loading first.
     var priorityMaps = [
         props.loader.getMapData('IDToName'),
@@ -70,9 +126,8 @@ function indexPage(props) {
         props.loader.getMapData('IDToCropImageURI'),
     ];
     props.loader.holdUntil(Promise.all(priorityMaps));
-    var _a = (0, react_1.useState)(localStorage.getItem('background_url') || 'https://i.imgur.com/Hg8CwwU.jpeg'), backgroundUrl = _a[0], setBackgroundUrl = _a[1];
-    var _b = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _b[0], setDeckIndex = _b[1];
-    var _c = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
+    var _a = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _a[0], setDeckIndex = _a[1];
+    var _b = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
         .fill(null).map(function (_, i) {
         var deck = null;
         try {
@@ -83,8 +138,8 @@ function indexPage(props) {
             deck = createNewDeck(i + 1);
         }
         return deck;
-    })), decks = _c[0], setDecks = _c[1];
-    var _d = (0, react_1.useState)(550), searchWidth = _d[0], setSearchWidth = _d[1];
+    })), decks = _b[0], setDecks = _b[1];
+    var _c = (0, react_1.useState)(550), searchWidth = _c[0], setSearchWidth = _c[1];
     var editNameWindowRef = (0, react_1.useRef)(null);
     var bulkImportWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
@@ -100,9 +155,6 @@ function indexPage(props) {
     (0, react_1.useEffect)(function () {
         localStorage.setItem("deck_index", deckIndex.toString());
     }, [deckIndex]);
-    (0, react_1.useEffect)(function () {
-        localStorage.setItem("background_url", backgroundUrl);
-    }, [backgroundUrl]);
     (0, react_1.useEffect)(function () {
         var body = document.getElementsByTagName('body')[0];
         var dragging = false;
@@ -133,6 +185,51 @@ function indexPage(props) {
                 }
             }
         });
+        (function () { return __awaiter(_this, void 0, void 0, function () {
+            var legacyPublicId, userData, cardback_1, newDecks, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!localStorage.getItem('loaded_legacy_decks')) return [3 /*break*/, 5];
+                        localStorage.setItem('loaded_legacy_decks', '1');
+                        legacyPublicId = document.cookie
+                            .split(';')
+                            .map(function (a) { return ({ key: a.split('=')[0].trim(), value: a.split('=')[1].trim() }); })
+                            .filter(function (a) { return a.key === 'publicId'; })[0].value;
+                        if (!legacyPublicId) return [3 /*break*/, 5];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, fetch("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
+                    case 2: return [4 /*yield*/, (_a.sent()).json()];
+                    case 3:
+                        userData = _a.sent();
+                        console.log(userData);
+                        cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
+                        if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
+                            cardback_1 = userData.cardbackUrl;
+                        }
+                        newDecks = copyDecks(decks);
+                        newDecks.splice.apply(newDecks, __spreadArray([newDecks.length, 0], userData.decks.map(function (a) {
+                            // Ensure we don't let poorly formatted decks in.
+                            return {
+                                name: a.name,
+                                keycard: a.keycard,
+                                mainboard: a.mainboard,
+                                sideboard: a.sideboard,
+                                backgroundUrl: cardback_1,
+                            };
+                        }), false));
+                        setDecks(newDecks);
+                        return [3 /*break*/, 5];
+                    case 4:
+                        e_1 = _a.sent();
+                        console.error('Unable to load decks from legacy account.');
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        }); })();
     }, []);
     var addCard = function (cardId, toSideboard) {
         var newDecks = copyDecks(decks);
@@ -192,6 +289,11 @@ function indexPage(props) {
             }
             newDecks[deckIndex].mainboard.push(cardId);
         }
+        setDecks(newDecks);
+    };
+    var setBackgroundUrl = function (newUrl) {
+        var newDecks = copyDecks(decks);
+        newDecks[deckIndex].backgroundUrl = newUrl;
         setDecks(newDecks);
     };
     var onStar = function (cardId) {
@@ -257,7 +359,12 @@ function indexPage(props) {
                 width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
-            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () { var _a; return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(backgroundUrl); }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
+            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: deck.backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () {
+                    var _a;
+                    var existingUrls = decks.map(function (d) { return d.backgroundUrl; }).filter(function (url) { return !!url; });
+                    existingUrls.splice(0, 0, 'https://i.imgur.com/Hg8CwwU.jpeg');
+                    return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(uniques(existingUrls), deck.backgroundUrl);
+                }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
                     if (swapPrintingsWindowRef.current) {
                         swapPrintingsWindowRef.current.open(cardId);
                     }
