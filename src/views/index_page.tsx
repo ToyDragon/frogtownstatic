@@ -174,9 +174,10 @@ export default function indexPage(props: {
         await loadLegacyDecksForPublicId(legacyBetaPublicId);
       }
 
-      if (!localStorage.getItem('legacy_public_id')) {
+      if (!localStorage.getItem('legacy_public_id') && document.cookie) {
         const legacyPublicId = document.cookie
             .split(';')
+            .filter((a) => !!a)
             .map((a) => ({key: a.split('=')[0].trim(), value: a.split('=')[1].trim()}))
             .filter((a) => a.key === 'publicId')[0].value;
         localStorage.setItem('legacy_public_id', legacyPublicId);

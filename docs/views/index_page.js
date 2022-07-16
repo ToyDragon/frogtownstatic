@@ -239,9 +239,10 @@ function indexPage(props) {
                         _a.sent();
                         _a.label = 2;
                     case 2:
-                        if (!!localStorage.getItem('legacy_public_id')) return [3 /*break*/, 4];
+                        if (!(!localStorage.getItem('legacy_public_id') && document.cookie)) return [3 /*break*/, 4];
                         legacyPublicId = document.cookie
                             .split(';')
+                            .filter(function (a) { return !!a; })
                             .map(function (a) { return ({ key: a.split('=')[0].trim(), value: a.split('=')[1].trim() }); })
                             .filter(function (a) { return a.key === 'publicId'; })[0].value;
                         localStorage.setItem('legacy_public_id', legacyPublicId);
