@@ -242,6 +242,7 @@ const SearchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function Search
               {value: 'B', display: <><img src="icons/ManaB.jpg" style={{marginTop: '-5px'}} /> Black</>},
               {value: 'R', display: <><img src="icons/ManaR.jpg" style={{marginTop: '-5px'}} /> Red</>},
               {value: 'G', display: <><img src="icons/ManaG.jpg" style={{marginTop: '-5px'}} /> Green</>},
+              {value: 'C', display: <><img src="icons/ManaC.jpg" style={{marginTop: '-5px'}} /> Colorless</>},
             ]}>
           Color
           </FilterMapCategory>
@@ -253,6 +254,7 @@ const SearchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function Search
               {value: 'B', display: <><img src="icons/ManaB.jpg" style={{marginTop: '-5px'}} /> Black</>},
               {value: 'R', display: <><img src="icons/ManaR.jpg" style={{marginTop: '-5px'}} /> Red</>},
               {value: 'G', display: <><img src="icons/ManaG.jpg" style={{marginTop: '-5px'}} /> Green</>},
+              {value: 'C', display: <><img src="icons/ManaC.jpg" style={{marginTop: '-5px'}} /> Colorless</>},
             ]}>
           Color Identity
           </FilterMapCategory>

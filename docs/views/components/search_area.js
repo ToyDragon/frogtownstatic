@@ -311,6 +311,9 @@ var SearchArea = (0, react_1.forwardRef)(function SearchArea(props, ref) {
                         { value: 'G', display: react_1.default.createElement(react_1.default.Fragment, null,
                                 react_1.default.createElement("img", { src: "icons/ManaG.jpg", style: { marginTop: '-5px' } }),
                                 " Green") },
+                        { value: 'C', display: react_1.default.createElement(react_1.default.Fragment, null,
+                                react_1.default.createElement("img", { src: "icons/ManaC.jpg", style: { marginTop: '-5px' } }),
+                                " Colorless") },
                     ] }, "Color"),
                 react_1.default.createElement(filter_map_category_1.default, { map: 'IDToColorIdentity', loader: props.loader, visible: enabledFilters['color_identity'], value: filterData.color_identity, setValue: filterDataSetter('color_identity'), multiSelect: true, categories: [
                         { value: 'W', display: react_1.default.createElement(react_1.default.Fragment, null,
@@ -328,6 +331,9 @@ var SearchArea = (0, react_1.forwardRef)(function SearchArea(props, ref) {
                         { value: 'G', display: react_1.default.createElement(react_1.default.Fragment, null,
                                 react_1.default.createElement("img", { src: "icons/ManaG.jpg", style: { marginTop: '-5px' } }),
                                 " Green") },
+                        { value: 'C', display: react_1.default.createElement(react_1.default.Fragment, null,
+                                react_1.default.createElement("img", { src: "icons/ManaC.jpg", style: { marginTop: '-5px' } }),
+                                " Colorless") },
                     ] }, "Color Identity"),
                 react_1.default.createElement(filter_map_category_1.default, { map: 'IDToSupertype', loader: props.loader, visible: enabledFilters['super_type'], value: filterData.super_type, setValue: filterDataSetter('super_type'), multiSelect: false }, "SuperType"),
                 react_1.default.createElement(filter_map_category_1.default, { map: 'IDToType', loader: props.loader, visible: enabledFilters['type'], value: filterData.type, setValue: filterDataSetter('type'), multiSelect: true, bannedValues: {
