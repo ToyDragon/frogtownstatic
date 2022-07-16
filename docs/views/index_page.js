@@ -58,21 +58,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var header_bar_1 = __importDefault(require("./components/header_bar"));
 var react_1 = __importStar(require("react"));
+var deck_1 = require("../data/deck");
 var search_area_1 = __importDefault(require("./components/search_area"));
 var deck_area_1 = __importDefault(require("./components/deck_area"));
 var hovercard_handler_1 = __importDefault(require("./components/hovercard_handler"));
@@ -85,15 +77,7 @@ var confirm_delete_window_1 = __importDefault(require("./components/confirm_dele
 var deck_drop_handler_1 = __importDefault(require("./components/deck_drop_handler"));
 var info_window_1 = __importDefault(require("./components/info_window"));
 var swap_printings_window_1 = __importDefault(require("./components/swap_printings_window"));
-function createNewDeck(num) {
-    return {
-        keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
-        name: "Deck #".concat(num),
-        mainboard: [],
-        sideboard: [],
-        backgroundUrl: 'https://i.imgur.com/Hg8CwwU.jpeg',
-    };
-}
+var legacy_deck_loader_1 = __importStar(require("./legacy_deck_loader"));
 function copyDecks(decks) {
     var newDecks = [];
     for (var _i = 0, decks_1 = decks; _i < decks_1.length; _i++) {
@@ -135,7 +119,7 @@ function indexPage(props) {
         }
         catch (_a) { }
         if (!deck) {
-            deck = createNewDeck(i + 1);
+            deck = (0, deck_1.createNewDeck)(i + 1);
         }
         return deck;
     })), decks = _b[0], setDecks = _b[1];
@@ -148,53 +132,6 @@ function indexPage(props) {
     var swapPrintingsWindowRef = (0, react_1.useRef)(null);
     var _d = (0, react_1.useState)(''), legacyPublicId = _d[0], setLegacyPublicId = _d[1];
     var _e = (0, react_1.useState)(''), legacyBetaPublicId = _e[0], setLegacyBetaPublicId = _e[1];
-    function loadLegacyDecksForPublicId(legacyPublicId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var userData, cardback_1, newDecks, loadedDecks, i, _i, decks_2, existingDeck, e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, fetch("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
-                    case 1: return [4 /*yield*/, (_a.sent()).json()];
-                    case 2:
-                        userData = _a.sent();
-                        console.log(userData);
-                        cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
-                        if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
-                            cardback_1 = userData.cardbackUrl;
-                        }
-                        newDecks = copyDecks(decks);
-                        loadedDecks = userData.decks.map(function (a) {
-                            // Ensure we don't let poorly formatted decks in.
-                            return {
-                                name: a.name,
-                                keycard: a.keycard || a.mainboard[0] || a.sideboard[0] || '4b81165e-f091-4211-8b47-5ea6868b0d4c',
-                                mainboard: a.mainboard,
-                                sideboard: a.sideboard,
-                                backgroundUrl: cardback_1,
-                            };
-                        });
-                        for (i = loadedDecks.length - 1; i >= 0; i--) {
-                            for (_i = 0, decks_2 = decks; _i < decks_2.length; _i++) {
-                                existingDeck = decks_2[_i];
-                                if (JSON.stringify(existingDeck) === JSON.stringify(loadedDecks[i])) {
-                                    loadedDecks.splice(i, 1);
-                                }
-                            }
-                        }
-                        newDecks.splice.apply(newDecks, __spreadArray([newDecks.length, 0], loadedDecks, false));
-                        setDecks(newDecks);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_1 = _a.sent();
-                        console.error('Unable to load decks from legacy account.');
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    }
     (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
@@ -234,42 +171,14 @@ function indexPage(props) {
                 }
             }
         });
-        (function () { return __awaiter(_this, void 0, void 0, function () {
-            var legacyBetaPublicId, parsedId;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        legacyBetaPublicId = ((window.location.search.split('?')[1] || '')
-                            .split('&')
-                            .filter(function (v) { return v.indexOf('legacyBetaPublicId') === 0; })[0] || '').split('=')[1] || localStorage.getItem('legacy_beta_public_id');
-                        setLegacyBetaPublicId(legacyBetaPublicId || '');
-                        if (!(legacyBetaPublicId && localStorage.getItem('legacy_beta_public_id') !== legacyBetaPublicId)) return [3 /*break*/, 2];
-                        localStorage.setItem('legacy_beta_public_id', legacyBetaPublicId);
-                        console.log('Loading legacy deck for beta public id ', legacyBetaPublicId);
-                        return [4 /*yield*/, loadLegacyDecksForPublicId(legacyBetaPublicId)];
-                    case 1:
-                        _a.sent();
-                        _a.label = 2;
-                    case 2:
-                        if (!document.cookie) return [3 /*break*/, 4];
-                        parsedId = document.cookie
-                            .split(';')
-                            .filter(function (a) { return !!a; })
-                            .map(function (a) { return ({ key: a.split('=')[0].trim(), value: a.split('=')[1].trim() }); })
-                            .filter(function (a) { return a.key === 'publicId'; })[0].value;
-                        setLegacyPublicId(parsedId || '');
-                        if (!(localStorage.getItem('legacy_public_id') !== parsedId)) return [3 /*break*/, 4];
-                        localStorage.setItem('legacy_public_id', parsedId);
-                        if (!(parsedId && parsedId !== localStorage.getItem('loaded_legacy_beta_decks'))) return [3 /*break*/, 4];
-                        console.log('Loading legacy deck for public id ', parsedId);
-                        return [4 /*yield*/, loadLegacyDecksForPublicId(parsedId)];
-                    case 3:
-                        _a.sent();
-                        _a.label = 4;
-                    case 4: return [2 /*return*/];
-                }
-            });
-        }); })();
+        (0, legacy_deck_loader_1.default)(copyDecks(decks), setLegacyPublicId, setLegacyBetaPublicId, window.location.search, document.cookie, props.urlLoader, {
+            getItem: localStorage.getItem,
+            setItem: localStorage.setItem,
+        }).then(function (newDecks) {
+            if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
+                setDecks(newDecks);
+            }
+        });
     }, []);
     var addCard = function (cardId, toSideboard) {
         var newDecks = copyDecks(decks);
@@ -343,7 +252,7 @@ function indexPage(props) {
     };
     var addDeck = function () {
         var newDecks = copyDecks(decks);
-        newDecks.push(createNewDeck(newDecks.length + 1));
+        newDecks.push((0, deck_1.createNewDeck)(newDecks.length + 1));
         setDecks(newDecks);
         setDeckIndex(newDecks.length - 1);
     };
@@ -358,7 +267,7 @@ function indexPage(props) {
         var newDecks = copyDecks(decks);
         newDecks.splice(deckIndex, 1);
         if (newDecks.length === 0) {
-            newDecks.push(createNewDeck(1));
+            newDecks.push((0, deck_1.createNewDeck)(1));
             setDeckIndex(0);
         }
         else if (deckIndex >= newDecks.length) {
@@ -419,9 +328,20 @@ function indexPage(props) {
         react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
         react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
         react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
-        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef, onReexport: function (publicId) {
-                loadLegacyDecksForPublicId(publicId);
-            } }),
+        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef, onReexport: function (publicId) { return __awaiter(_this, void 0, void 0, function () {
+                var newDecks;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, (0, legacy_deck_loader_1.loadLegacyDecksForPublicId)(publicId, copyDecks(decks), props.urlLoader)];
+                        case 1:
+                            newDecks = _a.sent();
+                            if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
+                                setDecks(newDecks);
+                            }
+                            return [2 /*return*/];
+                    }
+                });
+            }); } }),
         react_1.default.createElement(secondary_load_window_1.default, { loader: props.loader }),
         react_1.default.createElement(swap_printings_window_1.default, { ref: swapPrintingsWindowRef, addCard: function (id) { return addCard(id, false); }, loader: props.loader, imageLoadTracker: props.imageLoadTracker, urlLoader: props.urlLoader, swapCard: swapCard }),
         react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {
