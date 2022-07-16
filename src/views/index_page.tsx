@@ -137,36 +137,52 @@ export default function indexPage(props: {
     });
 
     (async () => {
-      if (!localStorage.getItem('loaded_legacy_decks')) {
-        localStorage.setItem('loaded_legacy_decks', '1');
+      async function loadLegacyDecksForPublicId(legacyPublicId: string): Promise<void> {
+        try {
+          const userData: LegacyUserData = await (await fetch(`https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/${legacyPublicId}.json`)).json();
+          console.log(userData);
+          let cardback = 'https://i.imgur.com/Hg8CwwU.jpeg';
+          if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
+            cardback = userData.cardbackUrl;
+          }
+          const newDecks = copyDecks(decks);
+          newDecks.splice(newDecks.length, 0, ...userData.decks.map((a) => {
+            // Ensure we don't let poorly formatted decks in.
+            return {
+              name: a.name,
+              keycard: a.keycard || a.mainboard[0] || a.sideboard[0] || '4b81165e-f091-4211-8b47-5ea6868b0d4c',
+              mainboard: a.mainboard,
+              sideboard: a.sideboard,
+              backgroundUrl: cardback,
+            };
+          }));
+          setDecks(newDecks);
+          // TODO: Toast about importing decks.
+        } catch (e) {
+          console.error('Unable to load decks from legacy account.');
+        }
+      }
+
+      const legacyBetaPublicId = (
+        (window.location.search.split('?')[1] || '')
+            .split('&')
+            .filter((v) => v.indexOf('legacyBetaPublicId') === 0)[0] || ''
+      ).split('=')[1];
+      if (legacyBetaPublicId && !localStorage.getItem('legacy_beta_public_id')) {
+        localStorage.setItem('legacy_beta_public_id', legacyBetaPublicId);
+        console.log('Loading legacy deck for beta public id ', legacyBetaPublicId);
+        await loadLegacyDecksForPublicId(legacyBetaPublicId);
+      }
+
+      if (!localStorage.getItem('legacy_public_id')) {
         const legacyPublicId = document.cookie
             .split(';')
             .map((a) => ({key: a.split('=')[0].trim(), value: a.split('=')[1].trim()}))
             .filter((a) => a.key === 'publicId')[0].value;
-        if (legacyPublicId) {
-          try {
-            const userData: LegacyUserData = await (await fetch(`https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/${legacyPublicId}.json`)).json();
-            console.log(userData);
-            let cardback = 'https://i.imgur.com/Hg8CwwU.jpeg';
-            if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
-              cardback = userData.cardbackUrl;
-            }
-            const newDecks = copyDecks(decks);
-            newDecks.splice(newDecks.length, 0, ...userData.decks.map((a) => {
-              // Ensure we don't let poorly formatted decks in.
-              return {
-                name: a.name,
-                keycard: a.keycard,
-                mainboard: a.mainboard,
-                sideboard: a.sideboard,
-                backgroundUrl: cardback,
-              };
-            }));
-            setDecks(newDecks);
-            // TODO: Toast about importing decks.
-          } catch (e) {
-            console.error('Unable to load decks from legacy account.');
-          }
+        localStorage.setItem('legacy_public_id', legacyPublicId);
+        if (legacyPublicId && legacyPublicId !== localStorage.getItem('loaded_legacy_beta_decks')) {
+          console.log('Loading legacy deck for public id ', legacyPublicId);
+          await loadLegacyDecksForPublicId(legacyPublicId);
         }
       }
     })();

@@ -186,47 +186,72 @@ function indexPage(props) {
             }
         });
         (function () { return __awaiter(_this, void 0, void 0, function () {
-            var legacyPublicId, userData, cardback_1, newDecks, e_1;
+            function loadLegacyDecksForPublicId(legacyPublicId) {
+                return __awaiter(this, void 0, void 0, function () {
+                    var userData, cardback_1, newDecks, e_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                _a.trys.push([0, 3, , 4]);
+                                return [4 /*yield*/, fetch("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
+                            case 1: return [4 /*yield*/, (_a.sent()).json()];
+                            case 2:
+                                userData = _a.sent();
+                                console.log(userData);
+                                cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
+                                if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
+                                    cardback_1 = userData.cardbackUrl;
+                                }
+                                newDecks = copyDecks(decks);
+                                newDecks.splice.apply(newDecks, __spreadArray([newDecks.length, 0], userData.decks.map(function (a) {
+                                    // Ensure we don't let poorly formatted decks in.
+                                    return {
+                                        name: a.name,
+                                        keycard: a.keycard || a.mainboard[0] || a.sideboard[0] || '4b81165e-f091-4211-8b47-5ea6868b0d4c',
+                                        mainboard: a.mainboard,
+                                        sideboard: a.sideboard,
+                                        backgroundUrl: cardback_1,
+                                    };
+                                }), false));
+                                setDecks(newDecks);
+                                return [3 /*break*/, 4];
+                            case 3:
+                                e_1 = _a.sent();
+                                console.error('Unable to load decks from legacy account.');
+                                return [3 /*break*/, 4];
+                            case 4: return [2 /*return*/];
+                        }
+                    });
+                });
+            }
+            var legacyBetaPublicId, legacyPublicId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!!localStorage.getItem('loaded_legacy_decks')) return [3 /*break*/, 5];
-                        localStorage.setItem('loaded_legacy_decks', '1');
+                        legacyBetaPublicId = ((window.location.search.split('?')[1] || '')
+                            .split('&')
+                            .filter(function (v) { return v.indexOf('legacyBetaPublicId') === 0; })[0] || '').split('=')[1];
+                        if (!(legacyBetaPublicId && !localStorage.getItem('legacy_beta_public_id'))) return [3 /*break*/, 2];
+                        localStorage.setItem('legacy_beta_public_id', legacyBetaPublicId);
+                        console.log('Loading legacy deck for beta public id ', legacyBetaPublicId);
+                        return [4 /*yield*/, loadLegacyDecksForPublicId(legacyBetaPublicId)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        if (!!localStorage.getItem('legacy_public_id')) return [3 /*break*/, 4];
                         legacyPublicId = document.cookie
                             .split(';')
                             .map(function (a) { return ({ key: a.split('=')[0].trim(), value: a.split('=')[1].trim() }); })
                             .filter(function (a) { return a.key === 'publicId'; })[0].value;
-                        if (!legacyPublicId) return [3 /*break*/, 5];
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, fetch("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
-                    case 2: return [4 /*yield*/, (_a.sent()).json()];
+                        localStorage.setItem('legacy_public_id', legacyPublicId);
+                        if (!(legacyPublicId && legacyPublicId !== localStorage.getItem('loaded_legacy_beta_decks'))) return [3 /*break*/, 4];
+                        console.log('Loading legacy deck for public id ', legacyPublicId);
+                        return [4 /*yield*/, loadLegacyDecksForPublicId(legacyPublicId)];
                     case 3:
-                        userData = _a.sent();
-                        console.log(userData);
-                        cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
-                        if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
-                            cardback_1 = userData.cardbackUrl;
-                        }
-                        newDecks = copyDecks(decks);
-                        newDecks.splice.apply(newDecks, __spreadArray([newDecks.length, 0], userData.decks.map(function (a) {
-                            // Ensure we don't let poorly formatted decks in.
-                            return {
-                                name: a.name,
-                                keycard: a.keycard,
-                                mainboard: a.mainboard,
-                                sideboard: a.sideboard,
-                                backgroundUrl: cardback_1,
-                            };
-                        }), false));
-                        setDecks(newDecks);
-                        return [3 /*break*/, 5];
-                    case 4:
-                        e_1 = _a.sent();
-                        console.error('Unable to load decks from legacy account.');
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         }); })();
