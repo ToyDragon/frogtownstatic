@@ -834,8 +834,10 @@ function parseCards(loader, input) {
     };
     var idToName = loader.getMapDataSync('IDToName');
     var idToSetCode = loader.getMapDataSync('IDToSetCode');
-    var nameRegex = /([0-9]+)?x?\s*([^<>]*)\s*(?:<(.*)>)?\s*/;
-    var idRegex = /([0-9]+)?x?\s*([0-9a-z]){36}\s*/;
+    // TODO: supporting parens as a set delimiter means we can't directly search for cards with parens
+    // in their names. Only like 5 of these exist, but may cause issues in the future.
+    var nameRegex = /([0-9]+)?x?\s*([^<>\[\]()]*)\s*(?:[<\[(](.*)[>\])])?\s*/;
+    var idRegex = /([0-9]+)?x?\s*([0-9a-z]){36}\s*(?:\/\/.*)?/;
     var uniqueErrors = {};
     var namesToMatch = [];
     for (var _i = 0, _c = input.split('\n'); _i < _c.length; _i++) {
@@ -861,7 +863,7 @@ function parseCards(loader, input) {
                 matchedName: '',
                 matchedNameRank: 0,
                 quantity: Number(matchResult[1] || 1),
-                setCode: matchResult[3] || '',
+                setCode: (matchResult[3] || '').toLowerCase(),
             });
             continue;
         }

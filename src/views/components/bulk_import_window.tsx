@@ -19,8 +19,10 @@ export function parseCards(loader: DataLoader, input: string): {ids: string[], e
   const idToName = loader.getMapDataSync('IDToName')!;
   const idToSetCode = loader.getMapDataSync('IDToSetCode')!;
 
-  const nameRegex = /([0-9]+)?x?\s*([^<>]*)\s*(?:<(.*)>)?\s*/;
-  const idRegex = /([0-9]+)?x?\s*([0-9a-z]){36}\s*/;
+  // TODO: supporting parens as a set delimiter means we can't directly search for cards with parens
+  // in their names. Only like 5 of these exist, but may cause issues in the future.
+  const nameRegex = /([0-9]+)?x?\s*([^<>\[\]()]*)\s*(?:[<\[(](.*)[>\])])?\s*/;
+  const idRegex = /([0-9]+)?x?\s*([0-9a-z]){36}\s*(?:\/\/.*)?/;
   const uniqueErrors: Record<string, boolean> = {};
 
   const namesToMatch: {
@@ -53,7 +55,7 @@ export function parseCards(loader: DataLoader, input: string): {ids: string[], e
         matchedName: '',
         matchedNameRank: 0,
         quantity: Number(matchResult[1] || 1),
-        setCode: matchResult[3] || '',
+        setCode: (matchResult[3] || '').toLowerCase(),
       });
       continue;
     }
