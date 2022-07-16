@@ -27,6 +27,7 @@ export default function deckArea(props: {
     onBulkImport: () => void,
     onSettings: () => void,
     onDelete: () => void,
+    onSwap: (id: string) => void,
 }) {
   const [displayMode, setDisplayMode] = useState(DisplayMode.Grid);
   const [grouper, setGrouper] = useState<Grouper | null>(null);
@@ -123,6 +124,7 @@ export default function deckArea(props: {
             onSideboard: (cardId: string) => {
               props.moveCard(cardId, true);
             },
+            onSwap: props.onSwap,
             onSimilar: props.onSimilar,
             onStar: props.onStar,
           }} />
@@ -145,12 +147,8 @@ export default function deckArea(props: {
             onSideboard: (cardId: string) => {
               props.moveCard(cardId, false);
             },
-            onSimilar: (cardId: string) => {
-              console.log(props.onSimilar, cardId);
-              if (props.onSimilar) {
-                props.onSimilar(cardId);
-              }
-            },
+            onSwap: props.onSwap,
+            onSimilar: props.onSimilar,
             onStar: props.onStar,
           }} />
       </div>

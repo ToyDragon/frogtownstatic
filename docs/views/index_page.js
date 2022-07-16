@@ -125,6 +125,7 @@ function indexPage(props) {
     })), decks = _b[0], setDecks = _b[1];
     var _c = (0, react_1.useState)(550), searchWidth = _c[0], setSearchWidth = _c[1];
     var editNameWindowRef = (0, react_1.useRef)(null);
+    var searchAreaRef = (0, react_1.useRef)(null);
     var bulkImportWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
@@ -280,8 +281,12 @@ function indexPage(props) {
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
             }, newDeck: addDeck, onInfo: function () { return infoWindowRef.current.open(legacyPublicId, legacyBetaPublicId); } }),
-        react_1.default.createElement(search_area_1.default, { loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
+        react_1.default.createElement(search_area_1.default, { ref: searchAreaRef, loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
                 addCard(cardId, false);
+            }, onSwap: function (id) {
+                if (swapPrintingsWindowRef.current) {
+                    swapPrintingsWindowRef.current.open(id);
+                }
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
         react_1.default.createElement("div", { id: 'searchDragBar', style: {
                 position: 'fixed',
@@ -313,9 +318,13 @@ function indexPage(props) {
                     var existingUrls = decks.map(function (d) { return d.backgroundUrl; }).filter(function (url) { return !!url; });
                     existingUrls.splice(0, 0, 'https://i.imgur.com/Hg8CwwU.jpeg');
                     return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(uniques(existingUrls), deck.backgroundUrl);
-                }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (cardId) {
+                }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (id) {
+                    if (searchAreaRef.current) {
+                        searchAreaRef.current.onSimilar(id);
+                    }
+                }, onSwap: function (id) {
                     if (swapPrintingsWindowRef.current) {
-                        swapPrintingsWindowRef.current.open(cardId);
+                        swapPrintingsWindowRef.current.open(id);
                     }
                 } })),
         react_1.default.createElement(edit_name_window_1.default, { ref: editNameWindowRef, nameChanged: function (newName) {

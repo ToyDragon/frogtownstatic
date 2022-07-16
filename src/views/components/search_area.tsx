@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ForwardedRef, forwardRef, useImperativeHandle, useState} from 'react';
 import {DataLoader} from '../../data/data_loader';
 import Debouncer from '../../data/debouncer';
 import executeFilter, {FilterData} from '../../data/execute_filter';
@@ -87,13 +87,25 @@ function initEnabledFilters(): Record<'misc' | keyof FilterData, boolean> {
 }
 
 const debouncer = new Debouncer(150, document);
-export default function searchArea(props: {
+
+
+export type SearchAreaHandle = {
+  onSimilar: (id: string) => void,
+};
+
+type SearchAreaProps = {
   imageLoadTracker: ImageLoadTracker,
   loader: DataLoader,
   urlLoader: URLLoader,
   width: number,
-  addCard: (id: string) => void
-}) {
+  addCard: (id: string) => void,
+  onSwap: (id: string) => void,
+};
+
+const SearchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function SearchArea(
+    props: SearchAreaProps,
+    ref: ForwardedRef<SearchAreaHandle>,
+) {
   const [displayMode, setDisplayMode] = useState(DisplayMode.SingleGrid);
   const [filterData, setFilterData] = useState<FilterData>(initFilterData());
   const [enabledFilters, setEnabledFilters] =
@@ -153,12 +165,19 @@ export default function searchArea(props: {
     const newFilterData = initFilterData();
     newFilterData['name'] = idToName![cardId];
     newFilterData['show_duplicates'] = true;
+    // newFilterData['exact_name_match'] = true;
     setFilterDataAndExecute(newFilterData);
 
     const newEnabledFilters = {...enabledFilters};
     newEnabledFilters['misc'] = true;
     setEnabledFilters(newEnabledFilters);
   };
+
+  useImperativeHandle(ref, () => ({
+    onSimilar: (id: string) => {
+      onSimilar(id);
+    },
+  }));
 
   let miscValueDisplay = [
     filterData.show_duplicates ? 'Show Duplicates' : '',
@@ -350,9 +369,12 @@ export default function searchArea(props: {
                 props.addCard(cardId);
               },
               onSimilar: onSimilar,
+              onSwap: props.onSwap,
             }} />
         </div>
       </div>
     </div>
   );
-}
+});
+
+export default SearchArea;

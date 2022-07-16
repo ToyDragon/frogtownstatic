@@ -130,6 +130,7 @@ function deckArea(props) {
                     onSideboard: function (cardId) {
                         props.moveCard(cardId, true);
                     },
+                    onSwap: props.onSwap,
                     onSimilar: props.onSimilar,
                     onStar: props.onStar,
                 } }),
@@ -149,12 +150,8 @@ function deckArea(props) {
                     onSideboard: function (cardId) {
                         props.moveCard(cardId, false);
                     },
-                    onSimilar: function (cardId) {
-                        console.log(props.onSimilar, cardId);
-                        if (props.onSimilar) {
-                            props.onSimilar(cardId);
-                        }
-                    },
+                    onSwap: props.onSwap,
+                    onSimilar: props.onSimilar,
                     onStar: props.onStar,
                 } })),
         react_1.default.createElement("div", { style: {

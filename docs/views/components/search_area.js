@@ -151,7 +151,7 @@ function initEnabledFilters() {
     };
 }
 var debouncer = new debouncer_1.default(150, document);
-function searchArea(props) {
+var SearchArea = (0, react_1.forwardRef)(function SearchArea(props, ref) {
     var _this = this;
     var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.SingleGrid), displayMode = _a[0], setDisplayMode = _a[1];
     var _b = (0, react_1.useState)(initFilterData()), filterData = _b[0], setFilterData = _b[1];
@@ -239,6 +239,7 @@ function searchArea(props) {
                     newFilterData = initFilterData();
                     newFilterData['name'] = idToName[cardId];
                     newFilterData['show_duplicates'] = true;
+                    // newFilterData['exact_name_match'] = true;
                     setFilterDataAndExecute(newFilterData);
                     newEnabledFilters = __assign({}, enabledFilters);
                     newEnabledFilters['misc'] = true;
@@ -247,6 +248,11 @@ function searchArea(props) {
             }
         });
     }); };
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
+        onSimilar: function (id) {
+            onSimilar(id);
+        },
+    }); });
     var miscValueDisplay = [
         filterData.show_duplicates ? 'Show Duplicates' : '',
         filterData.sort_by_release ? 'Sort by Release' : '',
@@ -408,7 +414,8 @@ function searchArea(props) {
                             props.addCard(cardId);
                         },
                         onSimilar: onSimilar,
+                        onSwap: props.onSwap,
                     } })))));
-}
-exports.default = searchArea;
+});
+exports.default = SearchArea;
 //# sourceMappingURL=search_area.js.map

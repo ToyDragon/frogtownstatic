@@ -1,7 +1,7 @@
 import HeaderBar from './components/header_bar';
 import React, {useEffect, useRef, useState} from 'react';
 import {createNewDeck, Deck} from '../data/deck';
-import SearchArea from './components/search_area';
+import SearchArea, {SearchAreaHandle} from './components/search_area';
 import DeckArea from './components/deck_area';
 import ImageLoadTracker from './components/image_load_tracker';
 import URLLoader from './components/url_loader';
@@ -71,6 +71,7 @@ export default function indexPage(props: {
 
   const [searchWidth, setSearchWidth] = useState(550);
   const editNameWindowRef = useRef<EditNameWindowHandle>(null);
+  const searchAreaRef = useRef<SearchAreaHandle>(null);
   const bulkImportWindowRef = useRef<BulkImportWindowHandle>(null);
   const settingsWindowRef = useRef<SettingsWindowHandle>(null);
   const confirmDeleteWindowRef = useRef<ConfirmDeleteWindowHandle>(null);
@@ -237,8 +238,12 @@ export default function indexPage(props: {
     <HeaderBar loader={props.loader} decks={decks} changeDeck={(i: number) => {
       setDeckIndex(i);
     }} newDeck={addDeck} onInfo={() => infoWindowRef.current!.open(legacyPublicId, legacyBetaPublicId)} />
-    <SearchArea loader={props.loader} urlLoader={props.urlLoader} addCard={(cardId: string) => {
+    <SearchArea ref={searchAreaRef} loader={props.loader} urlLoader={props.urlLoader} addCard={(cardId: string) => {
       addCard(cardId, false);
+    }} onSwap={(id: string) => {
+      if (swapPrintingsWindowRef.current) {
+        swapPrintingsWindowRef.current.open(id);
+      }
     }} imageLoadTracker={props.imageLoadTracker} width={searchWidth} />
     <div id='searchDragBar' style={{
       position: 'fixed',
@@ -277,9 +282,14 @@ export default function indexPage(props: {
           return settingsWindowRef.current?.open(uniques(existingUrls), deck.backgroundUrl);
         }}
         onDelete={() => confirmDeleteWindowRef.current?.open(deck.name)}
-        urlLoader={props.urlLoader} removeCard={removeCard} moveCard={moveCard} onSimilar={(cardId: string) => {
+        urlLoader={props.urlLoader} removeCard={removeCard} moveCard={moveCard}
+        onSimilar={(id: string) => {
+          if (searchAreaRef.current) {
+            searchAreaRef.current.onSimilar(id);
+          }
+        }} onSwap={(id: string) => {
           if (swapPrintingsWindowRef.current) {
-            swapPrintingsWindowRef.current.open(cardId);
+            swapPrintingsWindowRef.current!.open(id);
           }
         }} />
     </div>
