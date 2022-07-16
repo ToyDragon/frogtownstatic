@@ -165,7 +165,7 @@ function indexPage(props) {
         body.addEventListener('mousemove', function (e) {
             if (dragging) {
                 var xDiff = e.pageX - dragStartX;
-                if (lastSearchWidth + xDiff >= 550 && lastSearchWidth + xDiff <= 1000) {
+                if (lastSearchWidth + xDiff >= 550 && lastSearchWidth + xDiff <= 1055) {
                     dragStartX = e.pageX;
                     lastSearchWidth += xDiff;
                     setSearchWidth(lastSearchWidth);
