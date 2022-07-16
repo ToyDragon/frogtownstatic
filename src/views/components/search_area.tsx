@@ -33,6 +33,7 @@ function initFilterData(): FilterData {
     set: '',
     show_duplicates: false,
     sort_by_release: false,
+    exact_name_match: false,
   };
 }
 
@@ -82,6 +83,7 @@ function initEnabledFilters(): Record<'misc' | keyof FilterData, boolean> {
     set: false,
     show_duplicates: false, // unused
     sort_by_release: false, // unused
+    exact_name_match: false, // unused
     misc: false,
   };
 }
@@ -165,7 +167,7 @@ const SearchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function Search
     const newFilterData = initFilterData();
     newFilterData['name'] = idToName![cardId];
     newFilterData['show_duplicates'] = true;
-    // newFilterData['exact_name_match'] = true;
+    newFilterData['exact_name_match'] = true;
     setFilterDataAndExecute(newFilterData);
 
     const newEnabledFilters = {...enabledFilters};
@@ -182,6 +184,7 @@ const SearchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function Search
   let miscValueDisplay = [
     filterData.show_duplicates ? 'Show Duplicates' : '',
     filterData.sort_by_release ? 'Sort by Release' : '',
+    filterData.exact_name_match ? 'Match Name Exactly' : '',
   ].filter((a) => !!a).join(', ');
   if (miscValueDisplay.length) {
     miscValueDisplay = ` (${miscValueDisplay})`;
@@ -308,6 +311,10 @@ const SearchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function Search
               <MiscFilterOption loader={props.loader} maps={['IDToSetCode', 'SetCodeToRelease']}
                 value={filterData.sort_by_release} setValue={filterDataSetter('sort_by_release')}>
               Sort By Release
+              </MiscFilterOption>
+              <MiscFilterOption loader={props.loader} maps={['IDToName']}
+                value={filterData.exact_name_match} setValue={filterDataSetter('exact_name_match')}>
+              Match Name Exactly
               </MiscFilterOption>
             </ul>
           </div>

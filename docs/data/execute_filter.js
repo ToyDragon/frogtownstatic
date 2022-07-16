@@ -75,6 +75,17 @@ function rankStringMatch(potentialMatch, filterText) {
     return -1;
 }
 exports.rankStringMatch = rankStringMatch;
+function stringFilterExact(cardIds, map, filterValue) {
+    if (!filterValue || !map) {
+        return false;
+    }
+    for (var i = cardIds.length - 1; i >= 0; i--) {
+        if (map[cardIds[i]] !== filterValue) {
+            cardIds.splice(i, 1);
+        }
+    }
+    return true;
+}
 function stringFilter(cardIds, map, filterValue) {
     if (!filterValue || !map) {
         return false;
@@ -186,7 +197,12 @@ function executeFilter(data, loader) {
                         anyFilterApplied = anyFilterApplied || result;
                     };
                     /* eslint-disable max-len */
-                    tryApplyFilter(stringFilter(cardIds, idToName, data.name.trim()));
+                    if (!data.exact_name_match) {
+                        tryApplyFilter(stringFilter(cardIds, idToName, data.name.trim()));
+                    }
+                    else {
+                        tryApplyFilter(stringFilterExact(cardIds, idToName, data.name.trim()));
+                    }
                     tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
                     tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim()));

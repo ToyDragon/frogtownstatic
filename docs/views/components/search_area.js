@@ -103,6 +103,7 @@ function initFilterData() {
         set: '',
         show_duplicates: false,
         sort_by_release: false,
+        exact_name_match: false,
     };
 }
 function MiscFilterOption(props) {
@@ -147,6 +148,7 @@ function initEnabledFilters() {
         set: false,
         show_duplicates: false,
         sort_by_release: false,
+        exact_name_match: false,
         misc: false,
     };
 }
@@ -239,7 +241,7 @@ var SearchArea = (0, react_1.forwardRef)(function SearchArea(props, ref) {
                     newFilterData = initFilterData();
                     newFilterData['name'] = idToName[cardId];
                     newFilterData['show_duplicates'] = true;
-                    // newFilterData['exact_name_match'] = true;
+                    newFilterData['exact_name_match'] = true;
                     setFilterDataAndExecute(newFilterData);
                     newEnabledFilters = __assign({}, enabledFilters);
                     newEnabledFilters['misc'] = true;
@@ -256,6 +258,7 @@ var SearchArea = (0, react_1.forwardRef)(function SearchArea(props, ref) {
     var miscValueDisplay = [
         filterData.show_duplicates ? 'Show Duplicates' : '',
         filterData.sort_by_release ? 'Sort by Release' : '',
+        filterData.exact_name_match ? 'Match Name Exactly' : '',
     ].filter(function (a) { return !!a; }).join(', ');
     if (miscValueDisplay.length) {
         miscValueDisplay = " (".concat(miscValueDisplay, ")");
@@ -358,7 +361,8 @@ var SearchArea = (0, react_1.forwardRef)(function SearchArea(props, ref) {
                             react_1.default.createElement("span", { style: { fontSize: '12px' } }, miscValueDisplay))),
                     react_1.default.createElement("ul", { className: "dropdown-menu" },
                         react_1.default.createElement(MiscFilterOption, { loader: props.loader, maps: ['IDToName'], value: filterData.show_duplicates, setValue: filterDataSetter('show_duplicates') }, "Show Duplicates"),
-                        react_1.default.createElement(MiscFilterOption, { loader: props.loader, maps: ['IDToSetCode', 'SetCodeToRelease'], value: filterData.sort_by_release, setValue: filterDataSetter('sort_by_release') }, "Sort By Release"))),
+                        react_1.default.createElement(MiscFilterOption, { loader: props.loader, maps: ['IDToSetCode', 'SetCodeToRelease'], value: filterData.sort_by_release, setValue: filterDataSetter('sort_by_release') }, "Sort By Release"),
+                        react_1.default.createElement(MiscFilterOption, { loader: props.loader, maps: ['IDToName'], value: filterData.exact_name_match, setValue: filterDataSetter('exact_name_match') }, "Match Name Exactly"))),
                 react_1.default.createElement("div", { className: "input-group", style: {
                         display: 'inline-block',
                         width: '105px',

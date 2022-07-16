@@ -24,6 +24,7 @@ export interface FilterData {
   set: string;
   sort_by_release: boolean;
   show_duplicates: boolean;
+  exact_name_match: boolean;
 }
 
 function cleanName(name: string): string {
@@ -58,6 +59,23 @@ export function rankStringMatch(potentialMatch: string, filterText: string): num
     return 1000 - trigramMatches;
   }
   return -1;
+}
+
+function stringFilterExact(
+    cardIds: string[],
+    map: Record<string, string | string[]> | null,
+    filterValue: string,
+): boolean {
+  if (!filterValue || !map) {
+    return false;
+  }
+
+  for (let i = cardIds.length - 1; i >= 0; i--) {
+    if (map[cardIds[i]] !== filterValue) {
+      cardIds.splice(i, 1);
+    }
+  }
+  return true;
 }
 
 function stringFilter(
@@ -192,7 +210,11 @@ export default async function executeFilter(
   };
 
   /* eslint-disable max-len */
-  tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim()));
+  if (!data.exact_name_match) {
+    tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim()));
+  } else {
+    tryApplyFilter(stringFilterExact(cardIds, idToName!, data.name.trim()));
+  }
   tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
   tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim()));
