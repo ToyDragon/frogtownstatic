@@ -173,8 +173,8 @@ function indexPage(props) {
             }
         });
         (0, legacy_deck_loader_1.default)(copyDecks(decks), setLegacyPublicId, setLegacyBetaPublicId, window.location.search, document.cookie, props.urlLoader, {
-            getItem: localStorage.getItem,
-            setItem: localStorage.setItem,
+            getItem: function (key) { return localStorage.getItem(key); },
+            setItem: function (key, value) { return localStorage.setItem(key, value); },
         }).then(function (newDecks) {
             if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
                 setDecks(newDecks);

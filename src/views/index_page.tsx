@@ -128,8 +128,8 @@ export default function indexPage(props: {
         document.cookie,
         props.urlLoader,
         {
-          getItem: localStorage.getItem,
-          setItem: localStorage.setItem,
+          getItem: (key: string) => localStorage.getItem(key),
+          setItem: (key: string, value: string) => localStorage.setItem(key, value),
         }).then((newDecks) => {
       if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
         setDecks(newDecks);
