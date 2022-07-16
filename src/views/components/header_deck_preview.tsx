@@ -14,13 +14,13 @@ function ColorBlock(props: { colorType: MTGCostType, color: string, deck: Deck, 
   let display = 'none';
   if (idToColorIdentity) {
     for (const card of props.deck.mainboard) {
-      if (idToColorIdentity[card].indexOf(props.colorType) >= 0) {
+      if ((idToColorIdentity[card] || []).indexOf(props.colorType) >= 0) {
         display = 'inline-block';
         break;
       }
     }
     for (const card of props.deck.sideboard) {
-      if (idToColorIdentity[card].indexOf(props.colorType) >= 0) {
+      if ((idToColorIdentity[card] || []).indexOf(props.colorType) >= 0) {
         display = 'inline-block';
         break;
       }

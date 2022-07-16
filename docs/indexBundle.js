@@ -3367,14 +3367,14 @@ function ColorBlock(props) {
     if (idToColorIdentity) {
         for (var _i = 0, _a = props.deck.mainboard; _i < _a.length; _i++) {
             var card = _a[_i];
-            if (idToColorIdentity[card].indexOf(props.colorType) >= 0) {
+            if ((idToColorIdentity[card] || []).indexOf(props.colorType) >= 0) {
                 display = 'inline-block';
                 break;
             }
         }
         for (var _b = 0, _c = props.deck.sideboard; _b < _c.length; _b++) {
             var card = _c[_b];
-            if (idToColorIdentity[card].indexOf(props.colorType) >= 0) {
+            if ((idToColorIdentity[card] || []).indexOf(props.colorType) >= 0) {
                 display = 'inline-block';
                 break;
             }
