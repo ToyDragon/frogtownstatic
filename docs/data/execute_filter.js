@@ -57,20 +57,26 @@ function rankStringMatch(potentialMatch, filterText) {
         return 2;
     }
     if (potentialMatch.indexOf(filterText) >= 0) {
-        return 3;
+        return 100 - filterText.length;
     }
-    var trigramMatches = 0;
-    for (var _i = 0, _a = filterText.split(' '); _i < _a.length; _i++) {
-        var word = _a[_i];
-        for (var i = 0; i < word.length - 2; i++) {
-            var trigram = word.substring(i, i + 3);
-            if (potentialMatch.indexOf(trigram) >= 0) {
-                trigramMatches++;
+    var subMatches = [
+        0,
+        0,
+        0, // trigram
+    ];
+    for (var matchLen = 1; matchLen <= 3; matchLen++) {
+        for (var _i = 0, _a = filterText.split(' '); _i < _a.length; _i++) {
+            var word = _a[_i];
+            for (var i = 0; i < word.length + 1 - matchLen; i++) {
+                var submatch = word.substring(i, i + matchLen);
+                if (potentialMatch.indexOf(submatch) >= 0) {
+                    subMatches[matchLen - 1]++;
+                }
             }
         }
     }
-    if (trigramMatches > 0) {
-        return 1000 - trigramMatches;
+    if (subMatches[0] + subMatches[1] + subMatches[2] > 0) {
+        return 100000 - subMatches[2] * 100 - subMatches[1] * 10 - subMatches[0];
     }
     return -1;
 }
@@ -90,7 +96,7 @@ function stringFilter(cardIds, map, filterValue) {
     if (!filterValue || !map) {
         return false;
     }
-    var results = [];
+    var idToRank = {};
     for (var _i = 0, cardIds_1 = cardIds; _i < cardIds_1.length; _i++) {
         var id = cardIds_1[_i];
         var cardValue = map[id];
@@ -102,23 +108,15 @@ function stringFilter(cardIds, map, filterValue) {
         }
         var rank = rankStringMatch(cardValue, filterValue);
         if (rank >= 0) {
-            results.push({
-                cardId: id,
-                rank: rank,
-            });
+            idToRank[id] = rank;
         }
     }
-    results.sort(function (a, b) { return a.rank - b.rank; });
-    var bestRanks = {};
-    for (var i = 0; i < 100 && i < results.length; i++) {
-        bestRanks[results[i].cardId] = results[i].rank;
-    }
     for (var i = cardIds.length - 1; i >= 0; i--) {
-        if (!bestRanks[cardIds[i]]) {
+        if (!idToRank[cardIds[i]]) {
             cardIds.splice(i, 1);
         }
     }
-    cardIds.sort(function (a, b) { return bestRanks[a] - bestRanks[b]; });
+    cardIds.sort(function (a, b) { return idToRank[a] - idToRank[b]; });
     return true;
 }
 function exactStringFilter(cardIds, map, filterValue) {

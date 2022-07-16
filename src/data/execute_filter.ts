@@ -44,19 +44,26 @@ export function rankStringMatch(potentialMatch: string, filterText: string): num
     return 2;
   }
   if (potentialMatch.indexOf(filterText) >= 0) {
-    return 3;
+    return 100 - filterText.length;
   }
-  let trigramMatches = 0;
-  for (const word of filterText.split(' ')) {
-    for (let i = 0; i < word.length - 2; i++) {
-      const trigram = word.substring(i, i + 3);
-      if (potentialMatch.indexOf(trigram) >= 0) {
-        trigramMatches++;
+
+  const subMatches = [
+    0, // 1 char
+    0, // 2 char
+    0, // trigram
+  ];
+  for (let matchLen = 1; matchLen <= 3; matchLen++) {
+    for (const word of filterText.split(' ')) {
+      for (let i = 0; i < word.length + 1 - matchLen; i++) {
+        const submatch = word.substring(i, i + matchLen);
+        if (potentialMatch.indexOf(submatch) >= 0) {
+          subMatches[matchLen-1]++;
+        }
       }
     }
   }
-  if (trigramMatches > 0) {
-    return 1000 - trigramMatches;
+  if (subMatches[0] + subMatches[1] + subMatches[2] > 0) {
+    return 100000 - subMatches[2] * 100 - subMatches[1] * 10 - subMatches[0];
   }
   return -1;
 }
@@ -87,7 +94,7 @@ function stringFilter(
     return false;
   }
 
-  const results: { cardId: string, rank: number }[] = [];
+  const idToRank: Record<string, number> = {};
   for (const id of cardIds) {
     let cardValue = map[id];
     if (!cardValue) {
@@ -98,26 +105,17 @@ function stringFilter(
     }
     const rank = rankStringMatch(cardValue, filterValue);
     if (rank >= 0) {
-      results.push({
-        cardId: id,
-        rank: rank,
-      });
+      idToRank[id] = rank;
     }
-  }
-  results.sort((a, b) => a.rank - b.rank);
-
-  const bestRanks: Record<string, number> = {};
-  for (let i = 0; i < 100 && i < results.length; i++) {
-    bestRanks[results[i].cardId] = results[i].rank;
   }
 
   for (let i = cardIds.length - 1; i >= 0; i--) {
-    if (!bestRanks[cardIds[i]]) {
+    if (!idToRank[cardIds[i]]) {
       cardIds.splice(i, 1);
     }
   }
 
-  cardIds.sort((a, b) => bestRanks[a] - bestRanks[b]);
+  cardIds.sort((a, b) => idToRank[a] - idToRank[b]);
   return true;
 }
 
