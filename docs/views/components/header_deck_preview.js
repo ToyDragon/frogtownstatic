@@ -82,7 +82,7 @@ function HeaderDeckPreview(props) {
     var url = '';
     var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
     if (idToCropImageURI) {
-        url = "url(\"".concat(idToCropImageURI[props.deck.keycard], "\")");
+        url = "url(\"".concat(idToCropImageURI[props.deck.keycard || '75b56b18-47a3-470b-911c-57da82c5ac03'], "\")");
     }
     var fillParent = {
         width: '100%',
@@ -92,8 +92,10 @@ function HeaderDeckPreview(props) {
         left: '0',
     };
     var cardCount = props.deck.mainboard.length + props.deck.sideboard.length;
-    return react_1.default.createElement("div", { onMouseUp: function () {
-            props.changeToDeck();
+    return react_1.default.createElement("div", { onMouseUp: function (e) {
+            if (e.button === 0) {
+                props.changeToDeck();
+            }
         }, style: {
             position: 'relative',
             width: '220px',

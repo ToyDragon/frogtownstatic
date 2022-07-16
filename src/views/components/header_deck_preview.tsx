@@ -49,7 +49,7 @@ export default function HeaderDeckPreview(props: { deck: Deck, loader: DataLoade
   let url = '';
   const idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
   if (idToCropImageURI) {
-    url = `url("${idToCropImageURI[props.deck.keycard]}")`;
+    url = `url("${idToCropImageURI[props.deck.keycard || '75b56b18-47a3-470b-911c-57da82c5ac03']}")`;
   }
 
   const fillParent: React.CSSProperties = {
@@ -60,8 +60,10 @@ export default function HeaderDeckPreview(props: { deck: Deck, loader: DataLoade
     left: '0',
   };
   const cardCount = props.deck.mainboard.length + props.deck.sideboard.length;
-  return <div onMouseUp={() => {
-    props.changeToDeck();
+  return <div onMouseUp={(e) => {
+    if (e.button === 0) {
+      props.changeToDeck();
+    }
   }} style={{
     position: 'relative',
     width: '220px',
