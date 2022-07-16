@@ -146,6 +146,55 @@ function indexPage(props) {
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
     var infoWindowRef = (0, react_1.useRef)(null);
     var swapPrintingsWindowRef = (0, react_1.useRef)(null);
+    var _d = (0, react_1.useState)(''), legacyPublicId = _d[0], setLegacyPublicId = _d[1];
+    var _e = (0, react_1.useState)(''), legacyBetaPublicId = _e[0], setLegacyBetaPublicId = _e[1];
+    function loadLegacyDecksForPublicId(legacyPublicId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var userData, cardback_1, newDecks, loadedDecks, i, _i, decks_2, existingDeck, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, fetch("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
+                    case 1: return [4 /*yield*/, (_a.sent()).json()];
+                    case 2:
+                        userData = _a.sent();
+                        console.log(userData);
+                        cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
+                        if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
+                            cardback_1 = userData.cardbackUrl;
+                        }
+                        newDecks = copyDecks(decks);
+                        loadedDecks = userData.decks.map(function (a) {
+                            // Ensure we don't let poorly formatted decks in.
+                            return {
+                                name: a.name,
+                                keycard: a.keycard || a.mainboard[0] || a.sideboard[0] || '4b81165e-f091-4211-8b47-5ea6868b0d4c',
+                                mainboard: a.mainboard,
+                                sideboard: a.sideboard,
+                                backgroundUrl: cardback_1,
+                            };
+                        });
+                        for (i = loadedDecks.length - 1; i >= 0; i--) {
+                            for (_i = 0, decks_2 = decks; _i < decks_2.length; _i++) {
+                                existingDeck = decks_2[_i];
+                                if (JSON.stringify(existingDeck) === JSON.stringify(loadedDecks[i])) {
+                                    loadedDecks.splice(i, 1);
+                                }
+                            }
+                        }
+                        newDecks.splice.apply(newDecks, __spreadArray([newDecks.length, 0], loadedDecks, false));
+                        setDecks(newDecks);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_1 = _a.sent();
+                        console.error('Unable to load decks from legacy account.');
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    }
     (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
@@ -186,52 +235,15 @@ function indexPage(props) {
             }
         });
         (function () { return __awaiter(_this, void 0, void 0, function () {
-            function loadLegacyDecksForPublicId(legacyPublicId) {
-                return __awaiter(this, void 0, void 0, function () {
-                    var userData, cardback_1, newDecks, e_1;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                _a.trys.push([0, 3, , 4]);
-                                return [4 /*yield*/, fetch("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
-                            case 1: return [4 /*yield*/, (_a.sent()).json()];
-                            case 2:
-                                userData = _a.sent();
-                                console.log(userData);
-                                cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
-                                if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
-                                    cardback_1 = userData.cardbackUrl;
-                                }
-                                newDecks = copyDecks(decks);
-                                newDecks.splice.apply(newDecks, __spreadArray([newDecks.length, 0], userData.decks.map(function (a) {
-                                    // Ensure we don't let poorly formatted decks in.
-                                    return {
-                                        name: a.name,
-                                        keycard: a.keycard || a.mainboard[0] || a.sideboard[0] || '4b81165e-f091-4211-8b47-5ea6868b0d4c',
-                                        mainboard: a.mainboard,
-                                        sideboard: a.sideboard,
-                                        backgroundUrl: cardback_1,
-                                    };
-                                }), false));
-                                setDecks(newDecks);
-                                return [3 /*break*/, 4];
-                            case 3:
-                                e_1 = _a.sent();
-                                console.error('Unable to load decks from legacy account.');
-                                return [3 /*break*/, 4];
-                            case 4: return [2 /*return*/];
-                        }
-                    });
-                });
-            }
-            var legacyBetaPublicId, legacyPublicId;
+            var legacyBetaPublicId, parsedId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         legacyBetaPublicId = ((window.location.search.split('?')[1] || '')
                             .split('&')
-                            .filter(function (v) { return v.indexOf('legacyBetaPublicId') === 0; })[0] || '').split('=')[1];
-                        if (!(legacyBetaPublicId && !localStorage.getItem('legacy_beta_public_id'))) return [3 /*break*/, 2];
+                            .filter(function (v) { return v.indexOf('legacyBetaPublicId') === 0; })[0] || '').split('=')[1] || localStorage.getItem('legacy_beta_public_id');
+                        setLegacyBetaPublicId(legacyBetaPublicId || '');
+                        if (!(legacyBetaPublicId && localStorage.getItem('legacy_beta_public_id') !== legacyBetaPublicId)) return [3 /*break*/, 2];
                         localStorage.setItem('legacy_beta_public_id', legacyBetaPublicId);
                         console.log('Loading legacy deck for beta public id ', legacyBetaPublicId);
                         return [4 /*yield*/, loadLegacyDecksForPublicId(legacyBetaPublicId)];
@@ -239,16 +251,18 @@ function indexPage(props) {
                         _a.sent();
                         _a.label = 2;
                     case 2:
-                        if (!(!localStorage.getItem('legacy_public_id') && document.cookie)) return [3 /*break*/, 4];
-                        legacyPublicId = document.cookie
+                        if (!document.cookie) return [3 /*break*/, 4];
+                        parsedId = document.cookie
                             .split(';')
                             .filter(function (a) { return !!a; })
                             .map(function (a) { return ({ key: a.split('=')[0].trim(), value: a.split('=')[1].trim() }); })
                             .filter(function (a) { return a.key === 'publicId'; })[0].value;
-                        localStorage.setItem('legacy_public_id', legacyPublicId);
-                        if (!(legacyPublicId && legacyPublicId !== localStorage.getItem('loaded_legacy_beta_decks'))) return [3 /*break*/, 4];
-                        console.log('Loading legacy deck for public id ', legacyPublicId);
-                        return [4 /*yield*/, loadLegacyDecksForPublicId(legacyPublicId)];
+                        setLegacyPublicId(parsedId || '');
+                        if (!(localStorage.getItem('legacy_public_id') !== parsedId)) return [3 /*break*/, 4];
+                        localStorage.setItem('legacy_public_id', parsedId);
+                        if (!(parsedId && parsedId !== localStorage.getItem('loaded_legacy_beta_decks'))) return [3 /*break*/, 4];
+                        console.log('Loading legacy deck for public id ', parsedId);
+                        return [4 /*yield*/, loadLegacyDecksForPublicId(parsedId)];
                     case 3:
                         _a.sent();
                         _a.label = 4;
@@ -356,7 +370,7 @@ function indexPage(props) {
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
-            }, newDeck: addDeck, onInfo: function () { return infoWindowRef.current.open(); } }),
+            }, newDeck: addDeck, onInfo: function () { return infoWindowRef.current.open(legacyPublicId, legacyBetaPublicId); } }),
         react_1.default.createElement(search_area_1.default, { loader: props.loader, urlLoader: props.urlLoader, addCard: function (cardId) {
                 addCard(cardId, false);
             }, imageLoadTracker: props.imageLoadTracker, width: searchWidth }),
@@ -405,7 +419,9 @@ function indexPage(props) {
         react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
         react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
         react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
-        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef }),
+        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef, onReexport: function (publicId) {
+                loadLegacyDecksForPublicId(publicId);
+            } }),
         react_1.default.createElement(secondary_load_window_1.default, { loader: props.loader }),
         react_1.default.createElement(swap_printings_window_1.default, { ref: swapPrintingsWindowRef, addCard: function (id) { return addCard(id, false); }, loader: props.loader, imageLoadTracker: props.imageLoadTracker, urlLoader: props.urlLoader, swapCard: swapCard }),
         react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {

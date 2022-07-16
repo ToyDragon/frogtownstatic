@@ -24,11 +24,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
-var InfoWindow = (0, react_1.forwardRef)(function InfoWindow(_props, ref) {
+var InfoWindow = (0, react_1.forwardRef)(function InfoWindow(props, ref) {
     var _a = (0, react_1.useState)(false), isOpen = _a[0], setIsOpen = _a[1];
+    var _b = (0, react_1.useState)(''), legacyPublicId = _b[0], setLegacyPublicId = _b[1];
+    var _c = (0, react_1.useState)(''), legacyBetaPublicId = _c[0], setLegacyBetaPublicId = _c[1];
     (0, react_1.useImperativeHandle)(ref, function () { return ({
-        open: function () {
+        open: function (legacyPublicId, legacyBetaPublicId) {
             setIsOpen(true);
+            console.log('Opening with ids ' + legacyPublicId, legacyBetaPublicId);
+            setLegacyPublicId(legacyPublicId);
+            setLegacyBetaPublicId(legacyBetaPublicId);
         },
     }); });
     if (!isOpen) {
@@ -72,8 +77,22 @@ var InfoWindow = (0, react_1.forwardRef)(function InfoWindow(_props, ref) {
             react_1.default.createElement("div", { style: { marginTop: '12px' } }),
             react_1.default.createElement("div", null, discordLogo),
             react_1.default.createElement("div", null, githubLogo),
-            react_1.default.createElement("div", { style: { marginTop: '140px' } }),
-            react_1.default.createElement("div", { style: { fontSize: '12px', color: '#555555' } }, "Portions of Frogtown are unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy. The literal and graphical information presented on this site about Magic: The Gathering, including card images, the mana symbols, and Oracle text, is copyright Wizards of the Coast, LLC, a subsidiary of Hasbro, Inc. Frogtown is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast."),
+            react_1.default.createElement("div", { style: { marginTop: '12px' } }),
+            react_1.default.createElement("div", null,
+                (legacyPublicId || legacyBetaPublicId) &&
+                    react_1.default.createElement("div", null, "If you're missing decks from the old version of frogtown, here you can attempt to import the decks again."),
+                react_1.default.createElement("div", null,
+                    !legacyPublicId ? null : react_1.default.createElement("button", { className: "btn btn-primary", onMouseUp: function (e) {
+                            if (e.button === 0) {
+                                props.onReexport(legacyPublicId);
+                            }
+                        } }, "Try Import WWW Decks"),
+                    !legacyBetaPublicId ? null : react_1.default.createElement("button", { className: "btn btn-primary", style: { marginLeft: '8px' }, onMouseUp: function (e) {
+                            if (e.button === 0) {
+                                props.onReexport(legacyBetaPublicId);
+                            }
+                        } }, "Try Import Beta Decks"))),
+            react_1.default.createElement("div", { style: { fontSize: '12px', color: '#555555', position: 'absolute', bottom: '37px', padding: '12px' } }, "Portions of Frogtown are unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy. The literal and graphical information presented on this site about Magic: The Gathering, including card images, the mana symbols, and Oracle text, is copyright Wizards of the Coast, LLC, a subsidiary of Hasbro, Inc. Frogtown is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast."),
             react_1.default.createElement("div", { style: { position: 'absolute', right: '12px', bottom: '12px' } },
                 react_1.default.createElement("button", { className: 'btn btn-secondary', onMouseUp: function (e) {
                         if (e.button === 0) {
