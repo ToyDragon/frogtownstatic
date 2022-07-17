@@ -68,23 +68,6 @@ export function rankStringMatch(potentialMatch: string, filterText: string): num
   return -1;
 }
 
-function stringFilterExact(
-    cardIds: string[],
-    map: Record<string, string | string[]> | null,
-    filterValue: string,
-): boolean {
-  if (!filterValue || !map) {
-    return false;
-  }
-
-  for (let i = cardIds.length - 1; i >= 0; i--) {
-    if (map[cardIds[i]] !== filterValue) {
-      cardIds.splice(i, 1);
-    }
-  }
-  return true;
-}
-
 function stringFilter(
     cardIds: string[],
     map: Record<string, string | string[]> | null,
@@ -121,14 +104,72 @@ function stringFilter(
 
 function exactStringFilter(
     cardIds: string[],
-    map: Record<string, string> | null,
+    map: Record<string, string> | Record<string, string[]> | null,
     filterValue: string,
 ): boolean {
   if (!map || !filterValue) {
     return false;
   }
+  filterValue = cleanName(filterValue);
   for (let i = cardIds.length - 1; i >= 0; i--) {
-    if (map[cardIds[i]] !== filterValue) {
+    let matchFound = false;
+    const cardVal = map[cardIds[i]];
+    if (typeof cardVal === 'string') {
+      matchFound = filterValue === cleanName(cardVal);
+    } else if (cardVal) {
+      for (const val of cardVal) {
+        if (filterValue === cleanName(val)) {
+          matchFound = true;
+          break;
+        }
+      }
+    }
+    if (!matchFound) {
+      cardIds.splice(i, 1);
+    }
+  }
+  return true;
+}
+
+function substringFilter(
+    cardIds: string[],
+    map: Record<string, string> | Record<string, string[]> | null,
+    filterValue: string,
+): boolean {
+  if (!map || !filterValue) {
+    return false;
+  }
+  const filterValueWords = filterValue.split(' ').map((val) => cleanName(val));
+  const idToMatches: Record<string, number> = {};
+  let highestMatchCount = 0;
+  for (let i = cardIds.length - 1; i >= 0; i--) {
+    let matches = 0;
+    let cardVal = map[cardIds[i]];
+    if (typeof cardVal === 'string') {
+      cardVal = [cardVal];
+    }
+    if (cardVal) {
+      for (const filterWord of filterValueWords) {
+        for (const val of cardVal) {
+          if (cleanName(val).indexOf(filterWord) >= 0) {
+            matches++;
+
+            // Only match on each filter word once. IE if the user enters 'war', don't
+            // double count it for a 'dWARf WARrior'
+            break;
+          }
+        }
+      }
+    }
+    idToMatches[cardIds[i]] = matches;
+    if (matches > highestMatchCount) {
+      highestMatchCount = matches;
+    }
+  }
+
+  cardIds.sort((a, b) => idToMatches[b] - idToMatches[a]);
+  for (let i = cardIds.length - 1; i >= 0; i--) {
+    if (idToMatches[cardIds[i]] < highestMatchCount) {
       cardIds.splice(i, 1);
     }
   }
@@ -211,7 +252,7 @@ export default async function executeFilter(
   if (!data.exact_name_match) {
     tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim()));
   } else {
-    tryApplyFilter(stringFilterExact(cardIds, idToName!, data.name.trim()));
+    tryApplyFilter(exactStringFilter(cardIds, idToName!, data.name.trim()));
   }
   tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
@@ -220,7 +261,7 @@ export default async function executeFilter(
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColorIdentity'), data.color_identity));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToType'), data.type));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
-  tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
+  tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
   tryApplyFilter(executeNumberRangeFilter(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
   tryApplyFilter(executeNumberRangeFilter(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));

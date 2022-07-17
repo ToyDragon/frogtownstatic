@@ -81,17 +81,6 @@ function rankStringMatch(potentialMatch, filterText) {
     return -1;
 }
 exports.rankStringMatch = rankStringMatch;
-function stringFilterExact(cardIds, map, filterValue) {
-    if (!filterValue || !map) {
-        return false;
-    }
-    for (var i = cardIds.length - 1; i >= 0; i--) {
-        if (map[cardIds[i]] !== filterValue) {
-            cardIds.splice(i, 1);
-        }
-    }
-    return true;
-}
 function stringFilter(cardIds, map, filterValue) {
     if (!filterValue || !map) {
         return false;
@@ -123,8 +112,63 @@ function exactStringFilter(cardIds, map, filterValue) {
     if (!map || !filterValue) {
         return false;
     }
+    filterValue = cleanName(filterValue);
     for (var i = cardIds.length - 1; i >= 0; i--) {
-        if (map[cardIds[i]] !== filterValue) {
+        var matchFound = false;
+        var cardVal = map[cardIds[i]];
+        if (typeof cardVal === 'string') {
+            matchFound = filterValue === cleanName(cardVal);
+        }
+        else if (cardVal) {
+            for (var _i = 0, cardVal_1 = cardVal; _i < cardVal_1.length; _i++) {
+                var val = cardVal_1[_i];
+                if (filterValue === cleanName(val)) {
+                    matchFound = true;
+                    break;
+                }
+            }
+        }
+        if (!matchFound) {
+            cardIds.splice(i, 1);
+        }
+    }
+    return true;
+}
+function substringFilter(cardIds, map, filterValue) {
+    if (!map || !filterValue) {
+        return false;
+    }
+    var filterValueWords = filterValue.split(' ').map(function (val) { return cleanName(val); });
+    var idToMatches = {};
+    var highestMatchCount = 0;
+    for (var i = cardIds.length - 1; i >= 0; i--) {
+        var matches = 0;
+        var cardVal = map[cardIds[i]];
+        if (typeof cardVal === 'string') {
+            cardVal = [cardVal];
+        }
+        if (cardVal) {
+            for (var _i = 0, filterValueWords_1 = filterValueWords; _i < filterValueWords_1.length; _i++) {
+                var filterWord = filterValueWords_1[_i];
+                for (var _a = 0, cardVal_2 = cardVal; _a < cardVal_2.length; _a++) {
+                    var val = cardVal_2[_a];
+                    if (cleanName(val).indexOf(filterWord) >= 0) {
+                        matches++;
+                        // Only match on each filter word once. IE if the user enters 'war', don't
+                        // double count it for a 'dWARf WARrior'
+                        break;
+                    }
+                }
+            }
+        }
+        idToMatches[cardIds[i]] = matches;
+        if (matches > highestMatchCount) {
+            highestMatchCount = matches;
+        }
+    }
+    cardIds.sort(function (a, b) { return idToMatches[b] - idToMatches[a]; });
+    for (var i = cardIds.length - 1; i >= 0; i--) {
+        if (idToMatches[cardIds[i]] < highestMatchCount) {
             cardIds.splice(i, 1);
         }
     }
@@ -199,7 +243,7 @@ function executeFilter(data, loader) {
                         tryApplyFilter(stringFilter(cardIds, idToName, data.name.trim()));
                     }
                     else {
-                        tryApplyFilter(stringFilterExact(cardIds, idToName, data.name.trim()));
+                        tryApplyFilter(exactStringFilter(cardIds, idToName, data.name.trim()));
                     }
                     tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
@@ -208,7 +252,7 @@ function executeFilter(data, loader) {
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColorIdentity'), data.color_identity));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToType'), data.type));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
-                    tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
+                    tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
                     tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
                     tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
