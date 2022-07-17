@@ -81,6 +81,25 @@ export default function indexPage(props: {
   const [legacyBetaPublicId, setLegacyBetaPublicId] = useState('');
 
   useEffect(() => {
+    // Had a bug that overwrote all sideboards to be identical to mainboards. Unfortunately we can't restore the
+    // sideboard, so we just delete sideboards that are identical to mainboards.
+    if (!localStorage.getItem('fix_71722_mainboardsideboard')) {
+      localStorage.setItem('fix_71722_mainboardsideboard', Date.now().toString());
+      const newDecks = copyDecks(decks);
+      let changeMade = false;
+      for (const deck of newDecks) {
+        if (deck.mainboard.length > 0 && deck.mainboard.sort().join(',') === deck.sideboard.sort().join(',')) {
+          deck.sideboard = [];
+          changeMade = true;
+        }
+      }
+      if (changeMade) {
+        setDecks(newDecks);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     for (let i = 0; i < decks.length; i++) {
       localStorage.setItem(`deck_${i}`, JSON.stringify(decks[i]));
     }

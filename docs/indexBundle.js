@@ -5542,6 +5542,25 @@ function indexPage(props) {
     var _d = (0, react_1.useState)(''), legacyPublicId = _d[0], setLegacyPublicId = _d[1];
     var _e = (0, react_1.useState)(''), legacyBetaPublicId = _e[0], setLegacyBetaPublicId = _e[1];
     (0, react_1.useEffect)(function () {
+        // Had a bug that overwrote all sideboards to be identical to mainboards. Unfortunately we can't restore the
+        // sideboard, so we just delete sideboards that are identical to mainboards.
+        if (!localStorage.getItem('fix_71722_mainboardsideboard')) {
+            localStorage.setItem('fix_71722_mainboardsideboard', Date.now().toString());
+            var newDecks = copyDecks(decks);
+            var changeMade = false;
+            for (var _i = 0, newDecks_1 = newDecks; _i < newDecks_1.length; _i++) {
+                var deck_2 = newDecks_1[_i];
+                if (deck_2.mainboard.length > 0 && deck_2.mainboard.sort().join(',') === deck_2.sideboard.sort().join(',')) {
+                    deck_2.sideboard = [];
+                    changeMade = true;
+                }
+            }
+            if (changeMade) {
+                setDecks(newDecks);
+            }
+        }
+    }, []);
+    (0, react_1.useEffect)(function () {
         for (var i = 0; i < decks.length; i++) {
             localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
         }
