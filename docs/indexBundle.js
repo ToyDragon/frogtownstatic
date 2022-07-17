@@ -80,7 +80,7 @@ exports["default"] = Debouncer;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createNewDeck = void 0;
+exports.ensureValidDeck = exports.createNewDeck = void 0;
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -91,6 +91,16 @@ function createNewDeck(num) {
     };
 }
 exports.createNewDeck = createNewDeck;
+function ensureValidDeck(deck) {
+    return {
+        name: (typeof deck.name === 'string' && deck.name) || 'Deck Name',
+        keycard: (typeof deck.keycard === 'string' && deck.keycard) || '',
+        backgroundUrl: (typeof deck.backgroundUrl === 'string' && deck.backgroundUrl) || '',
+        mainboard: (Array.isArray(deck.mainboard) && deck.mainboard.filter(function (id) { return typeof id === 'string'; })) || [],
+        sideboard: (Array.isArray(deck.mainboard) && deck.mainboard.filter(function (id) { return typeof id === 'string'; })) || [],
+    };
+}
+exports.ensureValidDeck = ensureValidDeck;
 //# sourceMappingURL=deck.js.map
 
 /***/ }),
@@ -5442,7 +5452,7 @@ function indexPage(props) {
         if (!deck) {
             deck = (0, deck_1.createNewDeck)(i + 1);
         }
-        return deck;
+        return (0, deck_1.ensureValidDeck)(deck);
     })), decks = _b[0], setDecks = _b[1];
     var _c = (0, react_1.useState)(550), searchWidth = _c[0], setSearchWidth = _c[1];
     var editNameWindowRef = (0, react_1.useRef)(null);

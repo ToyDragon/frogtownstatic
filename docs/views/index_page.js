@@ -121,7 +121,7 @@ function indexPage(props) {
         if (!deck) {
             deck = (0, deck_1.createNewDeck)(i + 1);
         }
-        return deck;
+        return (0, deck_1.ensureValidDeck)(deck);
     })), decks = _b[0], setDecks = _b[1];
     var _c = (0, react_1.useState)(550), searchWidth = _c[0], setSearchWidth = _c[1];
     var editNameWindowRef = (0, react_1.useRef)(null);

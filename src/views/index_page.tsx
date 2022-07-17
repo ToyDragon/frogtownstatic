@@ -1,6 +1,6 @@
 import HeaderBar from './components/header_bar';
 import React, {useEffect, useRef, useState} from 'react';
-import {createNewDeck, Deck} from '../data/deck';
+import {createNewDeck, Deck, ensureValidDeck} from '../data/deck';
 import SearchArea, {SearchAreaHandle} from './components/search_area';
 import DeckArea from './components/deck_area';
 import ImageLoadTracker from './components/image_load_tracker';
@@ -65,7 +65,7 @@ export default function indexPage(props: {
             if (!deck) {
               deck = createNewDeck(i+1);
             }
-            return deck;
+            return ensureValidDeck(deck);
           }),
   );
 
