@@ -134,7 +134,6 @@ export default function CardGroup(props: {
       height: `${(countedCards.length + 1) * 26}px`,
     }} value={
       countedCards.map((idAndCount) => {
-        console.log(idAndCount);
         return `${idAndCount.count} ${idToNameMap[idAndCount.id]} <${idToSetCode[idAndCount.id]}>\n`;
       }).join('')
     }></textarea>;
@@ -147,7 +146,6 @@ export default function CardGroup(props: {
       height: `${(countedCards.length + 1) * 26}px`,
     }} value={
       countedCards.map((idAndCount) => {
-        console.log(idAndCount);
         return `${idAndCount.count} ${idAndCount.id} // ${idToNameMap[idAndCount.id]}` +
           ` <${idToSetCode[idAndCount.id]}>\n`;
       }).join('')

@@ -1323,6 +1323,12 @@ function CardArea(props) {
         else if (props.displayMode === display_dropdown_1.DisplayMode.CompactGrid) {
             group.stacks = groupModeCompactGrid(group.allCardIds, getName);
         }
+        else if (props.displayMode !== display_dropdown_1.DisplayMode.SmallDetails && props.displayMode !== display_dropdown_1.DisplayMode.SmallList) {
+            // Don't sort by name in the search pane modes. Those are ordered by the filters in a meaningful way.
+            group.stacks.push(group.allCardIds.slice().sort(function (a, b) {
+                return getName(a).localeCompare(getName(b));
+            }));
+        }
         else {
             group.stacks.push(group.allCardIds.slice());
         }
@@ -1481,7 +1487,6 @@ function CardGroup(props) {
                 width: '600px',
                 height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
-                console.log(idAndCount);
                 return "".concat(idAndCount.count, " ").concat(idToNameMap_1[idAndCount.id], " <").concat(idToSetCode_1[idAndCount.id], ">\n");
             }).join('') });
     }
@@ -1492,7 +1497,6 @@ function CardGroup(props) {
                 width: '800px',
                 height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
-                console.log(idAndCount);
                 return "".concat(idAndCount.count, " ").concat(idAndCount.id, " // ").concat(idToNameMap_2[idAndCount.id]) +
                     " <".concat(idToSetCode_2[idAndCount.id], ">\n");
             }).join('') });

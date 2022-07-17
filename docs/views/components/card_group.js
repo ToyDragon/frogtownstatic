@@ -109,7 +109,6 @@ function CardGroup(props) {
                 width: '600px',
                 height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
-                console.log(idAndCount);
                 return "".concat(idAndCount.count, " ").concat(idToNameMap_1[idAndCount.id], " <").concat(idToSetCode_1[idAndCount.id], ">\n");
             }).join('') });
     }
@@ -120,7 +119,6 @@ function CardGroup(props) {
                 width: '800px',
                 height: "".concat((countedCards.length + 1) * 26, "px"),
             }, value: countedCards.map(function (idAndCount) {
-                console.log(idAndCount);
                 return "".concat(idAndCount.count, " ").concat(idAndCount.id, " // ").concat(idToNameMap_2[idAndCount.id]) +
                     " <".concat(idToSetCode_2[idAndCount.id], ">\n");
             }).join('') });

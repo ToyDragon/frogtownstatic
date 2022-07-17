@@ -160,6 +160,11 @@ export default function CardArea(props: {
       group.stacks = groupModeGrid(group.allCardIds, getName);
     } else if (props.displayMode === DisplayMode.CompactGrid) {
       group.stacks = groupModeCompactGrid(group.allCardIds, getName);
+    } else if (props.displayMode !== DisplayMode.SmallDetails && props.displayMode !== DisplayMode.SmallList) {
+      // Don't sort by name in the search pane modes. Those are ordered by the filters in a meaningful way.
+      group.stacks.push(group.allCardIds.slice().sort((a, b) => {
+        return getName(a).localeCompare(getName(b));
+      }));
     } else {
       group.stacks.push(group.allCardIds.slice());
     }

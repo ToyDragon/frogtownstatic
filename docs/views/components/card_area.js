@@ -172,6 +172,12 @@ function CardArea(props) {
         else if (props.displayMode === display_dropdown_1.DisplayMode.CompactGrid) {
             group.stacks = groupModeCompactGrid(group.allCardIds, getName);
         }
+        else if (props.displayMode !== display_dropdown_1.DisplayMode.SmallDetails && props.displayMode !== display_dropdown_1.DisplayMode.SmallList) {
+            // Don't sort by name in the search pane modes. Those are ordered by the filters in a meaningful way.
+            group.stacks.push(group.allCardIds.slice().sort(function (a, b) {
+                return getName(a).localeCompare(getName(b));
+            }));
+        }
         else {
             group.stacks.push(group.allCardIds.slice());
         }
