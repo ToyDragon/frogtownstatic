@@ -97,7 +97,7 @@ function ensureValidDeck(deck) {
         keycard: (typeof deck.keycard === 'string' && deck.keycard) || '',
         backgroundUrl: (typeof deck.backgroundUrl === 'string' && deck.backgroundUrl) || '',
         mainboard: (Array.isArray(deck.mainboard) && deck.mainboard.filter(function (id) { return typeof id === 'string'; })) || [],
-        sideboard: (Array.isArray(deck.mainboard) && deck.mainboard.filter(function (id) { return typeof id === 'string'; })) || [],
+        sideboard: (Array.isArray(deck.sideboard) && deck.sideboard.filter(function (id) { return typeof id === 'string'; })) || [],
     };
 }
 exports.ensureValidDeck = ensureValidDeck;

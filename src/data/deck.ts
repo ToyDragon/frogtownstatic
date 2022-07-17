@@ -23,6 +23,6 @@ export function ensureValidDeck(deck: Deck): Deck {
     keycard: (typeof deck.keycard === 'string' && deck.keycard) || '',
     backgroundUrl: (typeof deck.backgroundUrl === 'string' && deck.backgroundUrl) || '',
     mainboard: (Array.isArray(deck.mainboard) && deck.mainboard.filter((id) => typeof id === 'string')) || [],
-    sideboard: (Array.isArray(deck.mainboard) && deck.mainboard.filter((id) => typeof id === 'string')) || [],
+    sideboard: (Array.isArray(deck.sideboard) && deck.sideboard.filter((id) => typeof id === 'string')) || [],
   };
 }
