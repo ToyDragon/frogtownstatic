@@ -72,10 +72,9 @@ function stringFilter(
     cardIds: string[],
     map: Record<string, string | string[]> | null,
     filterValue: string,
-    skipSort: boolean,
-): boolean {
+): Record<string, number> | null {
   if (!filterValue || !map) {
-    return false;
+    return null;
   }
 
   const idToRank: Record<string, number> = {};
@@ -93,26 +92,18 @@ function stringFilter(
     }
   }
 
-  for (let i = cardIds.length - 1; i >= 0; i--) {
-    if (!idToRank[cardIds[i]]) {
-      cardIds.splice(i, 1);
-    }
-  }
-
-  if (!skipSort) {
-    cardIds.sort((a, b) => idToRank[a] - idToRank[b]);
-  }
-  return true;
+  return idToRank;
 }
 
 function exactStringFilter(
     cardIds: string[],
     map: Record<string, string> | Record<string, string[]> | null,
     filterValue: string,
-): boolean {
+): Record<string, number> | null {
   if (!map || !filterValue) {
-    return false;
+    return null;
   }
+  const ranking: Record<string, number> = {};
   filterValue = cleanName(filterValue);
   for (let i = cardIds.length - 1; i >= 0; i--) {
     let matchFound = false;
@@ -127,27 +118,24 @@ function exactStringFilter(
         }
       }
     }
-    if (!matchFound) {
-      cardIds.splice(i, 1);
-    }
+    ranking[cardIds[i]] = matchFound ? 1 : -1;
   }
-  return true;
+  return ranking;
 }
 
 function substringFilter(
     cardIds: string[],
     map: Record<string, string> | Record<string, string[]> | null,
     filterValue: string,
-    skipSort: boolean,
-): boolean {
+): Record<string, number> | null {
   if (!map || !filterValue) {
-    return false;
+    return null;
   }
   const filterValueWords = filterValue.split(' ').map((val) => cleanName(val));
-  const idToMatches: Record<string, number> = {};
-  let highestMatchCount = 0;
+  const idToScore: Record<string, number> = {};
+  let highestScore = 0;
   for (let i = cardIds.length - 1; i >= 0; i--) {
-    let matches = 0;
+    let score = 0;
     let cardVal = map[cardIds[i]];
     if (typeof cardVal === 'string') {
       cardVal = [cardVal];
@@ -155,40 +143,43 @@ function substringFilter(
     if (cardVal) {
       for (const filterWord of filterValueWords) {
         for (const val of cardVal) {
-          if (cleanName(val).indexOf(filterWord) >= 0) {
-            matches++;
+          const cleanVal = cleanName(val);
 
-            // Only match on each filter word once. IE if the user enters 'war', don't
-            // double count it for a 'dWARf WARrior'
+          // Only match on each filter word once. IE if the user enters 'war', don't
+          // double count it for a 'dWARf WARrior'
+          if (cleanVal.split(' ').indexOf(filterWord)) {
+            score += 10;
+            break;
+          }
+          if (cleanVal.indexOf(filterWord) >= 0) {
+            score++;
             break;
           }
         }
       }
     }
-    idToMatches[cardIds[i]] = matches;
-    if (matches > highestMatchCount) {
-      highestMatchCount = matches;
+    if (score) {
+      idToScore[cardIds[i]] = score;
+      if (score > highestScore) {
+        highestScore = score;
+      }
     }
   }
 
-  if (!skipSort) {
-    cardIds.sort((a, b) => idToMatches[b] - idToMatches[a]);
+  const rank: Record<string, number> = {};
+  for (const id in idToScore) {
+    rank[id] = 1 + highestScore - idToScore[id];
   }
-  for (let i = cardIds.length - 1; i >= 0; i--) {
-    if (idToMatches[cardIds[i]] < highestMatchCount) {
-      cardIds.splice(i, 1);
-    }
-  }
-  return true;
+  return rank;
 }
 
 function categoryFilter(
     cardIds: string[],
     map: Record<string, string[] | string> | null,
     filterValue: MultiValue,
-): boolean {
+): Record<string, number> | null {
   if (!map) {
-    return false;
+    return null;
   }
 
   let allowedCount = 0;
@@ -200,12 +191,13 @@ function categoryFilter(
     }
   }
   if (allowedCount === 0) {
-    return false;
+    return null;
   }
 
+  const ranking: Record<string, number> = {};
   for (let i = cardIds.length - 1; i >= 0; --i) {
-    if (!map[cardIds[i]]) {
-      cardIds.splice(i, 1);
+    const id = cardIds[i];
+    if (!map[id]) {
       continue;
     }
     let values = map[cardIds[i]];
@@ -223,14 +215,15 @@ function categoryFilter(
       }
     }
 
-    if ((filterValue.mode === 'all' && matchesFound < allowedCount) ||
-      (filterValue.mode === 'any' && matchesFound === 0) ||
-      (filterValue.no_others && mismatchesFound > 0)) {
-      cardIds.splice(i, 1);
+    if (!filterValue.no_others || mismatchesFound === 0) {
+      if ((filterValue.mode === 'all' && matchesFound >= allowedCount) ||
+          (filterValue.mode === 'any' && matchesFound > 0)) {
+        ranking[id] = 1;
+      }
     }
   }
 
-  return true;
+  return ranking;
 }
 
 export default async function executeFilter(
@@ -249,27 +242,77 @@ export default async function executeFilter(
   }
 
   let anyFilterApplied = false;
+  let anySortApplied = false;
+  const cumulativeScores: Record<string, number> = {};
+  const tryApplyFilter = (ranking: Record<string, number> | null) => {
+    if (!ranking) {
+      return;
+    }
 
-  const tryApplyFilter = (result: boolean) => {
-    anyFilterApplied = anyFilterApplied || result;
-    return result;
+    anyFilterApplied = true;
+    for (let i = cardIds.length - 1; i >= 0; i--) {
+      if (!ranking[cardIds[i]] || ranking[cardIds[i]] <= 0) {
+        cardIds.splice(i, 1);
+      }
+    }
+
+    const sortedIds = cardIds.slice(0, cardIds.length)
+        .filter((a) => ranking[a] > 0)
+        .sort((a, b) => ranking[a] - ranking[b]);
+
+    // Meta Ranking prevents low cardinality results from bopping unlucky cards. For example,
+    // if 10000 cards match a filter for "type is creature", don't penalize the unlucky 9900 of them
+    // that weren't in the first 100 cards.
+    const rankToMetaRanking: Record<number, number> = {};
+    const metaRankCount: Record<number, number> = {};
+    let currentMetaRank = 0;
+    for (let i = 0; i < sortedIds.length; i++) {
+      if (!rankToMetaRanking[ranking[sortedIds[i]]]) {
+        rankToMetaRanking[ranking[sortedIds[i]]] = ++currentMetaRank;
+        metaRankCount[currentMetaRank] = 1;
+      } else {
+        metaRankCount[currentMetaRank]++;
+      }
+    }
+
+    // Find the first metarank not overlapping with the 100 best fit cards.
+    let maxIncludedMetaRank = currentMetaRank + 1;
+    let runningTotal = 0;
+    for (let i = 1; i <= currentMetaRank; i++) {
+      if (runningTotal >= 100) {
+        maxIncludedMetaRank = i;
+        break;
+      }
+      runningTotal += metaRankCount[i];
+    }
+
+    // Binary filters don't give meaningful sorting, so they need secondary sorting later.
+    if (currentMetaRank > 2) {
+      anySortApplied = true;
+    }
+
+    for (let i = 0; i < sortedIds.length; i++) {
+      const metaRank = rankToMetaRanking[ranking[sortedIds[i]]];
+      // Score is a number from 0 to 100. 0 for the lowest meta rank, 100 for the highest included metarank.
+      const score = 1 + 99 * Math.min(metaRank - 1, maxIncludedMetaRank - 1) / Math.max(maxIncludedMetaRank - 1, 1);
+      cumulativeScores[sortedIds[i]] = (cumulativeScores[sortedIds[i]] || 1) * score;
+    }
   };
 
-  let anySortableExecuted = false;
   /* eslint-disable max-len */
   if (!data.exact_name_match) {
-    anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim(), anySortableExecuted));
+    tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim()));
   } else {
-    anySortableExecuted = anySortableExecuted || tryApplyFilter(exactStringFilter(cardIds, idToName!, data.name.trim()));
+    tryApplyFilter(exactStringFilter(cardIds, idToName!, data.name.trim()));
   }
-  anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim(), anySortableExecuted));
+  tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
-  anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim(), anySortableExecuted));
+  tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColor'), data.color));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColorIdentity'), data.color_identity));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToType'), data.type));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
-  anySortableExecuted = anySortableExecuted || tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim(), anySortableExecuted));
+  tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
   tryApplyFilter(executeNumberRangeFilter(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
   tryApplyFilter(executeNumberRangeFilter(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
@@ -281,7 +324,9 @@ export default async function executeFilter(
     return [];
   }
 
-  if (!anySortableExecuted) {
+  if (anySortApplied) {
+    cardIds.sort((a, b) => cumulativeScores[a] - cumulativeScores[b]);
+  } else {
     if (data.sort_by_release) {
       const idToSetCode = loader.getMapDataSync('IDToSetCode');
       const setCodeToRelease = loader.getMapDataSync('SetCodeToRelease');
@@ -294,7 +339,9 @@ export default async function executeFilter(
       }
     } else {
       cardIds.sort((a, b) => {
-        return idToName[a].localeCompare(idToName[b]);
+        const aNoArenaPrefix = idToName[a].replace(/^A-/, '');
+        const bNoArenaPrefix = idToName[b].replace(/^A-/, '');
+        return aNoArenaPrefix.localeCompare(bNoArenaPrefix);
       });
     }
   }

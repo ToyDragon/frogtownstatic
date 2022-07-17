@@ -194,9 +194,9 @@ function rankStringMatch(potentialMatch, filterText) {
     return -1;
 }
 exports.rankStringMatch = rankStringMatch;
-function stringFilter(cardIds, map, filterValue, skipSort) {
+function stringFilter(cardIds, map, filterValue) {
     if (!filterValue || !map) {
-        return false;
+        return null;
     }
     var idToRank = {};
     for (var _i = 0, cardIds_1 = cardIds; _i < cardIds_1.length; _i++) {
@@ -213,20 +213,13 @@ function stringFilter(cardIds, map, filterValue, skipSort) {
             idToRank[id] = rank;
         }
     }
-    for (var i = cardIds.length - 1; i >= 0; i--) {
-        if (!idToRank[cardIds[i]]) {
-            cardIds.splice(i, 1);
-        }
-    }
-    if (!skipSort) {
-        cardIds.sort(function (a, b) { return idToRank[a] - idToRank[b]; });
-    }
-    return true;
+    return idToRank;
 }
 function exactStringFilter(cardIds, map, filterValue) {
     if (!map || !filterValue) {
-        return false;
+        return null;
     }
+    var ranking = {};
     filterValue = cleanName(filterValue);
     for (var i = cardIds.length - 1; i >= 0; i--) {
         var matchFound = false;
@@ -243,21 +236,19 @@ function exactStringFilter(cardIds, map, filterValue) {
                 }
             }
         }
-        if (!matchFound) {
-            cardIds.splice(i, 1);
-        }
+        ranking[cardIds[i]] = matchFound ? 1 : -1;
     }
-    return true;
+    return ranking;
 }
-function substringFilter(cardIds, map, filterValue, skipSort) {
+function substringFilter(cardIds, map, filterValue) {
     if (!map || !filterValue) {
-        return false;
+        return null;
     }
     var filterValueWords = filterValue.split(' ').map(function (val) { return cleanName(val); });
-    var idToMatches = {};
-    var highestMatchCount = 0;
+    var idToScore = {};
+    var highestScore = 0;
     for (var i = cardIds.length - 1; i >= 0; i--) {
-        var matches = 0;
+        var score = 0;
         var cardVal = map[cardIds[i]];
         if (typeof cardVal === 'string') {
             cardVal = [cardVal];
@@ -267,33 +258,36 @@ function substringFilter(cardIds, map, filterValue, skipSort) {
                 var filterWord = filterValueWords_1[_i];
                 for (var _a = 0, cardVal_2 = cardVal; _a < cardVal_2.length; _a++) {
                     var val = cardVal_2[_a];
-                    if (cleanName(val).indexOf(filterWord) >= 0) {
-                        matches++;
-                        // Only match on each filter word once. IE if the user enters 'war', don't
-                        // double count it for a 'dWARf WARrior'
+                    var cleanVal = cleanName(val);
+                    // Only match on each filter word once. IE if the user enters 'war', don't
+                    // double count it for a 'dWARf WARrior'
+                    if (cleanVal.split(' ').indexOf(filterWord)) {
+                        score += 10;
+                        break;
+                    }
+                    if (cleanVal.indexOf(filterWord) >= 0) {
+                        score++;
                         break;
                     }
                 }
             }
         }
-        idToMatches[cardIds[i]] = matches;
-        if (matches > highestMatchCount) {
-            highestMatchCount = matches;
+        if (score) {
+            idToScore[cardIds[i]] = score;
+            if (score > highestScore) {
+                highestScore = score;
+            }
         }
     }
-    if (!skipSort) {
-        cardIds.sort(function (a, b) { return idToMatches[b] - idToMatches[a]; });
+    var rank = {};
+    for (var id in idToScore) {
+        rank[id] = 1 + highestScore - idToScore[id];
     }
-    for (var i = cardIds.length - 1; i >= 0; i--) {
-        if (idToMatches[cardIds[i]] < highestMatchCount) {
-            cardIds.splice(i, 1);
-        }
-    }
-    return true;
+    return rank;
 }
 function categoryFilter(cardIds, map, filterValue) {
     if (!map) {
-        return false;
+        return null;
     }
     var allowedCount = 0;
     var allowedValues = {};
@@ -304,11 +298,12 @@ function categoryFilter(cardIds, map, filterValue) {
         }
     }
     if (allowedCount === 0) {
-        return false;
+        return null;
     }
+    var ranking = {};
     for (var i = cardIds.length - 1; i >= 0; --i) {
-        if (!map[cardIds[i]]) {
-            cardIds.splice(i, 1);
+        var id = cardIds[i];
+        if (!map[id]) {
             continue;
         }
         var values = map[cardIds[i]];
@@ -326,17 +321,18 @@ function categoryFilter(cardIds, map, filterValue) {
                 mismatchesFound++;
             }
         }
-        if ((filterValue.mode === 'all' && matchesFound < allowedCount) ||
-            (filterValue.mode === 'any' && matchesFound === 0) ||
-            (filterValue.no_others && mismatchesFound > 0)) {
-            cardIds.splice(i, 1);
+        if (!filterValue.no_others || mismatchesFound === 0) {
+            if ((filterValue.mode === 'all' && matchesFound >= allowedCount) ||
+                (filterValue.mode === 'any' && matchesFound > 0)) {
+                ranking[id] = 1;
+            }
         }
     }
-    return true;
+    return ranking;
 }
 function executeFilter(data, loader) {
     return __awaiter(this, void 0, void 0, function () {
-        var idToName, seenName, cardIds, id, anyFilterApplied, tryApplyFilter, anySortableExecuted, idToSetCode_1, setCodeToRelease_1;
+        var idToName, seenName, cardIds, id, anyFilterApplied, anySortApplied, cumulativeScores, tryApplyFilter, idToSetCode_1, setCodeToRelease_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, loader.getMapData('IDToName')];
@@ -352,26 +348,72 @@ function executeFilter(data, loader) {
                         cardIds.push(id);
                     }
                     anyFilterApplied = false;
-                    tryApplyFilter = function (result) {
-                        anyFilterApplied = anyFilterApplied || result;
-                        return result;
+                    anySortApplied = false;
+                    cumulativeScores = {};
+                    tryApplyFilter = function (ranking) {
+                        if (!ranking) {
+                            return;
+                        }
+                        anyFilterApplied = true;
+                        for (var i = cardIds.length - 1; i >= 0; i--) {
+                            if (!ranking[cardIds[i]] || ranking[cardIds[i]] <= 0) {
+                                cardIds.splice(i, 1);
+                            }
+                        }
+                        var sortedIds = cardIds.slice(0, cardIds.length)
+                            .filter(function (a) { return ranking[a] > 0; })
+                            .sort(function (a, b) { return ranking[a] - ranking[b]; });
+                        // Meta Ranking prevents low cardinality results from bopping unlucky cards. For example,
+                        // if 10000 cards match a filter for "type is creature", don't penalize the unlucky 9900 of them
+                        // that weren't in the first 100 cards.
+                        var rankToMetaRanking = {};
+                        var metaRankCount = {};
+                        var currentMetaRank = 0;
+                        for (var i = 0; i < sortedIds.length; i++) {
+                            if (!rankToMetaRanking[ranking[sortedIds[i]]]) {
+                                rankToMetaRanking[ranking[sortedIds[i]]] = ++currentMetaRank;
+                                metaRankCount[currentMetaRank] = 1;
+                            }
+                            else {
+                                metaRankCount[currentMetaRank]++;
+                            }
+                        }
+                        // Find the first metarank not overlapping with the 100 best fit cards.
+                        var maxIncludedMetaRank = currentMetaRank + 1;
+                        var runningTotal = 0;
+                        for (var i = 1; i <= currentMetaRank; i++) {
+                            if (runningTotal >= 100) {
+                                maxIncludedMetaRank = i;
+                                break;
+                            }
+                            runningTotal += metaRankCount[i];
+                        }
+                        // Binary filters don't give meaningful sorting, so they need secondary sorting later.
+                        if (currentMetaRank > 2) {
+                            anySortApplied = true;
+                        }
+                        for (var i = 0; i < sortedIds.length; i++) {
+                            var metaRank = rankToMetaRanking[ranking[sortedIds[i]]];
+                            // Score is a number from 0 to 100. 0 for the lowest meta rank, 100 for the highest included metarank.
+                            var score = 1 + 99 * Math.min(metaRank - 1, maxIncludedMetaRank - 1) / Math.max(maxIncludedMetaRank - 1, 1);
+                            cumulativeScores[sortedIds[i]] = (cumulativeScores[sortedIds[i]] || 1) * score;
+                        }
                     };
-                    anySortableExecuted = false;
                     /* eslint-disable max-len */
                     if (!data.exact_name_match) {
-                        anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, idToName, data.name.trim(), anySortableExecuted));
+                        tryApplyFilter(stringFilter(cardIds, idToName, data.name.trim()));
                     }
                     else {
-                        anySortableExecuted = anySortableExecuted || tryApplyFilter(exactStringFilter(cardIds, idToName, data.name.trim()));
+                        tryApplyFilter(exactStringFilter(cardIds, idToName, data.name.trim()));
                     }
-                    anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim(), anySortableExecuted));
+                    tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
-                    anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim(), anySortableExecuted));
+                    tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColor'), data.color));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColorIdentity'), data.color_identity));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToType'), data.type));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
-                    anySortableExecuted = anySortableExecuted || tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim(), anySortableExecuted));
+                    tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
                     tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
                     tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
@@ -381,7 +423,10 @@ function executeFilter(data, loader) {
                     if (!anyFilterApplied) {
                         return [2 /*return*/, []];
                     }
-                    if (!anySortableExecuted) {
+                    if (anySortApplied) {
+                        cardIds.sort(function (a, b) { return cumulativeScores[a] - cumulativeScores[b]; });
+                    }
+                    else {
                         if (data.sort_by_release) {
                             idToSetCode_1 = loader.getMapDataSync('IDToSetCode');
                             setCodeToRelease_1 = loader.getMapDataSync('SetCodeToRelease');
@@ -395,7 +440,9 @@ function executeFilter(data, loader) {
                         }
                         else {
                             cardIds.sort(function (a, b) {
-                                return idToName[a].localeCompare(idToName[b]);
+                                var aNoArenaPrefix = idToName[a].replace(/^A-/, '');
+                                var bNoArenaPrefix = idToName[b].replace(/^A-/, '');
+                                return aNoArenaPrefix.localeCompare(bNoArenaPrefix);
                             });
                         }
                     }
@@ -429,16 +476,16 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  */
 function executeNumberRangeFilter(cardIds, map, filterValue) {
     if (!filterValue || !map) {
-        return false;
+        return null;
     }
     var result = /^([0-9]*)(-)?([0-9]*)?$/.exec(filterValue);
     if (!result) {
-        return false;
+        return null;
     }
     var min = result[1];
     var max = result[3];
     if (typeof min === 'undefined' && typeof max === 'undefined') {
-        return false;
+        return null;
     }
     if (typeof result[2] === 'undefined') {
         max = min;
@@ -450,17 +497,18 @@ function executeNumberRangeFilter(cardIds, map, filterValue) {
         max = Number(max);
     }
     if (typeof min !== 'undefined' && typeof max !== 'undefined' && min > max) {
-        return false;
+        return null;
     }
+    var ranking = {};
     for (var i = cardIds.length - 1; i >= 0; i--) {
         var cardValue = Number(map[cardIds[i]]);
-        if (Number.isNaN(cardValue) ||
-            (typeof min !== 'undefined' && cardValue < min) ||
-            (typeof max !== 'undefined' && cardValue > max)) {
-            cardIds.splice(i, 1);
+        if (!Number.isNaN(cardValue) &&
+            (typeof min === 'undefined' || cardValue >= min) &&
+            (typeof max === 'undefined' || cardValue <= max)) {
+            ranking[cardIds[i]] = 1;
         }
     }
-    return true;
+    return ranking;
 }
 exports["default"] = executeNumberRangeFilter;
 //# sourceMappingURL=execute_number_range_filter.js.map
