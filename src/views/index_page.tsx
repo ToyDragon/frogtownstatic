@@ -234,6 +234,19 @@ export default function indexPage(props: {
   };
 
   const deck = decks[deckIndex];
+  if (!deck) {
+    console.error(`Deck at index ${deckIndex}/${decks.length} is ${deck}.`);
+    if (decks.length === 0) {
+      console.log('Creating deck 0');
+      setDecks([createNewDeck(1)]);
+      setDeckIndex(0);
+    } else {
+      console.log(`Creating deck ${decks.length}`);
+      setDeckIndex(decks.length);
+      setDecks([...decks, createNewDeck(1)]);
+    }
+    return <>{`Deck at index ${deckIndex}/${decks.length} is ${deck}.`}</>;
+  }
   return <>
     <HeaderBar loader={props.loader} decks={decks} changeDeck={(i: number) => {
       setDeckIndex(i);

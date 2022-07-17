@@ -5389,6 +5389,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -5608,6 +5617,20 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var deck = decks[deckIndex];
+    if (!deck) {
+        console.error("Deck at index ".concat(deckIndex, "/").concat(decks.length, " is ").concat(deck, "."));
+        if (decks.length === 0) {
+            console.log('Creating deck 0');
+            setDecks([(0, deck_1.createNewDeck)(1)]);
+            setDeckIndex(0);
+        }
+        else {
+            console.log("Creating deck ".concat(decks.length));
+            setDeckIndex(decks.length);
+            setDecks(__spreadArray(__spreadArray([], decks, true), [(0, deck_1.createNewDeck)(1)], false));
+        }
+        return react_1.default.createElement(react_1.default.Fragment, null, "Deck at index ".concat(deckIndex, "/").concat(decks.length, " is ").concat(deck, "."));
+    }
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
