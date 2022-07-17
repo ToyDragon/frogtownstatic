@@ -52,7 +52,7 @@ export default function CardGroup(props: {
               const bgProp = props.imageLoadTracker.getURLIsLoaded(bg) ? {} : {
                 'data-lazybackground': bg,
               };
-              return <div key={cardId + '_' + i}
+              return <div data-id={cardId} key={cardId + '_' + i}
                 className={(multipleCardsInStacks ? 'actionContainer' : '') + ' hoverContainer'} style={{
                   borderRadius: '15px',
                   position: 'absolute',

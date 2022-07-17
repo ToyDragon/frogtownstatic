@@ -55,7 +55,7 @@ function CardGroup(props) {
                     var bgProp = props.imageLoadTracker.getURLIsLoaded(bg) ? {} : {
                         'data-lazybackground': bg,
                     };
-                    return react_1.default.createElement("div", { key: cardId + '_' + i, className: (multipleCardsInStacks_1 ? 'actionContainer' : '') + ' hoverContainer', style: {
+                    return react_1.default.createElement("div", { "data-id": cardId, key: cardId + '_' + i, className: (multipleCardsInStacks_1 ? 'actionContainer' : '') + ' hoverContainer', style: {
                             borderRadius: '15px',
                             position: 'absolute',
                             top: (37 * i) + 'px',

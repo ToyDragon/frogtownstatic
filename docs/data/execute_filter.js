@@ -81,7 +81,7 @@ function rankStringMatch(potentialMatch, filterText) {
     return -1;
 }
 exports.rankStringMatch = rankStringMatch;
-function stringFilter(cardIds, map, filterValue) {
+function stringFilter(cardIds, map, filterValue, skipSort) {
     if (!filterValue || !map) {
         return false;
     }
@@ -105,7 +105,9 @@ function stringFilter(cardIds, map, filterValue) {
             cardIds.splice(i, 1);
         }
     }
-    cardIds.sort(function (a, b) { return idToRank[a] - idToRank[b]; });
+    if (!skipSort) {
+        cardIds.sort(function (a, b) { return idToRank[a] - idToRank[b]; });
+    }
     return true;
 }
 function exactStringFilter(cardIds, map, filterValue) {
@@ -134,7 +136,7 @@ function exactStringFilter(cardIds, map, filterValue) {
     }
     return true;
 }
-function substringFilter(cardIds, map, filterValue) {
+function substringFilter(cardIds, map, filterValue, skipSort) {
     if (!map || !filterValue) {
         return false;
     }
@@ -166,7 +168,9 @@ function substringFilter(cardIds, map, filterValue) {
             highestMatchCount = matches;
         }
     }
-    cardIds.sort(function (a, b) { return idToMatches[b] - idToMatches[a]; });
+    if (!skipSort) {
+        cardIds.sort(function (a, b) { return idToMatches[b] - idToMatches[a]; });
+    }
     for (var i = cardIds.length - 1; i >= 0; i--) {
         if (idToMatches[cardIds[i]] < highestMatchCount) {
             cardIds.splice(i, 1);
@@ -219,12 +223,12 @@ function categoryFilter(cardIds, map, filterValue) {
 }
 function executeFilter(data, loader) {
     return __awaiter(this, void 0, void 0, function () {
-        var idToName, seenName, cardIds, id, anyFilterApplied, tryApplyFilter, idToSetCode_1, setCodeToRelease_1;
+        var idToName, seenName, cardIds, id, anyFilterApplied, tryApplyFilter, anySortableExecuted, idToSetCode_1, setCodeToRelease_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, loader.getMapData('IDToName')];
                 case 1:
-                    idToName = _a.sent();
+                    idToName = (_a.sent());
                     seenName = {};
                     cardIds = [];
                     for (id in idToName) {
@@ -237,22 +241,24 @@ function executeFilter(data, loader) {
                     anyFilterApplied = false;
                     tryApplyFilter = function (result) {
                         anyFilterApplied = anyFilterApplied || result;
+                        return result;
                     };
+                    anySortableExecuted = false;
                     /* eslint-disable max-len */
                     if (!data.exact_name_match) {
-                        tryApplyFilter(stringFilter(cardIds, idToName, data.name.trim()));
+                        anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, idToName, data.name.trim(), anySortableExecuted));
                     }
                     else {
-                        tryApplyFilter(exactStringFilter(cardIds, idToName, data.name.trim()));
+                        anySortableExecuted = anySortableExecuted || tryApplyFilter(exactStringFilter(cardIds, idToName, data.name.trim()));
                     }
-                    tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
+                    anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim(), anySortableExecuted));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
-                    tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim()));
+                    anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim(), anySortableExecuted));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColor'), data.color));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColorIdentity'), data.color_identity));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToType'), data.type));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
-                    tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
+                    anySortableExecuted = anySortableExecuted || tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim(), anySortableExecuted));
                     tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
                     tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
                     tryApplyFilter((0, execute_number_range_filter_1.default)(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
@@ -262,21 +268,23 @@ function executeFilter(data, loader) {
                     if (!anyFilterApplied) {
                         return [2 /*return*/, []];
                     }
-                    if (data.sort_by_release) {
-                        idToSetCode_1 = loader.getMapDataSync('IDToSetCode');
-                        setCodeToRelease_1 = loader.getMapDataSync('SetCodeToRelease');
-                        if (idToSetCode_1 && setCodeToRelease_1) {
+                    if (!anySortableExecuted) {
+                        if (data.sort_by_release) {
+                            idToSetCode_1 = loader.getMapDataSync('IDToSetCode');
+                            setCodeToRelease_1 = loader.getMapDataSync('SetCodeToRelease');
+                            if (idToSetCode_1 && setCodeToRelease_1) {
+                                cardIds.sort(function (a, b) {
+                                    var aRelease = new Date(setCodeToRelease_1[idToSetCode_1[a]]).getTime();
+                                    var bRelease = new Date(setCodeToRelease_1[idToSetCode_1[b]]).getTime();
+                                    return bRelease - aRelease;
+                                });
+                            }
+                        }
+                        else {
                             cardIds.sort(function (a, b) {
-                                var aRelease = new Date(setCodeToRelease_1[idToSetCode_1[a]]).getTime();
-                                var bRelease = new Date(setCodeToRelease_1[idToSetCode_1[b]]).getTime();
-                                return bRelease - aRelease;
+                                return idToName[a].localeCompare(idToName[b]);
                             });
                         }
-                    }
-                    else if (data.name.trim().length === 0 && idToName) {
-                        cardIds.sort(function (a, b) {
-                            return idToName[a].localeCompare(idToName[b]);
-                        });
                     }
                     // Ensure a maximum of 200 cards is displayed.
                     cardIds.splice(200, cardIds.length - 200);

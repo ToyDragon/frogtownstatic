@@ -72,6 +72,7 @@ function stringFilter(
     cardIds: string[],
     map: Record<string, string | string[]> | null,
     filterValue: string,
+    skipSort: boolean,
 ): boolean {
   if (!filterValue || !map) {
     return false;
@@ -98,7 +99,9 @@ function stringFilter(
     }
   }
 
-  cardIds.sort((a, b) => idToRank[a] - idToRank[b]);
+  if (!skipSort) {
+    cardIds.sort((a, b) => idToRank[a] - idToRank[b]);
+  }
   return true;
 }
 
@@ -135,6 +138,7 @@ function substringFilter(
     cardIds: string[],
     map: Record<string, string> | Record<string, string[]> | null,
     filterValue: string,
+    skipSort: boolean,
 ): boolean {
   if (!map || !filterValue) {
     return false;
@@ -167,7 +171,9 @@ function substringFilter(
     }
   }
 
-  cardIds.sort((a, b) => idToMatches[b] - idToMatches[a]);
+  if (!skipSort) {
+    cardIds.sort((a, b) => idToMatches[b] - idToMatches[a]);
+  }
   for (let i = cardIds.length - 1; i >= 0; i--) {
     if (idToMatches[cardIds[i]] < highestMatchCount) {
       cardIds.splice(i, 1);
@@ -231,7 +237,7 @@ export default async function executeFilter(
     data: FilterData,
     loader: DataLoader,
 ): Promise<string[]> {
-  const idToName = await loader.getMapData('IDToName');
+  const idToName = (await loader.getMapData('IDToName'))!;
   const seenName: Record<string, boolean> = {};
   const cardIds: string[] = [];
   for (const id in idToName) {
@@ -246,22 +252,24 @@ export default async function executeFilter(
 
   const tryApplyFilter = (result: boolean) => {
     anyFilterApplied = anyFilterApplied || result;
+    return result;
   };
 
+  let anySortableExecuted = false;
   /* eslint-disable max-len */
   if (!data.exact_name_match) {
-    tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim()));
+    anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, idToName!, data.name.trim(), anySortableExecuted));
   } else {
-    tryApplyFilter(exactStringFilter(cardIds, idToName!, data.name.trim()));
+    anySortableExecuted = anySortableExecuted || tryApplyFilter(exactStringFilter(cardIds, idToName!, data.name.trim()));
   }
-  tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim()));
+  anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToText'), data.text.trim(), anySortableExecuted));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToRarity'), data.rarity));
-  tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim()));
+  anySortableExecuted = anySortableExecuted || tryApplyFilter(stringFilter(cardIds, loader.getMapDataSync('IDToArtist'), data.artist.trim(), anySortableExecuted));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColor'), data.color));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToColorIdentity'), data.color_identity));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToType'), data.type));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToSupertype'), data.super_type));
-  tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim()));
+  anySortableExecuted = anySortableExecuted || tryApplyFilter(substringFilter(cardIds, loader.getMapDataSync('IDToSubtype'), data.sub_type.trim(), anySortableExecuted));
   tryApplyFilter(categoryFilter(cardIds, loader.getMapDataSync('IDToLegalFormat'), data.legal_format));
   tryApplyFilter(executeNumberRangeFilter(cardIds, loader.getMapDataSync('IDToPower'), data.power.trim()));
   tryApplyFilter(executeNumberRangeFilter(cardIds, loader.getMapDataSync('IDToToughness'), data.toughness.trim()));
@@ -273,20 +281,22 @@ export default async function executeFilter(
     return [];
   }
 
-  if (data.sort_by_release) {
-    const idToSetCode = loader.getMapDataSync('IDToSetCode');
-    const setCodeToRelease = loader.getMapDataSync('SetCodeToRelease');
-    if (idToSetCode && setCodeToRelease) {
+  if (!anySortableExecuted) {
+    if (data.sort_by_release) {
+      const idToSetCode = loader.getMapDataSync('IDToSetCode');
+      const setCodeToRelease = loader.getMapDataSync('SetCodeToRelease');
+      if (idToSetCode && setCodeToRelease) {
+        cardIds.sort((a, b) => {
+          const aRelease = new Date(setCodeToRelease[idToSetCode[a]]).getTime();
+          const bRelease = new Date(setCodeToRelease[idToSetCode[b]]).getTime();
+          return bRelease - aRelease;
+        });
+      }
+    } else {
       cardIds.sort((a, b) => {
-        const aRelease = new Date(setCodeToRelease[idToSetCode[a]]).getTime();
-        const bRelease = new Date(setCodeToRelease[idToSetCode[b]]).getTime();
-        return bRelease - aRelease;
+        return idToName[a].localeCompare(idToName[b]);
       });
     }
-  } else if (data.name.trim().length === 0 && idToName) {
-    cardIds.sort((a, b) => {
-      return idToName[a].localeCompare(idToName[b]);
-    });
   }
 
   // Ensure a maximum of 200 cards is displayed.
