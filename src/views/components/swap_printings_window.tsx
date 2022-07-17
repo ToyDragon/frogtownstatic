@@ -1,4 +1,4 @@
-import React, {ForwardedRef, forwardRef, useImperativeHandle, useState} from 'react';
+import React, {ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState} from 'react';
 import {DataLoader} from '../../data/data_loader';
 import CardArea from './card_area';
 import {DisplayMode} from './display_dropdown';
@@ -27,6 +27,12 @@ const SwapPrintingsWindow = forwardRef<SwapPrintingsWindowHandle, SwapPrintingsW
       const [originalId, setOriginalId] = useState('');
       const [isOpen, setIsOpen] = useState(false);
 
+      useEffect(() => {
+        // Ensure maps start loading on initial render.
+        props.loader.getMapData('IDToSetCode');
+        props.loader.getMapData('SetCodeToRelease');
+      }, []);
+
       useImperativeHandle(ref, () => ({
         open: (id: string) => {
           const idToName = props.loader.getMapDataSync('IDToName')!;
@@ -38,6 +44,14 @@ const SwapPrintingsWindow = forwardRef<SwapPrintingsWindowHandle, SwapPrintingsW
             if (idToName[id] === name) {
               candidates.push(id);
             }
+          }
+
+          const idToSetCode = props.loader.getMapDataSync('IDToSetCode');
+          const setCodeToRelease = props.loader.getMapDataSync('SetCodeToRelease');
+          if (idToSetCode && setCodeToRelease) {
+            candidates.sort((a: string, b: string) => {
+              return setCodeToRelease[idToSetCode[a]] < setCodeToRelease[idToSetCode[b]] ? 1 : -1;
+            });
           }
           setCardIds(candidates);
           setIsOpen(true);

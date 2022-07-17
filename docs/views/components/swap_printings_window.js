@@ -34,6 +34,11 @@ var SwapPrintingsWindow = (0, react_1.forwardRef)(function SwapPrintingsWindow(p
     var _b = (0, react_1.useState)(''), cardName = _b[0], setCardName = _b[1];
     var _c = (0, react_1.useState)(''), originalId = _c[0], setOriginalId = _c[1];
     var _d = (0, react_1.useState)(false), isOpen = _d[0], setIsOpen = _d[1];
+    (0, react_1.useEffect)(function () {
+        // Ensure maps start loading on initial render.
+        props.loader.getMapData('IDToSetCode');
+        props.loader.getMapData('SetCodeToRelease');
+    }, []);
     (0, react_1.useImperativeHandle)(ref, function () { return ({
         open: function (id) {
             var idToName = props.loader.getMapDataSync('IDToName');
@@ -45,6 +50,13 @@ var SwapPrintingsWindow = (0, react_1.forwardRef)(function SwapPrintingsWindow(p
                 if (idToName[id_1] === name) {
                     candidates.push(id_1);
                 }
+            }
+            var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
+            var setCodeToRelease = props.loader.getMapDataSync('SetCodeToRelease');
+            if (idToSetCode && setCodeToRelease) {
+                candidates.sort(function (a, b) {
+                    return setCodeToRelease[idToSetCode[a]] < setCodeToRelease[idToSetCode[b]] ? 1 : -1;
+                });
             }
             setCardIds(candidates);
             setIsOpen(true);
