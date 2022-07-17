@@ -1001,6 +1001,7 @@ var BulkImportWindow = (0, react_1.forwardRef)(function BulkImportWindow(props, 
         open: function () {
             setInputValue('');
             setIsOpen(true);
+            setErrors([]);
             setTimeout(function () { var _a; return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.select(); }, 0);
         },
     }); });
@@ -1015,7 +1016,6 @@ var BulkImportWindow = (0, react_1.forwardRef)(function BulkImportWindow(props, 
                 if (e.key === 'Escape') {
                     setIsOpen(false);
                 }
-                setErrors([]);
                 return;
             }
             var result = parseCards(props.loader, inputValue);

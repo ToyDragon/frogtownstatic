@@ -107,6 +107,7 @@ const BulkImportWindow = forwardRef<BulkImportWindowHandle, BulkImportWindowProp
     open: () => {
       setInputValue('');
       setIsOpen(true);
+      setErrors([]);
       setTimeout(() => inputRef.current?.select(), 0);
     },
   }));
@@ -123,7 +124,6 @@ const BulkImportWindow = forwardRef<BulkImportWindowHandle, BulkImportWindowProp
         if (e.key === 'Escape') {
           setIsOpen(false);
         }
-        setErrors([]);
         return;
       }
 
