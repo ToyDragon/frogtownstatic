@@ -2,6 +2,183 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./docs/data/backup_decks.js":
+/*!***********************************!*\
+  !*** ./docs/data/backup_decks.js ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function backupDecks(storage, notificationWindow, metadata) {
+    return __awaiter(this, void 0, void 0, function () {
+        var shortDateStr, folderName, backupFolder, deckCount, _a;
+        var _this = this;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (!storage) {
+                        console.error('Trying to backup before storage prepared.');
+                        return [2 /*return*/, false];
+                    }
+                    shortDateStr = new Date().toDateString().toLocaleLowerCase().replace(/ /g, '_');
+                    folderName = "backup_v".concat(metadata.majorVersion, "_").concat(shortDateStr);
+                    return [4 /*yield*/, storage.createDir(folderName)];
+                case 1:
+                    backupFolder = _b.sent();
+                    if (!backupFolder) {
+                        console.error('Failed to create backup directory.');
+                        return [2 /*return*/, false];
+                    }
+                    notificationWindow.open('Backing Up Decks', 'Decks are backed up with every major version change. This will only take a moment...');
+                    _a = Number;
+                    return [4 /*yield*/, storage.get('deck_count')];
+                case 2:
+                    deckCount = _a.apply(void 0, [(_b.sent()) || 0]);
+                    return [4 /*yield*/, Promise.all(new Array(deckCount).fill(null).map(function (_, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var key, _a, _b, _c;
+                            return __generator(this, function (_d) {
+                                switch (_d.label) {
+                                    case 0:
+                                        key = "deck_".concat(i);
+                                        _b = (_a = backupFolder).set;
+                                        _c = [key];
+                                        return [4 /*yield*/, storage.get(key)];
+                                    case 1: return [4 /*yield*/, _b.apply(_a, _c.concat([(_d.sent()) || '']))];
+                                    case 2:
+                                        _d.sent();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 3:
+                    _b.sent();
+                    console.log("Backed up ".concat(deckCount, " decks to folder \"").concat(folderName, "\""));
+                    notificationWindow.close();
+                    return [2 /*return*/, true];
+            }
+        });
+    });
+}
+exports["default"] = backupDecks;
+//# sourceMappingURL=backup_decks.js.map
+
+/***/ }),
+
+/***/ "./docs/data/bugs/bug71722MainboardSideboard.js":
+/*!******************************************************!*\
+  !*** ./docs/data/bugs/bug71722MainboardSideboard.js ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.transformBug71722MainboardSideboard = void 0;
+// Had a bug that overwrote all sideboards to be identical to mainboards. Unfortunately we can't restore the
+// sideboard, so we just delete sideboards that are identical to mainboards.
+function transformBug71722MainboardSideboard(storage, decks) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _i, decks_1, deck;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, storage.get('fix_71722_mainboardsideboard')];
+                case 1:
+                    if (!!(_a.sent())) return [3 /*break*/, 4];
+                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 0); })];
+                case 2:
+                    _a.sent(); // Incase setDecks was already called elsewhere.
+                    return [4 /*yield*/, storage.set('fix_71722_mainboardsideboard', Date.now().toString())];
+                case 3:
+                    _a.sent();
+                    for (_i = 0, decks_1 = decks; _i < decks_1.length; _i++) {
+                        deck = decks_1[_i];
+                        if (deck.mainboard.length > 0 && deck.mainboard.sort().join(',') === deck.sideboard.sort().join(',')) {
+                            deck.sideboard = [];
+                        }
+                    }
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.transformBug71722MainboardSideboard = transformBug71722MainboardSideboard;
+//# sourceMappingURL=bug71722MainboardSideboard.js.map
+
+/***/ }),
+
 /***/ "./docs/data/debouncer.js":
 /*!********************************!*\
   !*** ./docs/data/debouncer.js ***!
@@ -76,11 +253,56 @@ exports["default"] = Debouncer;
 /*!***************************!*\
   !*** ./docs/data/deck.js ***!
   \***************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ensureValidDeck = exports.createNewDeck = void 0;
+exports.copyDecks = exports.saveDecksToStorage = exports.loadDecksFromStorage = exports.ensureValidDeck = exports.createNewDeck = void 0;
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -101,6 +323,101 @@ function ensureValidDeck(deck) {
     };
 }
 exports.ensureValidDeck = ensureValidDeck;
+function loadDecksFromStorage(storage) {
+    return __awaiter(this, void 0, void 0, function () {
+        var loadedDecks, _a, _b;
+        var _this = this;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _a = Array.bind;
+                    _b = Number;
+                    return [4 /*yield*/, storage.get('deck_count')];
+                case 1:
+                    loadedDecks = new (_a.apply(Array, [void 0, _b.apply(void 0, [(_c.sent()) || '1'])]))().fill(null);
+                    return [4 /*yield*/, Promise.all(loadedDecks.map(function (_, i) { return __awaiter(_this, void 0, void 0, function () {
+                            var deck, _a, _b, _c;
+                            return __generator(this, function (_d) {
+                                switch (_d.label) {
+                                    case 0:
+                                        deck = null;
+                                        _d.label = 1;
+                                    case 1:
+                                        _d.trys.push([1, 3, , 4]);
+                                        _b = (_a = JSON).parse;
+                                        return [4 /*yield*/, storage.get("deck_".concat(i))];
+                                    case 2:
+                                        deck = _b.apply(_a, [(_d.sent()) || 'null']);
+                                        return [3 /*break*/, 4];
+                                    case 3:
+                                        _c = _d.sent();
+                                        return [3 /*break*/, 4];
+                                    case 4:
+                                        if (!deck) {
+                                            deck = createNewDeck(i + 1);
+                                        }
+                                        loadedDecks[i] = ensureValidDeck(deck);
+                                        console.log('Loaded deck ', i, loadedDecks[i]);
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); }))];
+                case 2:
+                    _c.sent();
+                    console.log('Loaded all decks');
+                    return [2 /*return*/, loadedDecks];
+            }
+        });
+    });
+}
+exports.loadDecksFromStorage = loadDecksFromStorage;
+function saveDecksToStorage(storage, decks) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _this = this;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!storage) {
+                        if (decks === null || decks === void 0 ? void 0 : decks.length) {
+                            console.error('Decks changed before storage ready: ', decks);
+                        }
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, Promise.all(__spreadArray(__spreadArray([], decks.map(function (deck, i) { return __awaiter(_this, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, storage.set("deck_".concat(i), JSON.stringify(deck))];
+                                    case 1:
+                                        _a.sent();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); }), true), [
+                            storage.set("deck_count", decks.length.toString()),
+                        ], false))];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.saveDecksToStorage = saveDecksToStorage;
+function copyDecks(decks) {
+    var newDecks = [];
+    for (var _i = 0, decks_1 = decks; _i < decks_1.length; _i++) {
+        var deck = decks_1[_i];
+        newDecks.push({
+            name: deck.name,
+            keycard: deck.keycard,
+            mainboard: deck.mainboard.slice(),
+            sideboard: deck.sideboard.slice(),
+            backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
+        });
+    }
+    return newDecks;
+}
+exports.copyDecks = copyDecks;
 //# sourceMappingURL=deck.js.map
 
 /***/ }),
@@ -515,6 +832,26 @@ exports["default"] = executeNumberRangeFilter;
 
 /***/ }),
 
+/***/ "./docs/data/frogtown_metadata.js":
+/*!****************************************!*\
+  !*** ./docs/data/frogtown_metadata.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getCurrentMetadata = void 0;
+function getCurrentMetadata() {
+    return {
+        majorVersion: 1,
+        minorVersion: 1,
+    };
+}
+exports.getCurrentMetadata = getCurrentMetadata;
+//# sourceMappingURL=frogtown_metadata.js.map
+
+/***/ }),
+
 /***/ "./docs/data/map_data.js":
 /*!*******************************!*\
   !*** ./docs/data/map_data.js ***!
@@ -621,6 +958,206 @@ var MapData = /** @class */ (function () {
 }());
 exports.MapData = MapData;
 //# sourceMappingURL=map_data.js.map
+
+/***/ }),
+
+/***/ "./docs/data/storage.js":
+/*!******************************!*\
+  !*** ./docs/data/storage.js ***!
+  \******************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createDirectoryStorage = exports.createLocalStorage = void 0;
+var debouncer_1 = __importDefault(__webpack_require__(/*! ./debouncer */ "./docs/data/debouncer.js"));
+function createLocalStorage() {
+    var _this = this;
+    return {
+        get: function (key) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+            return [2 /*return*/, localStorage.getItem(key)];
+        }); }); },
+        set: function (key, value) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+            return [2 /*return*/, localStorage.setItem(key, value)];
+        }); }); },
+        createDir: function (_name) { return Promise.resolve(null); },
+        isBig: false,
+    };
+}
+exports.createLocalStorage = createLocalStorage;
+function createDirectoryStorage(folder, unloadable) {
+    var _this = this;
+    var lastKnownValue = {};
+    var pendingValues = {};
+    var pendingResolvers = [];
+    var debouncer = new debouncer_1.default(2000, unloadable);
+    function trySaveToDisk(force) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, _b, result, _c, _i, pendingResolvers_1, resolver;
+            var _this = this;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        _b = force;
+                        if (!_b) return [3 /*break*/, 2];
+                        return [4 /*yield*/, debouncer.forceAct()];
+                    case 1:
+                        _b = (_d.sent());
+                        _d.label = 2;
+                    case 2:
+                        _a = (_b);
+                        if (_a) return [3 /*break*/, 4];
+                        return [4 /*yield*/, debouncer.waitAndShouldAct()];
+                    case 3:
+                        _a = (_d.sent());
+                        _d.label = 4;
+                    case 4:
+                        if (!_a) return [3 /*break*/, 9];
+                        result = false;
+                        _d.label = 5;
+                    case 5:
+                        _d.trys.push([5, 7, , 8]);
+                        console.log('Writing batch keys', Object.keys(pendingValues));
+                        return [4 /*yield*/, Promise.all(Object.keys(pendingValues).map(function (key) { return __awaiter(_this, void 0, void 0, function () {
+                                var writable;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, folder.getFileHandle(key, { create: true })];
+                                        case 1: return [4 /*yield*/, (_a.sent())
+                                                .createWritable({ keepExistingData: false })];
+                                        case 2:
+                                            writable = _a.sent();
+                                            return [4 /*yield*/, writable.write(pendingValues[key])];
+                                        case 3:
+                                            _a.sent();
+                                            return [4 /*yield*/, writable.close()];
+                                        case 4:
+                                            _a.sent();
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            }); }))];
+                    case 6:
+                        _d.sent();
+                        result = true;
+                        return [3 /*break*/, 8];
+                    case 7:
+                        _c = _d.sent();
+                        return [3 /*break*/, 8];
+                    case 8:
+                        pendingValues = {};
+                        for (_i = 0, pendingResolvers_1 = pendingResolvers; _i < pendingResolvers_1.length; _i++) {
+                            resolver = pendingResolvers_1[_i];
+                            resolver(result);
+                        }
+                        pendingResolvers = [];
+                        _d.label = 9;
+                    case 9: return [2 /*return*/];
+                }
+            });
+        });
+    }
+    return {
+        get: function (key) { return __awaiter(_this, void 0, void 0, function () {
+            var file, value, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 4, , 5]);
+                        if (lastKnownValue[key]) {
+                            return [2 /*return*/, lastKnownValue[key]];
+                        }
+                        return [4 /*yield*/, folder.getFileHandle(key)];
+                    case 1: return [4 /*yield*/, (_b.sent()).getFile()];
+                    case 2:
+                        file = _b.sent();
+                        return [4 /*yield*/, file.text()];
+                    case 3:
+                        value = _b.sent();
+                        lastKnownValue[key] = value;
+                        return [2 /*return*/, value];
+                    case 4:
+                        _a = _b.sent();
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/, null];
+                }
+            });
+        }); },
+        set: function (key, value, force) { return __awaiter(_this, void 0, void 0, function () {
+            var writePromise;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(force || value !== lastKnownValue[key])) return [3 /*break*/, 2];
+                        lastKnownValue[key] = value;
+                        pendingValues[key] = value;
+                        writePromise = new Promise(function (resolve) {
+                            pendingResolvers.push(resolve);
+                        });
+                        trySaveToDisk(force);
+                        return [4 /*yield*/, writePromise];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        console.log('Skipping write of duplicate info for key ', key);
+                        return [2 /*return*/, true];
+                }
+            });
+        }); },
+        createDir: function (name) { return __awaiter(_this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = createDirectoryStorage;
+                        return [4 /*yield*/, folder.getDirectoryHandle(name, { create: true })];
+                    case 1: return [2 /*return*/, _a.apply(void 0, [_b.sent(), unloadable])];
+                }
+            });
+        }); },
+        isBig: false,
+    };
+}
+exports.createDirectoryStorage = createDirectoryStorage;
+//# sourceMappingURL=storage.js.map
 
 /***/ }),
 
@@ -1575,6 +2112,202 @@ exports["default"] = CardGroup;
 
 /***/ }),
 
+/***/ "./docs/views/components/choose_storage_window.js":
+/*!********************************************************!*\
+  !*** ./docs/views/components/choose_storage_window.js ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+function ChooseStorageWindow(props) {
+    var _this = this;
+    var _a = (0, react_1.useState)(true), isOpen = _a[0], setIsOpen = _a[1];
+    (0, react_1.useEffect)(function () {
+        var styleEle = document.createElement('style');
+        styleEle.innerHTML = "\n      .storageWindow {\n        background-color: white;\n      }\n      .highlightHover:hover {\n        background-color: lightblue;\n      }\n    ";
+        document.querySelector('body').append(styleEle);
+    }, []);
+    if (!isOpen) {
+        return null;
+    }
+    return react_1.default.createElement("div", { style: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0',
+            left: '0',
+            backgroundColor: '#00000070',
+            zIndex: '7',
+        } },
+        react_1.default.createElement("div", { style: {
+                position: 'absolute',
+                top: 'calc(50% - 300px)',
+                left: 'calc(50% - 506px)',
+                width: '1012px',
+                fontSize: '24px',
+            } },
+            react_1.default.createElement("div", { className: 'storageWindow ' + (!!window.showDirectoryPicker ? 'highlightHover' : ''), style: {
+                    display: 'inline-block',
+                    width: '500px',
+                    height: '600px',
+                    borderRadius: '12px',
+                    border: '3px solid #cdd6e4',
+                    padding: '12px',
+                    verticalAlign: 'top',
+                    position: 'relative',
+                }, onMouseUp: function (e) { return __awaiter(_this, void 0, void 0, function () {
+                    var dir, hasMetadataFile, metadatafile, contents, _a, approvedFolder;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                if (!(e.button === 0 && !!window.showDirectoryPicker)) return [3 /*break*/, 10];
+                                return [4 /*yield*/, window.showDirectoryPicker()];
+                            case 1:
+                                dir = _b.sent();
+                                console.log('Chose directory: ', dir);
+                                hasMetadataFile = false;
+                                _b.label = 2;
+                            case 2:
+                                _b.trys.push([2, 6, , 7]);
+                                return [4 /*yield*/, dir.getFileHandle('frogtown_metadata.json')];
+                            case 3:
+                                metadatafile = _b.sent();
+                                return [4 /*yield*/, metadatafile.getFile()];
+                            case 4: return [4 /*yield*/, (_b.sent()).text()];
+                            case 5:
+                                contents = _b.sent();
+                                console.log('Metadata file contents: ' + contents);
+                                if (contents) {
+                                    hasMetadataFile = true;
+                                }
+                                return [3 /*break*/, 7];
+                            case 6:
+                                _a = _b.sent();
+                                return [3 /*break*/, 7];
+                            case 7:
+                                if (!!hasMetadataFile) return [3 /*break*/, 9];
+                                console.log('No metadata, confirming choice');
+                                return [4 /*yield*/, props.confirmationWindow.current.open("Folder \"".concat(dir.name, "\" has no Frogtown metadata file, are you sure you want to use this folder?"), 'This is normal if this is a new folder that you have never used before.', 'Use This Folder')];
+                            case 8:
+                                approvedFolder = _b.sent();
+                                if (approvedFolder) {
+                                    props.storageChosen(false, dir);
+                                    setIsOpen(false);
+                                }
+                                return [3 /*break*/, 10];
+                            case 9:
+                                console.log('Metadata file present, moving forward with directory.');
+                                props.storageChosen(false, dir);
+                                setIsOpen(false);
+                                _b.label = 10;
+                            case 10: return [2 /*return*/];
+                        }
+                    });
+                }); } },
+                react_1.default.createElement("h1", null, "Store In Folder"),
+                !!window.showDirectoryPicker ? null :
+                    react_1.default.createElement(react_1.default.Fragment, null,
+                        react_1.default.createElement("div", { style: { padding: '12px', color: 'darkred', fontSize: '24px' } }, "NOT SUPPORTED IN YOUR BROWSER"),
+                        react_1.default.createElement("div", { style: { paddingLeft: '12px', paddingRight: '12px', color: 'darkred' } },
+                            "Try a ",
+                            react_1.default.createElement("a", { href: 'https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker#browser_compatibility', target: '_blank', rel: 'noreferrer' }, "supported browser"),
+                            ", like chrome.")),
+                react_1.default.createElement("div", { style: { padding: '12px' } }, "When decks are stored in a folder on your computer, it's a lot harder\n          to accidentally lose them."),
+                react_1.default.createElement("div", { style: { marginTop: '12px' } }),
+                react_1.default.createElement("div", { style: { padding: '12px' } }, "Create a folder called \"Frogtown Decks\" or something similar on your\n          computer, and choose it when the folder selector appears."),
+                react_1.default.createElement("div", { style: { fontSize: '48px', fontWeight: 'bolder', color: 'darkgreen', position: 'absolute',
+                        bottom: '0', left: '63px' } }, "RECOMMENDED")),
+            react_1.default.createElement("div", { className: 'storageWindow highlightHover', style: {
+                    display: 'inline-block',
+                    marginLeft: '12px',
+                    width: '500px',
+                    height: '600px',
+                    borderRadius: '12px',
+                    border: '3px solid #cdd6e4',
+                    padding: '12px',
+                    verticalAlign: 'top',
+                    position: 'relative',
+                }, onMouseUp: function (e) { return __awaiter(_this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        if (e.button === 0) {
+                            props.storageChosen(true, null);
+                            setIsOpen(false);
+                        }
+                        return [2 /*return*/];
+                    });
+                }); } },
+                react_1.default.createElement("h1", null, "Store In Browser Cache"),
+                react_1.default.createElement("div", { style: { padding: '12px' } }, "When decks are stored in your browser directly, they can be accidentally\n          lost when clearing your browsers cache. Also, they are difficult to back up and restore if something\n          goes wrong."),
+                react_1.default.createElement("div", { style: { fontSize: '48px', fontWeight: 'bolder', color: 'darkred', position: 'absolute',
+                        bottom: '0', left: '99px' } }, "DONT DO IT"))));
+}
+exports["default"] = ChooseStorageWindow;
+;
+//# sourceMappingURL=choose_storage_window.js.map
+
+/***/ }),
+
 /***/ "./docs/views/components/compact_details_card.js":
 /*!*******************************************************!*\
   !*** ./docs/views/components/compact_details_card.js ***!
@@ -2011,6 +2744,150 @@ exports["default"] = ConfirmDeleteWindow;
 
 /***/ }),
 
+/***/ "./docs/views/components/confirmation_window.js":
+/*!******************************************************!*\
+  !*** ./docs/views/components/confirmation_window.js ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var ConfirmationWindow = (0, react_1.forwardRef)(function ConfirmationWindow(_props, ref) {
+    var _this = this;
+    var _a = (0, react_1.useState)(false), isOpen = _a[0], setIsOpen = _a[1];
+    var _b = (0, react_1.useState)(''), title = _b[0], setTitle = _b[1];
+    var _c = (0, react_1.useState)(''), confirmAction = _c[0], setConfirmAction = _c[1];
+    var _d = (0, react_1.useState)(''), message = _d[0], setMessage = _d[1];
+    var callbackRef = (0, react_1.useRef)(null);
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
+        open: function (title, message, confirmAction) {
+            if (isOpen) {
+                console.error('Tried to open two confirmation windows at the same time.');
+                return Promise.resolve(false);
+            }
+            setIsOpen(true);
+            setTitle(title);
+            setMessage(message);
+            setConfirmAction(confirmAction);
+            return new Promise(function (resolve) {
+                callbackRef.current = resolve;
+            });
+        },
+    }); });
+    if (!isOpen) {
+        return null;
+    }
+    return react_1.default.createElement("div", { style: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0',
+            left: '0',
+            backgroundColor: '#00000070',
+            zIndex: '7',
+        } },
+        react_1.default.createElement("div", { style: {
+                width: '800px',
+                height: '350px',
+                position: 'absolute',
+                left: 'calc(50% - 300px)',
+                top: 'calc(50% - 175px)',
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                border: '3px solid #cdd6e4',
+                padding: '16px',
+            } },
+            react_1.default.createElement("div", { style: { padding: '12px', fontSize: '36px' } }, title),
+            react_1.default.createElement("div", { style: { fontSize: '24px' } }, message),
+            react_1.default.createElement("div", { style: {
+                    position: 'absolute',
+                    bottom: '12px',
+                    right: '12px',
+                } },
+                react_1.default.createElement("button", { className: 'btn btn-secondary', onMouseUp: function (e) { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            if (e.button === 0) {
+                                setIsOpen(false);
+                                callbackRef.current(false);
+                            }
+                            return [2 /*return*/];
+                        });
+                    }); } }, "Cancel"),
+                react_1.default.createElement("button", { className: 'btn btn-primary', style: { marginLeft: '8px' }, onMouseUp: function (e) { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            if (e.button === 0) {
+                                setIsOpen(false);
+                                callbackRef.current(true);
+                            }
+                            return [2 /*return*/];
+                        });
+                    }); } }, confirmAction))));
+});
+exports["default"] = ConfirmationWindow;
+//# sourceMappingURL=confirmation_window.js.map
+
+/***/ }),
+
 /***/ "./docs/views/components/deck_area.js":
 /*!********************************************!*\
   !*** ./docs/views/components/deck_area.js ***!
@@ -2064,9 +2941,10 @@ var card_group_1 = __webpack_require__(/*! ./card_group */ "./docs/views/compone
 var display_dropdown_1 = __importStar(__webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js"));
 var grouper_dropdown_1 = __importDefault(__webpack_require__(/*! ./grouper_dropdown */ "./docs/views/components/grouper_dropdown.js"));
 function deckArea(props) {
-    var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.Grid), displayMode = _a[0], setDisplayMode = _a[1];
-    var _b = (0, react_1.useState)(null), grouper = _b[0], setGrouper = _b[1];
-    var _c = (0, react_1.useState)(false), exportReady = _c[0], setExportReady = _c[1];
+    var _a, _b, _c, _d, _e, _f, _g;
+    var _h = (0, react_1.useState)(display_dropdown_1.DisplayMode.Grid), displayMode = _h[0], setDisplayMode = _h[1];
+    var _j = (0, react_1.useState)(null), grouper = _j[0], setGrouper = _j[1];
+    var _k = (0, react_1.useState)(false), exportReady = _k[0], setExportReady = _k[1];
     var setImageMapLoaded = (0, react_1.useState)(false)[1];
     var tabletopSimManager = (0, react_1.useRef)(new tabletop_simulator_1.default(props.loader));
     (0, react_1.useEffect)(function () {
@@ -2079,24 +2957,23 @@ function deckArea(props) {
     }, []);
     var keycardImageUrl = '';
     var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
-    if (idToCropImageURI) {
-        keycardImageUrl = "url(\"".concat(idToCropImageURI[props.keycard], "\")");
+    if (idToCropImageURI && ((_a = props.deck) === null || _a === void 0 ? void 0 : _a.keycard)) {
+        keycardImageUrl = "url(\"".concat(idToCropImageURI[props.deck.keycard], "\")");
     }
-    var downloadProps = {
-        href: !exportReady ? '#' :
-            'data:text/json,' +
-                encodeURIComponent(tabletopSimManager.current.exportDeck(props.mainboardCards, props.sideboardCards, props.backUrl)),
-        download: !exportReady ? '' : "".concat(props.name, ".json"),
+    var downloadProps = (!props.deck || !exportReady) ? { href: '#' } : {
+        href: 'data:text/json,' +
+            encodeURIComponent(tabletopSimManager.current.exportDeck(props.deck.mainboard, props.deck.sideboard, props.deck.backgroundUrl)),
+        download: "".concat(props.deck.name, ".json"),
     };
     var idToName = props.loader.getMapDataSync('IDToName');
     var tcgplayerLink = '';
-    if (idToName && props.mainboardCards.length + props.sideboardCards.length > 0) {
+    if (props.deck && idToName && props.deck.mainboard.length + props.deck.sideboard.length > 0) {
         var affiliateCode = 'frogtown';
         tcgplayerLink = "https://www.tcgplayer.com/massentry?productline=Magic&utm_campaign=".concat(affiliateCode, "&utm_medium=scryfall&utm_source=").concat(affiliateCode, "&c=") +
-            encodeURIComponent((0, card_group_1.countCards)(props.mainboardCards.concat(props.sideboardCards))
+            encodeURIComponent((0, card_group_1.countCards)(props.deck.mainboard.concat(props.deck.sideboard))
                 .map(function (a) { return "".concat(a.count, " ").concat(idToName[a.id]); }).join('||'));
     }
-    var cardCount = props.mainboardCards.length + props.sideboardCards.length;
+    var cardCount = !props.deck ? 0 : props.deck.mainboard.length + props.deck.sideboard.length;
     return (react_1.default.createElement("div", { style: {
             position: 'relative',
             width: '100%',
@@ -2124,11 +3001,7 @@ function deckArea(props) {
                 color: 'white',
                 left: '267px',
                 top: '92px',
-            } },
-            props.name,
-            " (",
-            props.mainboardCards.length + props.sideboardCards.length,
-            " cards)"),
+            } }, !props.deck ? '' : "".concat(props.deck.name, " (").concat(cardCount, " cards)")),
         react_1.default.createElement("div", { style: {
                 overflowY: 'scroll',
                 height: 'calc(100% - 176px)',
@@ -2137,9 +3010,9 @@ function deckArea(props) {
                     fontSize: '44px',
                     marginLeft: '25px',
                     marginBottom: '-16px',
-                    visibility: props.mainboardCards.length === 0 ? 'hidden' : 'visible',
+                    visibility: (((_c = (_b = props.deck) === null || _b === void 0 ? void 0 : _b.mainboard) === null || _c === void 0 ? void 0 : _c.length) || 0) === 0 ? 'hidden' : 'visible',
                 } }, "Mainboard"),
-            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: props.mainboardCards, displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
+            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: ((_d = props.deck) === null || _d === void 0 ? void 0 : _d.mainboard) || [], displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
                     onAdd: function (cardId) {
                         props.addCard(cardId, false);
                     },
@@ -2157,9 +3030,9 @@ function deckArea(props) {
                     fontSize: '44px',
                     marginLeft: '25px',
                     marginBottom: '-16px',
-                    visibility: props.sideboardCards.length === 0 ? 'hidden' : 'visible',
+                    visibility: (((_f = (_e = props.deck) === null || _e === void 0 ? void 0 : _e.sideboard) === null || _f === void 0 ? void 0 : _f.length) || 0) === 0 ? 'hidden' : 'visible',
                 } }, "Sideboard"),
-            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: props.sideboardCards, displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
+            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: ((_g = props.deck) === null || _g === void 0 ? void 0 : _g.sideboard) || [], displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
                     onAdd: function (cardId) {
                         props.addCard(cardId, true);
                     },
@@ -3870,6 +4743,191 @@ exports["default"] = tryStartLazyBackgroundLoader;
 
 /***/ }),
 
+/***/ "./docs/views/components/legacy_deck_loader.js":
+/*!*****************************************************!*\
+  !*** ./docs/views/components/legacy_deck_loader.js ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.loadLegacyDecksForPublicId = void 0;
+var deck_1 = __webpack_require__(/*! ../../data/deck */ "./docs/data/deck.js");
+function loadLegacyDecksForPublicId(legacyPublicId, existingDecks, urlLoader) {
+    return __awaiter(this, void 0, void 0, function () {
+        var loadedDecks, userData, _a, _b, cardback_1, i, mainboardStr, sideboardStr, _i, existingDecks_1, existingDeck, e_1;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    loadedDecks = [];
+                    _c.label = 1;
+                case 1:
+                    _c.trys.push([1, 3, , 4]);
+                    _b = (_a = JSON).parse;
+                    return [4 /*yield*/, urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
+                case 2:
+                    userData = _b.apply(_a, [_c.sent()]);
+                    console.log(userData);
+                    cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
+                    if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
+                        cardback_1 = userData.cardbackUrl;
+                    }
+                    loadedDecks = userData.decks.map(function (a) {
+                        // Ensure we don't let poorly formatted decks in.
+                        return {
+                            name: a.name,
+                            keycard: a.keycard || a.mainboard[0] || a.sideboard[0] || '4b81165e-f091-4211-8b47-5ea6868b0d4c',
+                            mainboard: a.mainboard,
+                            sideboard: a.sideboard,
+                            backgroundUrl: cardback_1,
+                        };
+                    });
+                    for (i = loadedDecks.length - 1; i >= 0; i--) {
+                        mainboardStr = __spreadArray([], loadedDecks[i].mainboard, true).sort().join(',');
+                        sideboardStr = __spreadArray([], loadedDecks[i].sideboard, true).sort().join(',');
+                        for (_i = 0, existingDecks_1 = existingDecks; _i < existingDecks_1.length; _i++) {
+                            existingDeck = existingDecks_1[_i];
+                            if (mainboardStr === __spreadArray([], existingDeck.mainboard, true).sort().join(',') &&
+                                sideboardStr === __spreadArray([], existingDeck.sideboard, true).sort().join(',')) {
+                                loadedDecks.splice(i, 1);
+                            }
+                        }
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    e_1 = _c.sent();
+                    console.error('Unable to load decks from legacy account.');
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/, loadedDecks];
+            }
+        });
+    });
+}
+exports.loadLegacyDecksForPublicId = loadLegacyDecksForPublicId;
+function loadLegacyDecksInitial(decks, setLegacyPublicId, setLegacyBetaPublicId, search, cookie, urlLoader, storage) {
+    return __awaiter(this, void 0, void 0, function () {
+        var decksOnlyContainedStarter, legacyBetaPublicId, _a, _b, newlyLoadedDecks, parsedId, _c, _d, newlyLoadedDecks;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
+                case 0:
+                    decksOnlyContainedStarter = decks.length === 1 &&
+                        JSON.stringify(decks[0]) === JSON.stringify((0, deck_1.createNewDeck)(1));
+                    _a = ((search.split('?')[1] || '')
+                        .split('&')
+                        .filter(function (v) { return v.indexOf('legacyBetaPublicId') === 0; })[0] || '').split('=')[1];
+                    if (_a) return [3 /*break*/, 2];
+                    return [4 /*yield*/, storage.get('legacy_beta_public_id')];
+                case 1:
+                    _a = (_e.sent());
+                    _e.label = 2;
+                case 2:
+                    legacyBetaPublicId = _a;
+                    setLegacyBetaPublicId(legacyBetaPublicId || '');
+                    _b = legacyBetaPublicId;
+                    if (!_b) return [3 /*break*/, 4];
+                    return [4 /*yield*/, storage.get('legacy_beta_public_id')];
+                case 3:
+                    _b = (_e.sent()) !== legacyBetaPublicId;
+                    _e.label = 4;
+                case 4:
+                    if (!_b) return [3 /*break*/, 7];
+                    return [4 /*yield*/, storage.set('legacy_beta_public_id', legacyBetaPublicId)];
+                case 5:
+                    _e.sent();
+                    console.log('Loading legacy deck for beta public id ', legacyBetaPublicId);
+                    return [4 /*yield*/, loadLegacyDecksForPublicId(legacyBetaPublicId, decks, urlLoader)];
+                case 6:
+                    newlyLoadedDecks = _e.sent();
+                    decks.splice.apply(decks, __spreadArray([decks.length, 0], newlyLoadedDecks, false));
+                    _e.label = 7;
+                case 7:
+                    if (!cookie) return [3 /*break*/, 13];
+                    parsedId = cookie
+                        .split(';')
+                        .filter(function (a) { return !!a; })
+                        .map(function (a) { return ({ key: a.split('=')[0].trim(), value: a.split('=')[1].trim() }); })
+                        .filter(function (a) { return a.key === 'publicId'; })[0].value;
+                    setLegacyPublicId(parsedId || '');
+                    return [4 /*yield*/, storage.get('legacy_public_id')];
+                case 8:
+                    if (!((_e.sent()) !== parsedId)) return [3 /*break*/, 13];
+                    return [4 /*yield*/, storage.set('legacy_public_id', parsedId)];
+                case 9:
+                    _e.sent();
+                    _c = parsedId;
+                    if (!_c) return [3 /*break*/, 11];
+                    _d = parsedId;
+                    return [4 /*yield*/, storage.get('loaded_legacy_beta_decks')];
+                case 10:
+                    _c = _d !== (_e.sent());
+                    _e.label = 11;
+                case 11:
+                    if (!_c) return [3 /*break*/, 13];
+                    console.log('Loading legacy deck for public id ', parsedId);
+                    return [4 /*yield*/, loadLegacyDecksForPublicId(parsedId, decks, urlLoader)];
+                case 12:
+                    newlyLoadedDecks = _e.sent();
+                    decks.splice.apply(decks, __spreadArray([decks.length, 0], newlyLoadedDecks, false));
+                    _e.label = 13;
+                case 13:
+                    if (decksOnlyContainedStarter && decks.length > 1) {
+                        decks.splice(0, 1);
+                    }
+                    return [2 /*return*/, decks];
+            }
+        });
+    });
+}
+exports["default"] = loadLegacyDecksInitial;
+//# sourceMappingURL=legacy_deck_loader.js.map
+
+/***/ }),
+
 /***/ "./docs/views/components/list_card.js":
 /*!********************************************!*\
   !*** ./docs/views/components/list_card.js ***!
@@ -4137,6 +5195,87 @@ function makeManaIcon(name) {
 exports["default"] = makeManaIcon;
 ;
 //# sourceMappingURL=make_mana_icon.js.map
+
+/***/ }),
+
+/***/ "./docs/views/components/notification_window.js":
+/*!******************************************************!*\
+  !*** ./docs/views/components/notification_window.js ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var NotificationWindow = (0, react_1.forwardRef)(function NotificationWindow(_props, ref) {
+    var _a = (0, react_1.useState)(false), isOpen = _a[0], setIsOpen = _a[1];
+    var _b = (0, react_1.useState)(''), title = _b[0], setTitle = _b[1];
+    var _c = (0, react_1.useState)(''), message = _c[0], setMessage = _c[1];
+    (0, react_1.useImperativeHandle)(ref, function () { return ({
+        open: function (title, message) {
+            if (isOpen) {
+                console.error('Tried to open two notification windows at the same time.');
+                return;
+            }
+            setIsOpen(true);
+            setTitle(title);
+            setMessage(message);
+        },
+        close: function () {
+            setIsOpen(false);
+        },
+    }); });
+    if (!isOpen) {
+        return null;
+    }
+    return react_1.default.createElement("div", { style: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0',
+            left: '0',
+            backgroundColor: '#00000070',
+            zIndex: '7',
+        } },
+        react_1.default.createElement("div", { style: {
+                width: '800px',
+                height: '250px',
+                position: 'absolute',
+                left: 'calc(50% - 300px)',
+                top: 'calc(50% - 125px)',
+                backgroundColor: 'white',
+                borderRadius: '12px',
+                border: '3px solid #cdd6e4',
+                padding: '16px',
+            } },
+            react_1.default.createElement("div", { style: { padding: '12px', fontSize: '36px' } }, title),
+            react_1.default.createElement("div", { style: { fontSize: '24px' } }, message)));
+});
+exports["default"] = NotificationWindow;
+//# sourceMappingURL=notification_window.js.map
 
 /***/ }),
 
@@ -5485,21 +6624,14 @@ var confirm_delete_window_1 = __importDefault(__webpack_require__(/*! ./componen
 var deck_drop_handler_1 = __importDefault(__webpack_require__(/*! ./components/deck_drop_handler */ "./docs/views/components/deck_drop_handler.js"));
 var info_window_1 = __importDefault(__webpack_require__(/*! ./components/info_window */ "./docs/views/components/info_window.js"));
 var swap_printings_window_1 = __importDefault(__webpack_require__(/*! ./components/swap_printings_window */ "./docs/views/components/swap_printings_window.js"));
-var legacy_deck_loader_1 = __importStar(__webpack_require__(/*! ./legacy_deck_loader */ "./docs/views/legacy_deck_loader.js"));
-function copyDecks(decks) {
-    var newDecks = [];
-    for (var _i = 0, decks_1 = decks; _i < decks_1.length; _i++) {
-        var deck = decks_1[_i];
-        newDecks.push({
-            name: deck.name,
-            keycard: deck.keycard,
-            mainboard: deck.mainboard.slice(),
-            sideboard: deck.sideboard.slice(),
-            backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
-        });
-    }
-    return newDecks;
-}
+var legacy_deck_loader_1 = __importStar(__webpack_require__(/*! ./components/legacy_deck_loader */ "./docs/views/components/legacy_deck_loader.js"));
+var choose_storage_window_1 = __importDefault(__webpack_require__(/*! ./components/choose_storage_window */ "./docs/views/components/choose_storage_window.js"));
+var confirmation_window_1 = __importDefault(__webpack_require__(/*! ./components/confirmation_window */ "./docs/views/components/confirmation_window.js"));
+var storage_1 = __webpack_require__(/*! ../data/storage */ "./docs/data/storage.js");
+var frogtown_metadata_1 = __webpack_require__(/*! ../data/frogtown_metadata */ "./docs/data/frogtown_metadata.js");
+var backup_decks_1 = __importDefault(__webpack_require__(/*! ../data/backup_decks */ "./docs/data/backup_decks.js"));
+var bug71722MainboardSideboard_1 = __webpack_require__(/*! ../data/bugs/bug71722MainboardSideboard */ "./docs/data/bugs/bug71722MainboardSideboard.js");
+var notification_window_1 = __importDefault(__webpack_require__(/*! ./components/notification_window */ "./docs/views/components/notification_window.js"));
 function uniques(vals) {
     var obj = {};
     for (var _i = 0, vals_1 = vals; _i < vals_1.length; _i++) {
@@ -5518,56 +6650,70 @@ function indexPage(props) {
         props.loader.getMapData('IDToCropImageURI'),
     ];
     props.loader.holdUntil(Promise.all(priorityMaps));
-    var _a = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _a[0], setDeckIndex = _a[1];
-    var _b = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
-        .fill(null).map(function (_, i) {
-        var deck = null;
-        try {
-            deck = JSON.parse(localStorage.getItem("deck_".concat(i)) || 'null');
-        }
-        catch (_a) { }
-        if (!deck) {
-            deck = (0, deck_1.createNewDeck)(i + 1);
-        }
-        return (0, deck_1.ensureValidDeck)(deck);
-    })), decks = _b[0], setDecks = _b[1];
+    var _a = (0, react_1.useState)(0), deckIndex = _a[0], setDeckIndex = _a[1];
+    var _b = (0, react_1.useState)([]), decks = _b[0], setDecks = _b[1];
     var _c = (0, react_1.useState)(550), searchWidth = _c[0], setSearchWidth = _c[1];
     var editNameWindowRef = (0, react_1.useRef)(null);
     var searchAreaRef = (0, react_1.useRef)(null);
     var bulkImportWindowRef = (0, react_1.useRef)(null);
+    var notificationWindowRef = (0, react_1.useRef)(null);
+    var confirmationWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
     var infoWindowRef = (0, react_1.useRef)(null);
     var swapPrintingsWindowRef = (0, react_1.useRef)(null);
+    var storageRef = (0, react_1.useRef)(null);
     var _d = (0, react_1.useState)(''), legacyPublicId = _d[0], setLegacyPublicId = _d[1];
     var _e = (0, react_1.useState)(''), legacyBetaPublicId = _e[0], setLegacyBetaPublicId = _e[1];
-    (0, react_1.useEffect)(function () {
-        // Had a bug that overwrote all sideboards to be identical to mainboards. Unfortunately we can't restore the
-        // sideboard, so we just delete sideboards that are identical to mainboards.
-        if (!localStorage.getItem('fix_71722_mainboardsideboard')) {
-            localStorage.setItem('fix_71722_mainboardsideboard', Date.now().toString());
-            var newDecks = copyDecks(decks);
-            var changeMade = false;
-            for (var _i = 0, newDecks_1 = newDecks; _i < newDecks_1.length; _i++) {
-                var deck_2 = newDecks_1[_i];
-                if (deck_2.mainboard.length > 0 && deck_2.mainboard.sort().join(',') === deck_2.sideboard.sort().join(',')) {
-                    deck_2.sideboard = [];
-                    changeMade = true;
+    function tryMoveCacheIntoFolder(decks) {
+        return __awaiter(this, void 0, void 0, function () {
+            var localStorage, dirDecks, cacheDecks, performTransfer;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        localStorage = (0, storage_1.createLocalStorage)();
+                        return [4 /*yield*/, (0, deck_1.loadDecksFromStorage)(storageRef.current)];
+                    case 1:
+                        dirDecks = _a.sent();
+                        return [4 /*yield*/, (0, deck_1.loadDecksFromStorage)(localStorage)];
+                    case 2:
+                        cacheDecks = _a.sent();
+                        if (!cacheDecks.filter(function (d) { return d.mainboard.length || d.sideboard.length; }).length) return [3 /*break*/, 4];
+                        return [4 /*yield*/, confirmationWindowRef.current.open("Would you like to transfer the ".concat(cacheDecks.length, " decks in your local cache to this folder?"), 'The decks will no longer be available when choosing "Local Cache".', 'Transfer Decks')];
+                    case 3:
+                        performTransfer = _a.sent();
+                        if (performTransfer) {
+                            decks.splice.apply(decks, __spreadArray([decks.length, 0], dirDecks, false));
+                            decks.splice.apply(decks, __spreadArray([decks.length, 0], cacheDecks, false));
+                            localStorage.set('deck_count', '0');
+                        }
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
-            }
-            if (changeMade) {
-                setDecks(newDecks);
-            }
-        }
-    }, []);
+            });
+        });
+    }
     (0, react_1.useEffect)(function () {
-        for (var i = 0; i < decks.length; i++) {
-            localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
-        }
-        localStorage.setItem("deck_count", decks.length.toString());
+        (0, deck_1.saveDecksToStorage)(storageRef.current, decks);
     }, [decks]);
     (0, react_1.useEffect)(function () {
-        localStorage.setItem("deck_index", deckIndex.toString());
+        (function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!storageRef.current) {
+                            if (decks === null || decks === void 0 ? void 0 : decks.length) {
+                                console.error('Decks changed before storage ready: ', decks);
+                            }
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, storageRef.current.set("deck_index", deckIndex.toString())];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); })();
     }, [deckIndex]);
     (0, react_1.useEffect)(function () {
         var body = document.getElementsByTagName('body')[0];
@@ -5599,17 +6745,9 @@ function indexPage(props) {
                 }
             }
         });
-        (0, legacy_deck_loader_1.default)(copyDecks(decks), setLegacyPublicId, setLegacyBetaPublicId, window.location.search, document.cookie, props.urlLoader, {
-            getItem: function (key) { return localStorage.getItem(key); },
-            setItem: function (key, value) { return localStorage.setItem(key, value); },
-        }).then(function (newDecks) {
-            if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
-                setDecks(newDecks);
-            }
-        });
     }, []);
     var addCard = function (cardId, toSideboard) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         if (toSideboard) {
             newDecks[deckIndex].sideboard.push(cardId);
         }
@@ -5619,7 +6757,7 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var addCards = function (ids) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         for (var _i = 0, ids_1 = ids; _i < ids_1.length; _i++) {
             var cardId = ids_1[_i];
             newDecks[deckIndex].mainboard.push(cardId);
@@ -5627,7 +6765,7 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var removeCard = function (cardId, toSideboard) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         if (toSideboard) {
             for (var i = 0; i < newDecks[deckIndex].sideboard.length; i++) {
                 if (newDecks[deckIndex].sideboard[i] === cardId) {
@@ -5647,7 +6785,7 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var moveCard = function (cardId, toSideboard) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         if (toSideboard) {
             for (var i = 0; i < newDecks[deckIndex].mainboard.length; i++) {
                 if (newDecks[deckIndex].mainboard[i] === cardId) {
@@ -5669,30 +6807,30 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var setBackgroundUrl = function (newUrl) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks[deckIndex].backgroundUrl = newUrl;
         setDecks(newDecks);
     };
     var onStar = function (cardId) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks[deckIndex].keycard = cardId;
         setDecks(newDecks);
     };
     var addDeck = function () {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks.push((0, deck_1.createNewDeck)(newDecks.length + 1));
         setDecks(newDecks);
         setDeckIndex(newDecks.length - 1);
     };
     var swapCard = function (fromId, toId) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         console.log('Swap from ', fromId, toId);
         newDecks[deckIndex].mainboard = newDecks[deckIndex].mainboard.map(function (id) { return (id === fromId ? toId : id); });
         newDecks[deckIndex].sideboard = newDecks[deckIndex].sideboard.map(function (id) { return (id === fromId ? toId : id); });
         setDecks(newDecks);
     };
     var deleteConfirmed = function () {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks.splice(deckIndex, 1);
         if (newDecks.length === 0) {
             newDecks.push((0, deck_1.createNewDeck)(1));
@@ -5703,21 +6841,7 @@ function indexPage(props) {
         }
         setDecks(newDecks);
     };
-    var deck = decks[deckIndex];
-    if (!deck) {
-        console.error("Deck at index ".concat(deckIndex, "/").concat(decks.length, " is ").concat(deck, "."));
-        if (decks.length === 0) {
-            console.log('Creating deck 0');
-            setDecks([(0, deck_1.createNewDeck)(1)]);
-            setDeckIndex(0);
-        }
-        else {
-            console.log("Creating deck ".concat(decks.length));
-            setDeckIndex(decks.length);
-            setDecks(__spreadArray(__spreadArray([], decks, true), [(0, deck_1.createNewDeck)(1)], false));
-        }
-        return react_1.default.createElement(react_1.default.Fragment, null, "Deck at index ".concat(deckIndex, "/").concat(decks.length, " is ").concat(deck, "."));
-    }
+    var deck = deckIndex >= decks.length ? null : decks[deckIndex];
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
@@ -5754,12 +6878,15 @@ function indexPage(props) {
                 width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
-            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: deck.backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () {
+            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, deck: deck, loader: props.loader, addCard: addCard, onStar: onStar, onEditName: function () { var _a; return deck && ((_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () {
                     var _a;
+                    if (!deck) {
+                        return;
+                    }
                     var existingUrls = decks.map(function (d) { return d.backgroundUrl; }).filter(function (url) { return !!url; });
                     existingUrls.splice(0, 0, 'https://i.imgur.com/Hg8CwwU.jpeg');
                     return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(uniques(existingUrls), deck.backgroundUrl);
-                }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (id) {
+                }, onDelete: function () { var _a; return deck && ((_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (id) {
                     if (searchAreaRef.current) {
                         searchAreaRef.current.onSimilar(id);
                     }
@@ -5769,7 +6896,7 @@ function indexPage(props) {
                     }
                 } })),
         react_1.default.createElement(edit_name_window_1.default, { ref: editNameWindowRef, nameChanged: function (newName) {
-                var newDecks = copyDecks(decks);
+                var newDecks = (0, deck_1.copyDecks)(decks);
                 newDecks[deckIndex].name = newName;
                 setDecks(newDecks);
             } }),
@@ -5782,7 +6909,7 @@ function indexPage(props) {
                 var newDecks;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, (0, legacy_deck_loader_1.loadLegacyDecksForPublicId)(publicId, copyDecks(decks), props.urlLoader)];
+                        case 0: return [4 /*yield*/, (0, legacy_deck_loader_1.loadLegacyDecksForPublicId)(publicId, (0, deck_1.copyDecks)(decks), props.urlLoader)];
                         case 1:
                             newDecks = _a.sent();
                             if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
@@ -5804,171 +6931,97 @@ function indexPage(props) {
                         return;
                     }
                 }
-                var newDecks = copyDecks(decks);
+                var newDecks = (0, deck_1.copyDecks)(decks);
                 newDecks.push(deck);
                 setDecks(newDecks);
                 setDeckIndex(newDecks.length - 1);
-            } }));
+            } }),
+        react_1.default.createElement(choose_storage_window_1.default, { confirmationWindow: confirmationWindowRef, storageChosen: function (useCache, folder) { return __awaiter(_this, void 0, void 0, function () {
+                var loadedDecks, existingMetadata, _a, _b, _c, currentMetadata, storageDecks, _d, _e;
+                return __generator(this, function (_f) {
+                    switch (_f.label) {
+                        case 0:
+                            loadedDecks = (0, deck_1.copyDecks)(decks);
+                            if (!useCache) return [3 /*break*/, 1];
+                            storageRef.current = (0, storage_1.createLocalStorage)();
+                            return [3 /*break*/, 13];
+                        case 1:
+                            if (!folder) return [3 /*break*/, 13];
+                            storageRef.current = (0, storage_1.createDirectoryStorage)(folder, document);
+                            existingMetadata = null;
+                            _f.label = 2;
+                        case 2:
+                            _f.trys.push([2, 4, , 5]);
+                            _b = (_a = JSON).parse;
+                            return [4 /*yield*/, storageRef.current.get('frogtown_metadata.json')];
+                        case 3:
+                            existingMetadata = _b.apply(_a, [(_f.sent()) || '']);
+                            return [3 /*break*/, 5];
+                        case 4:
+                            _c = _f.sent();
+                            return [3 /*break*/, 5];
+                        case 5:
+                            currentMetadata = (0, frogtown_metadata_1.getCurrentMetadata)();
+                            console.log({ existingMetadata: existingMetadata, currentMetadata: currentMetadata });
+                            return [4 /*yield*/, storageRef.current.set('frogtown_metadata.json', JSON.stringify(existingMetadata), true)];
+                        case 6:
+                            if (!!(_f.sent())) return [3 /*break*/, 8];
+                            return [4 /*yield*/, confirmationWindowRef.current.open('Failed To Write To Storage', 'Frogtown was unable to write your decks to the selected folder, and will now refresh.', 'OK')];
+                        case 7:
+                            _f.sent();
+                            window.location.reload();
+                            return [2 /*return*/];
+                        case 8:
+                            if (!(currentMetadata.majorVersion !== (existingMetadata === null || existingMetadata === void 0 ? void 0 : existingMetadata.majorVersion))) return [3 /*break*/, 10];
+                            return [4 /*yield*/, (0, backup_decks_1.default)(storageRef.current, notificationWindowRef.current, existingMetadata || { majorVersion: 0, minorVersion: 0 })];
+                        case 9:
+                            _f.sent();
+                            _f.label = 10;
+                        case 10: return [4 /*yield*/, storageRef.current.set('frogtown_metadata.json', JSON.stringify(currentMetadata))];
+                        case 11:
+                            _f.sent();
+                            return [4 /*yield*/, tryMoveCacheIntoFolder(loadedDecks)];
+                        case 12:
+                            _f.sent();
+                            _f.label = 13;
+                        case 13:
+                            if (!!storageRef.current) return [3 /*break*/, 14];
+                            console.error('Failed to initialize storage!');
+                            return [3 /*break*/, 19];
+                        case 14: return [4 /*yield*/, (0, deck_1.loadDecksFromStorage)(storageRef.current)];
+                        case 15:
+                            storageDecks = _f.sent();
+                            loadedDecks.splice.apply(loadedDecks, __spreadArray([loadedDecks.length, 0], storageDecks, false));
+                            _d = setDeckIndex;
+                            _e = Number;
+                            return [4 /*yield*/, storageRef.current.get('deck_index')];
+                        case 16:
+                            _d.apply(void 0, [_e.apply(void 0, [(_f.sent()) || '0'])]);
+                            // Data transforms to address/mitigate bugs in previous versions.
+                            return [4 /*yield*/, (0, bug71722MainboardSideboard_1.transformBug71722MainboardSideboard)(storageRef.current, loadedDecks)];
+                        case 17:
+                            // Data transforms to address/mitigate bugs in previous versions.
+                            _f.sent();
+                            // Always pass local storage to the legacy deck loader, it is only used to track if decks have already been
+                            // imported or not. The old IDs are stored in cookies, and the decks should only be imported once, makes sense
+                            // to keep it in all in the browser.
+                            return [4 /*yield*/, (0, legacy_deck_loader_1.default)(loadedDecks, setLegacyPublicId, setLegacyBetaPublicId, window.location.search, document.cookie, props.urlLoader, (0, storage_1.createLocalStorage)())];
+                        case 18:
+                            // Always pass local storage to the legacy deck loader, it is only used to track if decks have already been
+                            // imported or not. The old IDs are stored in cookies, and the decks should only be imported once, makes sense
+                            // to keep it in all in the browser.
+                            _f.sent();
+                            setDecks(loadedDecks);
+                            _f.label = 19;
+                        case 19: return [2 /*return*/];
+                    }
+                });
+            }); } }),
+        react_1.default.createElement(confirmation_window_1.default, { ref: confirmationWindowRef }),
+        react_1.default.createElement(notification_window_1.default, { ref: notificationWindowRef }));
 }
 exports["default"] = indexPage;
 //# sourceMappingURL=index_page.js.map
-
-/***/ }),
-
-/***/ "./docs/views/legacy_deck_loader.js":
-/*!******************************************!*\
-  !*** ./docs/views/legacy_deck_loader.js ***!
-  \******************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.loadLegacyDecksForPublicId = void 0;
-var deck_1 = __webpack_require__(/*! ../data/deck */ "./docs/data/deck.js");
-function loadLegacyDecksForPublicId(legacyPublicId, newDecks, urlLoader) {
-    return __awaiter(this, void 0, void 0, function () {
-        var userData, _a, _b, cardback_1, loadedDecks, i, mainboardStr, sideboardStr, _i, newDecks_1, existingDeck, e_1;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _c.trys.push([0, 2, , 3]);
-                    _b = (_a = JSON).parse;
-                    return [4 /*yield*/, urlLoader.load("https://s3.us-west-2.amazonaws.com/frogtown.userdecklists/".concat(legacyPublicId, ".json"))];
-                case 1:
-                    userData = _b.apply(_a, [_c.sent()]);
-                    console.log(userData);
-                    cardback_1 = 'https://i.imgur.com/Hg8CwwU.jpeg';
-                    if (userData.cardbackUrl && userData.cardbackUrl.indexOf('frogtown.me') === -1) {
-                        cardback_1 = userData.cardbackUrl;
-                    }
-                    loadedDecks = userData.decks.map(function (a) {
-                        // Ensure we don't let poorly formatted decks in.
-                        return {
-                            name: a.name,
-                            keycard: a.keycard || a.mainboard[0] || a.sideboard[0] || '4b81165e-f091-4211-8b47-5ea6868b0d4c',
-                            mainboard: a.mainboard,
-                            sideboard: a.sideboard,
-                            backgroundUrl: cardback_1,
-                        };
-                    });
-                    for (i = loadedDecks.length - 1; i >= 0; i--) {
-                        mainboardStr = __spreadArray([], loadedDecks[i].mainboard, true).sort().join(',');
-                        sideboardStr = __spreadArray([], loadedDecks[i].sideboard, true).sort().join(',');
-                        for (_i = 0, newDecks_1 = newDecks; _i < newDecks_1.length; _i++) {
-                            existingDeck = newDecks_1[_i];
-                            if (mainboardStr === __spreadArray([], existingDeck.mainboard, true).sort().join(',') &&
-                                sideboardStr === __spreadArray([], existingDeck.sideboard, true).sort().join(',')) {
-                                loadedDecks.splice(i, 1);
-                            }
-                        }
-                    }
-                    newDecks.splice.apply(newDecks, __spreadArray([newDecks.length, 0], loadedDecks, false));
-                    return [3 /*break*/, 3];
-                case 2:
-                    e_1 = _c.sent();
-                    console.error('Unable to load decks from legacy account.');
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/, newDecks];
-            }
-        });
-    });
-}
-exports.loadLegacyDecksForPublicId = loadLegacyDecksForPublicId;
-function loadLegacyDecksInitial(decks, setLegacyPublicId, setLegacyBetaPublicId, search, cookie, urlLoader, storage) {
-    return __awaiter(this, void 0, void 0, function () {
-        var startingDeckCount, decksOnlyContainedStarter, legacyBetaPublicId, parsedId;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    startingDeckCount = decks.length;
-                    decksOnlyContainedStarter = decks.length === 1 &&
-                        JSON.stringify(decks[0]) === JSON.stringify((0, deck_1.createNewDeck)(1));
-                    legacyBetaPublicId = ((search.split('?')[1] || '')
-                        .split('&')
-                        .filter(function (v) { return v.indexOf('legacyBetaPublicId') === 0; })[0] || '').split('=')[1] || storage.getItem('legacy_beta_public_id');
-                    setLegacyBetaPublicId(legacyBetaPublicId || '');
-                    if (!(legacyBetaPublicId && storage.getItem('legacy_beta_public_id') !== legacyBetaPublicId)) return [3 /*break*/, 2];
-                    storage.setItem('legacy_beta_public_id', legacyBetaPublicId);
-                    return [4 /*yield*/, loadLegacyDecksForPublicId(legacyBetaPublicId, decks, urlLoader)];
-                case 1:
-                    // console.log('Loading legacy deck for beta public id ', legacyBetaPublicId);
-                    decks = _a.sent();
-                    _a.label = 2;
-                case 2:
-                    if (!cookie) return [3 /*break*/, 4];
-                    parsedId = cookie
-                        .split(';')
-                        .filter(function (a) { return !!a; })
-                        .map(function (a) { return ({ key: a.split('=')[0].trim(), value: a.split('=')[1].trim() }); })
-                        .filter(function (a) { return a.key === 'publicId'; })[0].value;
-                    setLegacyPublicId(parsedId || '');
-                    if (!(storage.getItem('legacy_public_id') !== parsedId)) return [3 /*break*/, 4];
-                    storage.setItem('legacy_public_id', parsedId);
-                    if (!(parsedId && parsedId !== storage.getItem('loaded_legacy_beta_decks'))) return [3 /*break*/, 4];
-                    return [4 /*yield*/, loadLegacyDecksForPublicId(parsedId, decks, urlLoader)];
-                case 3:
-                    // console.log('Loading legacy deck for public id ', parsedId);
-                    decks = _a.sent();
-                    _a.label = 4;
-                case 4:
-                    if (decks.length !== startingDeckCount) {
-                        if (decksOnlyContainedStarter) {
-                            decks.splice(0, 1);
-                        }
-                        return [2 /*return*/, decks];
-                    }
-                    return [2 /*return*/, null];
-            }
-        });
-    });
-}
-exports["default"] = loadLegacyDecksInitial;
-//# sourceMappingURL=legacy_deck_loader.js.map
 
 /***/ }),
 

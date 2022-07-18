@@ -86,21 +86,14 @@ var confirm_delete_window_1 = __importDefault(require("./components/confirm_dele
 var deck_drop_handler_1 = __importDefault(require("./components/deck_drop_handler"));
 var info_window_1 = __importDefault(require("./components/info_window"));
 var swap_printings_window_1 = __importDefault(require("./components/swap_printings_window"));
-var legacy_deck_loader_1 = __importStar(require("./legacy_deck_loader"));
-function copyDecks(decks) {
-    var newDecks = [];
-    for (var _i = 0, decks_1 = decks; _i < decks_1.length; _i++) {
-        var deck = decks_1[_i];
-        newDecks.push({
-            name: deck.name,
-            keycard: deck.keycard,
-            mainboard: deck.mainboard.slice(),
-            sideboard: deck.sideboard.slice(),
-            backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
-        });
-    }
-    return newDecks;
-}
+var legacy_deck_loader_1 = __importStar(require("./components/legacy_deck_loader"));
+var choose_storage_window_1 = __importDefault(require("./components/choose_storage_window"));
+var confirmation_window_1 = __importDefault(require("./components/confirmation_window"));
+var storage_1 = require("../data/storage");
+var frogtown_metadata_1 = require("../data/frogtown_metadata");
+var backup_decks_1 = __importDefault(require("../data/backup_decks"));
+var bug71722MainboardSideboard_1 = require("../data/bugs/bug71722MainboardSideboard");
+var notification_window_1 = __importDefault(require("./components/notification_window"));
 function uniques(vals) {
     var obj = {};
     for (var _i = 0, vals_1 = vals; _i < vals_1.length; _i++) {
@@ -119,56 +112,70 @@ function indexPage(props) {
         props.loader.getMapData('IDToCropImageURI'),
     ];
     props.loader.holdUntil(Promise.all(priorityMaps));
-    var _a = (0, react_1.useState)(Number(localStorage.getItem('deck_index') || '0')), deckIndex = _a[0], setDeckIndex = _a[1];
-    var _b = (0, react_1.useState)(new Array(Number(localStorage.getItem('deck_count') || '1'))
-        .fill(null).map(function (_, i) {
-        var deck = null;
-        try {
-            deck = JSON.parse(localStorage.getItem("deck_".concat(i)) || 'null');
-        }
-        catch (_a) { }
-        if (!deck) {
-            deck = (0, deck_1.createNewDeck)(i + 1);
-        }
-        return (0, deck_1.ensureValidDeck)(deck);
-    })), decks = _b[0], setDecks = _b[1];
+    var _a = (0, react_1.useState)(0), deckIndex = _a[0], setDeckIndex = _a[1];
+    var _b = (0, react_1.useState)([]), decks = _b[0], setDecks = _b[1];
     var _c = (0, react_1.useState)(550), searchWidth = _c[0], setSearchWidth = _c[1];
     var editNameWindowRef = (0, react_1.useRef)(null);
     var searchAreaRef = (0, react_1.useRef)(null);
     var bulkImportWindowRef = (0, react_1.useRef)(null);
+    var notificationWindowRef = (0, react_1.useRef)(null);
+    var confirmationWindowRef = (0, react_1.useRef)(null);
     var settingsWindowRef = (0, react_1.useRef)(null);
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
     var infoWindowRef = (0, react_1.useRef)(null);
     var swapPrintingsWindowRef = (0, react_1.useRef)(null);
+    var storageRef = (0, react_1.useRef)(null);
     var _d = (0, react_1.useState)(''), legacyPublicId = _d[0], setLegacyPublicId = _d[1];
     var _e = (0, react_1.useState)(''), legacyBetaPublicId = _e[0], setLegacyBetaPublicId = _e[1];
-    (0, react_1.useEffect)(function () {
-        // Had a bug that overwrote all sideboards to be identical to mainboards. Unfortunately we can't restore the
-        // sideboard, so we just delete sideboards that are identical to mainboards.
-        if (!localStorage.getItem('fix_71722_mainboardsideboard')) {
-            localStorage.setItem('fix_71722_mainboardsideboard', Date.now().toString());
-            var newDecks = copyDecks(decks);
-            var changeMade = false;
-            for (var _i = 0, newDecks_1 = newDecks; _i < newDecks_1.length; _i++) {
-                var deck_2 = newDecks_1[_i];
-                if (deck_2.mainboard.length > 0 && deck_2.mainboard.sort().join(',') === deck_2.sideboard.sort().join(',')) {
-                    deck_2.sideboard = [];
-                    changeMade = true;
+    function tryMoveCacheIntoFolder(decks) {
+        return __awaiter(this, void 0, void 0, function () {
+            var localStorage, dirDecks, cacheDecks, performTransfer;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        localStorage = (0, storage_1.createLocalStorage)();
+                        return [4 /*yield*/, (0, deck_1.loadDecksFromStorage)(storageRef.current)];
+                    case 1:
+                        dirDecks = _a.sent();
+                        return [4 /*yield*/, (0, deck_1.loadDecksFromStorage)(localStorage)];
+                    case 2:
+                        cacheDecks = _a.sent();
+                        if (!cacheDecks.filter(function (d) { return d.mainboard.length || d.sideboard.length; }).length) return [3 /*break*/, 4];
+                        return [4 /*yield*/, confirmationWindowRef.current.open("Would you like to transfer the ".concat(cacheDecks.length, " decks in your local cache to this folder?"), 'The decks will no longer be available when choosing "Local Cache".', 'Transfer Decks')];
+                    case 3:
+                        performTransfer = _a.sent();
+                        if (performTransfer) {
+                            decks.splice.apply(decks, __spreadArray([decks.length, 0], dirDecks, false));
+                            decks.splice.apply(decks, __spreadArray([decks.length, 0], cacheDecks, false));
+                            localStorage.set('deck_count', '0');
+                        }
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
-            }
-            if (changeMade) {
-                setDecks(newDecks);
-            }
-        }
-    }, []);
+            });
+        });
+    }
     (0, react_1.useEffect)(function () {
-        for (var i = 0; i < decks.length; i++) {
-            localStorage.setItem("deck_".concat(i), JSON.stringify(decks[i]));
-        }
-        localStorage.setItem("deck_count", decks.length.toString());
+        (0, deck_1.saveDecksToStorage)(storageRef.current, decks);
     }, [decks]);
     (0, react_1.useEffect)(function () {
-        localStorage.setItem("deck_index", deckIndex.toString());
+        (function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!storageRef.current) {
+                            if (decks === null || decks === void 0 ? void 0 : decks.length) {
+                                console.error('Decks changed before storage ready: ', decks);
+                            }
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, storageRef.current.set("deck_index", deckIndex.toString())];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); })();
     }, [deckIndex]);
     (0, react_1.useEffect)(function () {
         var body = document.getElementsByTagName('body')[0];
@@ -200,17 +207,9 @@ function indexPage(props) {
                 }
             }
         });
-        (0, legacy_deck_loader_1.default)(copyDecks(decks), setLegacyPublicId, setLegacyBetaPublicId, window.location.search, document.cookie, props.urlLoader, {
-            getItem: function (key) { return localStorage.getItem(key); },
-            setItem: function (key, value) { return localStorage.setItem(key, value); },
-        }).then(function (newDecks) {
-            if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
-                setDecks(newDecks);
-            }
-        });
     }, []);
     var addCard = function (cardId, toSideboard) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         if (toSideboard) {
             newDecks[deckIndex].sideboard.push(cardId);
         }
@@ -220,7 +219,7 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var addCards = function (ids) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         for (var _i = 0, ids_1 = ids; _i < ids_1.length; _i++) {
             var cardId = ids_1[_i];
             newDecks[deckIndex].mainboard.push(cardId);
@@ -228,7 +227,7 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var removeCard = function (cardId, toSideboard) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         if (toSideboard) {
             for (var i = 0; i < newDecks[deckIndex].sideboard.length; i++) {
                 if (newDecks[deckIndex].sideboard[i] === cardId) {
@@ -248,7 +247,7 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var moveCard = function (cardId, toSideboard) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         if (toSideboard) {
             for (var i = 0; i < newDecks[deckIndex].mainboard.length; i++) {
                 if (newDecks[deckIndex].mainboard[i] === cardId) {
@@ -270,30 +269,30 @@ function indexPage(props) {
         setDecks(newDecks);
     };
     var setBackgroundUrl = function (newUrl) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks[deckIndex].backgroundUrl = newUrl;
         setDecks(newDecks);
     };
     var onStar = function (cardId) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks[deckIndex].keycard = cardId;
         setDecks(newDecks);
     };
     var addDeck = function () {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks.push((0, deck_1.createNewDeck)(newDecks.length + 1));
         setDecks(newDecks);
         setDeckIndex(newDecks.length - 1);
     };
     var swapCard = function (fromId, toId) {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         console.log('Swap from ', fromId, toId);
         newDecks[deckIndex].mainboard = newDecks[deckIndex].mainboard.map(function (id) { return (id === fromId ? toId : id); });
         newDecks[deckIndex].sideboard = newDecks[deckIndex].sideboard.map(function (id) { return (id === fromId ? toId : id); });
         setDecks(newDecks);
     };
     var deleteConfirmed = function () {
-        var newDecks = copyDecks(decks);
+        var newDecks = (0, deck_1.copyDecks)(decks);
         newDecks.splice(deckIndex, 1);
         if (newDecks.length === 0) {
             newDecks.push((0, deck_1.createNewDeck)(1));
@@ -304,21 +303,7 @@ function indexPage(props) {
         }
         setDecks(newDecks);
     };
-    var deck = decks[deckIndex];
-    if (!deck) {
-        console.error("Deck at index ".concat(deckIndex, "/").concat(decks.length, " is ").concat(deck, "."));
-        if (decks.length === 0) {
-            console.log('Creating deck 0');
-            setDecks([(0, deck_1.createNewDeck)(1)]);
-            setDeckIndex(0);
-        }
-        else {
-            console.log("Creating deck ".concat(decks.length));
-            setDeckIndex(decks.length);
-            setDecks(__spreadArray(__spreadArray([], decks, true), [(0, deck_1.createNewDeck)(1)], false));
-        }
-        return react_1.default.createElement(react_1.default.Fragment, null, "Deck at index ".concat(deckIndex, "/").concat(decks.length, " is ").concat(deck, "."));
-    }
+    var deck = deckIndex >= decks.length ? null : decks[deckIndex];
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
                 setDeckIndex(i);
@@ -355,12 +340,15 @@ function indexPage(props) {
                 width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
-            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, mainboardCards: deck.mainboard, keycard: deck.keycard, name: deck.name, sideboardCards: deck.sideboard, loader: props.loader, addCard: addCard, onStar: onStar, backUrl: deck.backgroundUrl, onEditName: function () { var _a; return (_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () {
+            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, deck: deck, loader: props.loader, addCard: addCard, onStar: onStar, onEditName: function () { var _a; return deck && ((_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () {
                     var _a;
+                    if (!deck) {
+                        return;
+                    }
                     var existingUrls = decks.map(function (d) { return d.backgroundUrl; }).filter(function (url) { return !!url; });
                     existingUrls.splice(0, 0, 'https://i.imgur.com/Hg8CwwU.jpeg');
                     return (_a = settingsWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(uniques(existingUrls), deck.backgroundUrl);
-                }, onDelete: function () { var _a; return (_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (id) {
+                }, onDelete: function () { var _a; return deck && ((_a = confirmDeleteWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, urlLoader: props.urlLoader, removeCard: removeCard, moveCard: moveCard, onSimilar: function (id) {
                     if (searchAreaRef.current) {
                         searchAreaRef.current.onSimilar(id);
                     }
@@ -370,7 +358,7 @@ function indexPage(props) {
                     }
                 } })),
         react_1.default.createElement(edit_name_window_1.default, { ref: editNameWindowRef, nameChanged: function (newName) {
-                var newDecks = copyDecks(decks);
+                var newDecks = (0, deck_1.copyDecks)(decks);
                 newDecks[deckIndex].name = newName;
                 setDecks(newDecks);
             } }),
@@ -383,7 +371,7 @@ function indexPage(props) {
                 var newDecks;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, (0, legacy_deck_loader_1.loadLegacyDecksForPublicId)(publicId, copyDecks(decks), props.urlLoader)];
+                        case 0: return [4 /*yield*/, (0, legacy_deck_loader_1.loadLegacyDecksForPublicId)(publicId, (0, deck_1.copyDecks)(decks), props.urlLoader)];
                         case 1:
                             newDecks = _a.sent();
                             if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
@@ -405,11 +393,94 @@ function indexPage(props) {
                         return;
                     }
                 }
-                var newDecks = copyDecks(decks);
+                var newDecks = (0, deck_1.copyDecks)(decks);
                 newDecks.push(deck);
                 setDecks(newDecks);
                 setDeckIndex(newDecks.length - 1);
-            } }));
+            } }),
+        react_1.default.createElement(choose_storage_window_1.default, { confirmationWindow: confirmationWindowRef, storageChosen: function (useCache, folder) { return __awaiter(_this, void 0, void 0, function () {
+                var loadedDecks, existingMetadata, _a, _b, _c, currentMetadata, storageDecks, _d, _e;
+                return __generator(this, function (_f) {
+                    switch (_f.label) {
+                        case 0:
+                            loadedDecks = (0, deck_1.copyDecks)(decks);
+                            if (!useCache) return [3 /*break*/, 1];
+                            storageRef.current = (0, storage_1.createLocalStorage)();
+                            return [3 /*break*/, 13];
+                        case 1:
+                            if (!folder) return [3 /*break*/, 13];
+                            storageRef.current = (0, storage_1.createDirectoryStorage)(folder, document);
+                            existingMetadata = null;
+                            _f.label = 2;
+                        case 2:
+                            _f.trys.push([2, 4, , 5]);
+                            _b = (_a = JSON).parse;
+                            return [4 /*yield*/, storageRef.current.get('frogtown_metadata.json')];
+                        case 3:
+                            existingMetadata = _b.apply(_a, [(_f.sent()) || '']);
+                            return [3 /*break*/, 5];
+                        case 4:
+                            _c = _f.sent();
+                            return [3 /*break*/, 5];
+                        case 5:
+                            currentMetadata = (0, frogtown_metadata_1.getCurrentMetadata)();
+                            console.log({ existingMetadata: existingMetadata, currentMetadata: currentMetadata });
+                            return [4 /*yield*/, storageRef.current.set('frogtown_metadata.json', JSON.stringify(existingMetadata), true)];
+                        case 6:
+                            if (!!(_f.sent())) return [3 /*break*/, 8];
+                            return [4 /*yield*/, confirmationWindowRef.current.open('Failed To Write To Storage', 'Frogtown was unable to write your decks to the selected folder, and will now refresh.', 'OK')];
+                        case 7:
+                            _f.sent();
+                            window.location.reload();
+                            return [2 /*return*/];
+                        case 8:
+                            if (!(currentMetadata.majorVersion !== (existingMetadata === null || existingMetadata === void 0 ? void 0 : existingMetadata.majorVersion))) return [3 /*break*/, 10];
+                            return [4 /*yield*/, (0, backup_decks_1.default)(storageRef.current, notificationWindowRef.current, existingMetadata || { majorVersion: 0, minorVersion: 0 })];
+                        case 9:
+                            _f.sent();
+                            _f.label = 10;
+                        case 10: return [4 /*yield*/, storageRef.current.set('frogtown_metadata.json', JSON.stringify(currentMetadata))];
+                        case 11:
+                            _f.sent();
+                            return [4 /*yield*/, tryMoveCacheIntoFolder(loadedDecks)];
+                        case 12:
+                            _f.sent();
+                            _f.label = 13;
+                        case 13:
+                            if (!!storageRef.current) return [3 /*break*/, 14];
+                            console.error('Failed to initialize storage!');
+                            return [3 /*break*/, 19];
+                        case 14: return [4 /*yield*/, (0, deck_1.loadDecksFromStorage)(storageRef.current)];
+                        case 15:
+                            storageDecks = _f.sent();
+                            loadedDecks.splice.apply(loadedDecks, __spreadArray([loadedDecks.length, 0], storageDecks, false));
+                            _d = setDeckIndex;
+                            _e = Number;
+                            return [4 /*yield*/, storageRef.current.get('deck_index')];
+                        case 16:
+                            _d.apply(void 0, [_e.apply(void 0, [(_f.sent()) || '0'])]);
+                            // Data transforms to address/mitigate bugs in previous versions.
+                            return [4 /*yield*/, (0, bug71722MainboardSideboard_1.transformBug71722MainboardSideboard)(storageRef.current, loadedDecks)];
+                        case 17:
+                            // Data transforms to address/mitigate bugs in previous versions.
+                            _f.sent();
+                            // Always pass local storage to the legacy deck loader, it is only used to track if decks have already been
+                            // imported or not. The old IDs are stored in cookies, and the decks should only be imported once, makes sense
+                            // to keep it in all in the browser.
+                            return [4 /*yield*/, (0, legacy_deck_loader_1.default)(loadedDecks, setLegacyPublicId, setLegacyBetaPublicId, window.location.search, document.cookie, props.urlLoader, (0, storage_1.createLocalStorage)())];
+                        case 18:
+                            // Always pass local storage to the legacy deck loader, it is only used to track if decks have already been
+                            // imported or not. The old IDs are stored in cookies, and the decks should only be imported once, makes sense
+                            // to keep it in all in the browser.
+                            _f.sent();
+                            setDecks(loadedDecks);
+                            _f.label = 19;
+                        case 19: return [2 /*return*/];
+                    }
+                });
+            }); } }),
+        react_1.default.createElement(confirmation_window_1.default, { ref: confirmationWindowRef }),
+        react_1.default.createElement(notification_window_1.default, { ref: notificationWindowRef }));
 }
 exports.default = indexPage;
 //# sourceMappingURL=index_page.js.map

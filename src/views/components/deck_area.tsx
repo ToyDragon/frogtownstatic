@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {DataLoader} from '../../data/data_loader';
+import {Deck} from '../../data/deck';
 import IconGear from '../bootstrap_icons/icon_gear';
 import TableTopSimulator from '../exporter/tabletop_simulator';
 import CardArea from './card_area';
@@ -13,11 +14,7 @@ export default function deckArea(props: {
     imageLoadTracker: ImageLoadTracker,
     loader: DataLoader,
     urlLoader: URLLoader,
-    name: string,
-    keycard: string,
-    mainboardCards: string[],
-    sideboardCards: string[],
-    backUrl: string,
+    deck: Deck | null,
     addCard: (id: string, toSideboard: boolean) => void,
     removeCard: (id: string, toSideboard: boolean) => void,
     moveCard: (id: string, toSideboard: boolean) => void,
@@ -45,30 +42,29 @@ export default function deckArea(props: {
 
   let keycardImageUrl = '';
   const idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
-  if (idToCropImageURI) {
-    keycardImageUrl = `url("${idToCropImageURI[props.keycard]}")`;
+  if (idToCropImageURI && props.deck?.keycard) {
+    keycardImageUrl = `url("${idToCropImageURI[props.deck.keycard]}")`;
   }
 
-  const downloadProps = {
-    href: !exportReady ? '#' :
-      'data:text/json,' +
+  const downloadProps = (!props.deck || !exportReady) ? {href: '#'} : {
+    href: 'data:text/json,' +
       encodeURIComponent(tabletopSimManager.current.exportDeck(
-          props.mainboardCards,
-          props.sideboardCards,
-          props.backUrl)),
-    download: !exportReady ? '' : `${props.name}.json`,
+          props.deck.mainboard,
+          props.deck.sideboard,
+          props.deck.backgroundUrl)),
+    download: `${props.deck.name}.json`,
   };
 
   const idToName = props.loader.getMapDataSync('IDToName');
   let tcgplayerLink = '';
-  if (idToName && props.mainboardCards.length + props.sideboardCards.length > 0) {
+  if (props.deck && idToName && props.deck.mainboard.length + props.deck.sideboard.length > 0) {
     const affiliateCode = 'frogtown';
     tcgplayerLink = `https://www.tcgplayer.com/massentry?productline=Magic&utm_campaign=${affiliateCode}&utm_medium=scryfall&utm_source=${affiliateCode}&c=` +
-      encodeURIComponent(countCards(props.mainboardCards.concat(props.sideboardCards))
+      encodeURIComponent(countCards(props.deck.mainboard.concat(props.deck.sideboard))
           .map((a) => `${a.count} ${idToName[a.id]}`).join('||'));
   }
 
-  const cardCount = props.mainboardCards.length + props.sideboardCards.length;
+  const cardCount = !props.deck ? 0 : props.deck.mainboard.length + props.deck.sideboard.length;
 
   return (
     <div style={{
@@ -99,7 +95,7 @@ export default function deckArea(props: {
         left: '267px',
         top: '92px',
       }}>
-        {props.name} ({props.mainboardCards.length + props.sideboardCards.length} cards)
+        {!props.deck ? '' : `${props.deck.name} (${cardCount} cards)`}
       </div>
       <div style={{
         overflowY: 'scroll',
@@ -109,12 +105,13 @@ export default function deckArea(props: {
           fontSize: '44px',
           marginLeft: '25px',
           marginBottom: '-16px',
-          visibility: props.mainboardCards.length === 0 ? 'hidden' : 'visible',
+          visibility: (props.deck?.mainboard?.length || 0) === 0 ? 'hidden' : 'visible',
         }}>
           Mainboard
         </div>
-        <CardArea imageLoadTracker={props.imageLoadTracker} cardIds={props.mainboardCards} displayMode={displayMode}
-          loader={props.loader} urlLoader={props.urlLoader} grouper={grouper} actionHandlers={{
+        <CardArea imageLoadTracker={props.imageLoadTracker} cardIds={props.deck?.mainboard || []}
+          displayMode={displayMode} loader={props.loader} urlLoader={props.urlLoader} grouper={grouper}
+          actionHandlers={{
             onAdd: (cardId: string) => {
               props.addCard(cardId, false);
             },
@@ -132,12 +129,13 @@ export default function deckArea(props: {
           fontSize: '44px',
           marginLeft: '25px',
           marginBottom: '-16px',
-          visibility: props.sideboardCards.length === 0 ? 'hidden' : 'visible',
+          visibility: (props.deck?.sideboard?.length || 0) === 0 ? 'hidden' : 'visible',
         }}>
           Sideboard
         </div>
-        <CardArea imageLoadTracker={props.imageLoadTracker} cardIds={props.sideboardCards} displayMode={displayMode}
-          loader={props.loader} urlLoader={props.urlLoader} grouper={grouper} actionHandlers={{
+        <CardArea imageLoadTracker={props.imageLoadTracker} cardIds={props.deck?.sideboard || []}
+          displayMode={displayMode} loader={props.loader} urlLoader={props.urlLoader} grouper={grouper}
+          actionHandlers={{
             onAdd: (cardId: string) => {
               props.addCard(cardId, true);
             },

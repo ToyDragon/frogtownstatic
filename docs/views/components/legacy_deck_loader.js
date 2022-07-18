@@ -46,7 +46,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadLegacyDecksForPublicId = void 0;
-var deck_1 = require("../data/deck");
+var deck_1 = require("../../data/deck");
 function loadLegacyDecksForPublicId(legacyPublicId, existingDecks, urlLoader) {
     return __awaiter(this, void 0, void 0, function () {
         var loadedDecks, userData, _a, _b, cardback_1, i, mainboardStr, sideboardStr, _i, existingDecks_1, existingDeck, e_1;

@@ -28,8 +28,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var path = __importStar(require("path"));
+var https = __importStar(require("https"));
+var fs = __importStar(require("fs"));
 var app = (0, express_1.default)();
 app.use(express_1.default.static(path.resolve(__dirname, '../../docs')));
+var sslConfig = null;
+try {
+    sslConfig = {
+        key: fs.readFileSync('secrets/server.key'),
+        cert: fs.readFileSync('secrets/server.crt'),
+    };
+}
+catch (_a) { }
 app.listen(8080);
 console.log("Listening on port {8080}.");
+if (sslConfig) {
+    https.createServer(sslConfig, app).listen(18443);
+    console.log("Listening on port {18443}.");
+}
 //# sourceMappingURL=server.js.map

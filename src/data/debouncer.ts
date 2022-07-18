@@ -1,12 +1,14 @@
+export type Unloadable = {
+  addEventListener: (event: 'onbeforeunload', cb: () => void) => void,
+};
+
 export default class Debouncer {
   private delay: number;
   private lastAction!: Date;
   private waiting = false;
   private inProgressRequest: ((shouldAct: boolean) => void) | null = null;
 
-  public constructor(delay: number, unloadable: {
-    addEventListener: (event: 'onbeforeunload', cb: () => void) => void,
-  }) {
+  public constructor(delay: number, unloadable: Unloadable) {
     this.delay = delay;
     this.lastAction = new Date();
     this.lastAction.setFullYear(1990);

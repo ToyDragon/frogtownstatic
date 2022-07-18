@@ -1,5 +1,5 @@
 import MemoryUrlLoader from './memory_url_loader';
-import loadLegacyDecksInitial, {LegacyUserData, loadLegacyDecksForPublicId} from '../legacy_deck_loader';
+import loadLegacyDecksInitial, {LegacyUserData, loadLegacyDecksForPublicId} from './legacy_deck_loader';
 
 
 it('loads decks for specific id', async () => {
@@ -64,7 +64,6 @@ it('doesnt add duplicate decks', async () => {
 
   const newDecks = await loadLegacyDecksForPublicId('a', [...originalDecks], urlLoader as any);
   expect(newDecks).toEqual([
-    originalDecks[0],
     {
       backgroundUrl: 'test.com/wow.png',
       ...legacyData.decks[1],
@@ -91,8 +90,10 @@ it('parses ids correctly', async () => {
   const fnSetId = jest.fn((_id: string) => 0);
   const fnSetBetaId = jest.fn((_id: string) => 0);
   const storage = {
-    getItem: jest.fn((_key: string) => null),
-    setItem: jest.fn((_key: string, _val: string) => null),
+    get: jest.fn((_key: string) => Promise.resolve(null)),
+    set: jest.fn((_key: string, _val: string) => Promise.resolve(null)),
+    createDir: (_name: string) => Promise.resolve(null),
+    isBig: false,
   };
 
   // This call with timeout if it's not finding the two specified IDs.
@@ -105,10 +106,10 @@ it('parses ids correctly', async () => {
       storage);
   expect(newDecks?.length).toEqual(1);
   expect(fnSetBetaId.mock.calls[0][0]).toEqual('abc123_beta');
-  expect(storage.setItem.mock.calls[0][0]).toEqual('legacy_beta_public_id');
-  expect(storage.setItem.mock.calls[0][1]).toEqual('abc123_beta');
+  expect(storage.set.mock.calls[0][0]).toEqual('legacy_beta_public_id');
+  expect(storage.set.mock.calls[0][1]).toEqual('abc123_beta');
 
   expect(fnSetId.mock.calls[0][0]).toEqual('abc123_www');
-  expect(storage.setItem.mock.calls[1][0]).toEqual('legacy_public_id');
-  expect(storage.setItem.mock.calls[1][1]).toEqual('abc123_www');
+  expect(storage.set.mock.calls[1][0]).toEqual('legacy_public_id');
+  expect(storage.set.mock.calls[1][1]).toEqual('abc123_www');
 });

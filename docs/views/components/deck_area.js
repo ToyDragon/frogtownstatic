@@ -45,9 +45,10 @@ var card_group_1 = require("./card_group");
 var display_dropdown_1 = __importStar(require("./display_dropdown"));
 var grouper_dropdown_1 = __importDefault(require("./grouper_dropdown"));
 function deckArea(props) {
-    var _a = (0, react_1.useState)(display_dropdown_1.DisplayMode.Grid), displayMode = _a[0], setDisplayMode = _a[1];
-    var _b = (0, react_1.useState)(null), grouper = _b[0], setGrouper = _b[1];
-    var _c = (0, react_1.useState)(false), exportReady = _c[0], setExportReady = _c[1];
+    var _a, _b, _c, _d, _e, _f, _g;
+    var _h = (0, react_1.useState)(display_dropdown_1.DisplayMode.Grid), displayMode = _h[0], setDisplayMode = _h[1];
+    var _j = (0, react_1.useState)(null), grouper = _j[0], setGrouper = _j[1];
+    var _k = (0, react_1.useState)(false), exportReady = _k[0], setExportReady = _k[1];
     var setImageMapLoaded = (0, react_1.useState)(false)[1];
     var tabletopSimManager = (0, react_1.useRef)(new tabletop_simulator_1.default(props.loader));
     (0, react_1.useEffect)(function () {
@@ -60,24 +61,23 @@ function deckArea(props) {
     }, []);
     var keycardImageUrl = '';
     var idToCropImageURI = props.loader.getMapDataSync('IDToCropImageURI');
-    if (idToCropImageURI) {
-        keycardImageUrl = "url(\"".concat(idToCropImageURI[props.keycard], "\")");
+    if (idToCropImageURI && ((_a = props.deck) === null || _a === void 0 ? void 0 : _a.keycard)) {
+        keycardImageUrl = "url(\"".concat(idToCropImageURI[props.deck.keycard], "\")");
     }
-    var downloadProps = {
-        href: !exportReady ? '#' :
-            'data:text/json,' +
-                encodeURIComponent(tabletopSimManager.current.exportDeck(props.mainboardCards, props.sideboardCards, props.backUrl)),
-        download: !exportReady ? '' : "".concat(props.name, ".json"),
+    var downloadProps = (!props.deck || !exportReady) ? { href: '#' } : {
+        href: 'data:text/json,' +
+            encodeURIComponent(tabletopSimManager.current.exportDeck(props.deck.mainboard, props.deck.sideboard, props.deck.backgroundUrl)),
+        download: "".concat(props.deck.name, ".json"),
     };
     var idToName = props.loader.getMapDataSync('IDToName');
     var tcgplayerLink = '';
-    if (idToName && props.mainboardCards.length + props.sideboardCards.length > 0) {
+    if (props.deck && idToName && props.deck.mainboard.length + props.deck.sideboard.length > 0) {
         var affiliateCode = 'frogtown';
         tcgplayerLink = "https://www.tcgplayer.com/massentry?productline=Magic&utm_campaign=".concat(affiliateCode, "&utm_medium=scryfall&utm_source=").concat(affiliateCode, "&c=") +
-            encodeURIComponent((0, card_group_1.countCards)(props.mainboardCards.concat(props.sideboardCards))
+            encodeURIComponent((0, card_group_1.countCards)(props.deck.mainboard.concat(props.deck.sideboard))
                 .map(function (a) { return "".concat(a.count, " ").concat(idToName[a.id]); }).join('||'));
     }
-    var cardCount = props.mainboardCards.length + props.sideboardCards.length;
+    var cardCount = !props.deck ? 0 : props.deck.mainboard.length + props.deck.sideboard.length;
     return (react_1.default.createElement("div", { style: {
             position: 'relative',
             width: '100%',
@@ -105,11 +105,7 @@ function deckArea(props) {
                 color: 'white',
                 left: '267px',
                 top: '92px',
-            } },
-            props.name,
-            " (",
-            props.mainboardCards.length + props.sideboardCards.length,
-            " cards)"),
+            } }, !props.deck ? '' : "".concat(props.deck.name, " (").concat(cardCount, " cards)")),
         react_1.default.createElement("div", { style: {
                 overflowY: 'scroll',
                 height: 'calc(100% - 176px)',
@@ -118,9 +114,9 @@ function deckArea(props) {
                     fontSize: '44px',
                     marginLeft: '25px',
                     marginBottom: '-16px',
-                    visibility: props.mainboardCards.length === 0 ? 'hidden' : 'visible',
+                    visibility: (((_c = (_b = props.deck) === null || _b === void 0 ? void 0 : _b.mainboard) === null || _c === void 0 ? void 0 : _c.length) || 0) === 0 ? 'hidden' : 'visible',
                 } }, "Mainboard"),
-            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: props.mainboardCards, displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
+            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: ((_d = props.deck) === null || _d === void 0 ? void 0 : _d.mainboard) || [], displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
                     onAdd: function (cardId) {
                         props.addCard(cardId, false);
                     },
@@ -138,9 +134,9 @@ function deckArea(props) {
                     fontSize: '44px',
                     marginLeft: '25px',
                     marginBottom: '-16px',
-                    visibility: props.sideboardCards.length === 0 ? 'hidden' : 'visible',
+                    visibility: (((_f = (_e = props.deck) === null || _e === void 0 ? void 0 : _e.sideboard) === null || _f === void 0 ? void 0 : _f.length) || 0) === 0 ? 'hidden' : 'visible',
                 } }, "Sideboard"),
-            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: props.sideboardCards, displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
+            react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: ((_g = props.deck) === null || _g === void 0 ? void 0 : _g.sideboard) || [], displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, grouper: grouper, actionHandlers: {
                     onAdd: function (cardId) {
                         props.addCard(cardId, true);
                     },

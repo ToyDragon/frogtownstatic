@@ -1,6 +1,6 @@
 import HeaderBar from './components/header_bar';
 import React, {useEffect, useRef, useState} from 'react';
-import {createNewDeck, Deck, ensureValidDeck} from '../data/deck';
+import {copyDecks, createNewDeck, Deck, loadDecksFromStorage, saveDecksToStorage} from '../data/deck';
 import SearchArea, {SearchAreaHandle} from './components/search_area';
 import DeckArea from './components/deck_area';
 import ImageLoadTracker from './components/image_load_tracker';
@@ -16,21 +16,14 @@ import ConfirmDeleteWindow, {ConfirmDeleteWindowHandle} from './components/confi
 import DeckDropHandler from './components/deck_drop_handler';
 import InfoWindow, {InfoWindowHandle} from './components/info_window';
 import SwapPrintingsWindow, {SwapPrintingsWindowHandle} from './components/swap_printings_window';
-import loadLegacyDecksInitial, {loadLegacyDecksForPublicId} from './legacy_deck_loader';
-
-function copyDecks(decks: Deck[]): Deck[] {
-  const newDecks: Deck[] = [];
-  for (const deck of decks) {
-    newDecks.push({
-      name: deck.name,
-      keycard: deck.keycard,
-      mainboard: deck.mainboard.slice(),
-      sideboard: deck.sideboard.slice(),
-      backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
-    });
-  }
-  return newDecks;
-}
+import loadLegacyDecksInitial, {loadLegacyDecksForPublicId} from './components/legacy_deck_loader';
+import ChooseStorageWindow from './components/choose_storage_window';
+import ConfirmationWindow, {ConfirmationWindowHandle} from './components/confirmation_window';
+import {createDirectoryStorage, createLocalStorage, FrogtownStorage} from '../data/storage';
+import {FrogtownMetadata, getCurrentMetadata} from '../data/frogtown_metadata';
+import backupDecks from '../data/backup_decks';
+import {transformBug71722MainboardSideboard} from '../data/bugs/bug71722MainboardSideboard';
+import NotificationWindow, {NotificationWindowHandle} from './components/notification_window';
 
 function uniques(vals: string[]): string[] {
   const obj: Record<string, boolean> = {};
@@ -54,60 +47,55 @@ export default function indexPage(props: {
   ];
   props.loader.holdUntil(Promise.all(priorityMaps));
 
-  const [deckIndex, setDeckIndex] = useState<number>(Number(localStorage.getItem('deck_index') || '0'));
-  const [decks, setDecks] = useState<Deck[]>(
-      new Array(Number(localStorage.getItem('deck_count') || '1'))
-          .fill(null).map((_, i) => {
-            let deck = null;
-            try {
-              deck = JSON.parse(localStorage.getItem(`deck_${i}`) || 'null');
-            } catch {}
-            if (!deck) {
-              deck = createNewDeck(i+1);
-            }
-            return ensureValidDeck(deck);
-          }),
-  );
+  const [deckIndex, setDeckIndex] = useState<number>(0);
+  const [decks, setDecks] = useState<Deck[]>([]);
 
   const [searchWidth, setSearchWidth] = useState(550);
   const editNameWindowRef = useRef<EditNameWindowHandle>(null);
   const searchAreaRef = useRef<SearchAreaHandle>(null);
   const bulkImportWindowRef = useRef<BulkImportWindowHandle>(null);
+  const notificationWindowRef = useRef<NotificationWindowHandle>(null);
+  const confirmationWindowRef = useRef<ConfirmationWindowHandle>(null);
   const settingsWindowRef = useRef<SettingsWindowHandle>(null);
   const confirmDeleteWindowRef = useRef<ConfirmDeleteWindowHandle>(null);
   const infoWindowRef = useRef<InfoWindowHandle>(null);
   const swapPrintingsWindowRef = useRef<SwapPrintingsWindowHandle>(null);
+  const storageRef = useRef<FrogtownStorage | null>(null);
   const [legacyPublicId, setLegacyPublicId] = useState('');
   const [legacyBetaPublicId, setLegacyBetaPublicId] = useState('');
 
-  useEffect(() => {
-    // Had a bug that overwrote all sideboards to be identical to mainboards. Unfortunately we can't restore the
-    // sideboard, so we just delete sideboards that are identical to mainboards.
-    if (!localStorage.getItem('fix_71722_mainboardsideboard')) {
-      localStorage.setItem('fix_71722_mainboardsideboard', Date.now().toString());
-      const newDecks = copyDecks(decks);
-      let changeMade = false;
-      for (const deck of newDecks) {
-        if (deck.mainboard.length > 0 && deck.mainboard.sort().join(',') === deck.sideboard.sort().join(',')) {
-          deck.sideboard = [];
-          changeMade = true;
-        }
-      }
-      if (changeMade) {
-        setDecks(newDecks);
+  async function tryMoveCacheIntoFolder(decks: Deck[]): Promise<void> {
+    const localStorage = createLocalStorage();
+    const dirDecks = await loadDecksFromStorage(storageRef.current!);
+    const cacheDecks = await loadDecksFromStorage(localStorage);
+    if (cacheDecks.filter((d) => d.mainboard.length || d.sideboard.length).length) {
+      const performTransfer = await confirmationWindowRef.current!.open(
+          `Would you like to transfer the ${cacheDecks.length} decks in your local cache to this folder?`,
+          'The decks will no longer be available when choosing "Local Cache".',
+          'Transfer Decks',
+      );
+      if (performTransfer) {
+        decks.splice(decks.length, 0, ...dirDecks);
+        decks.splice(decks.length, 0, ...cacheDecks);
+        localStorage.set('deck_count', '0');
       }
     }
-  }, []);
+  }
 
   useEffect(() => {
-    for (let i = 0; i < decks.length; i++) {
-      localStorage.setItem(`deck_${i}`, JSON.stringify(decks[i]));
-    }
-    localStorage.setItem(`deck_count`, decks.length.toString());
+    saveDecksToStorage(storageRef.current, decks);
   }, [decks]);
 
   useEffect(() => {
-    localStorage.setItem(`deck_index`, deckIndex.toString());
+    (async () => {
+      if (!storageRef.current) {
+        if (decks?.length) {
+          console.error('Decks changed before storage ready: ', decks);
+        }
+        return;
+      }
+      await storageRef.current.set(`deck_index`, deckIndex.toString());
+    })();
   }, [deckIndex]);
 
   useEffect(() => {
@@ -137,21 +125,6 @@ export default function indexPage(props: {
           lastSearchWidth += xDiff;
           setSearchWidth(lastSearchWidth);
         }
-      }
-    });
-
-    loadLegacyDecksInitial(copyDecks(decks),
-        setLegacyPublicId,
-        setLegacyBetaPublicId,
-        window.location.search,
-        document.cookie,
-        props.urlLoader,
-        {
-          getItem: (key: string) => localStorage.getItem(key),
-          setItem: (key: string, value: string) => localStorage.setItem(key, value),
-        }).then((newDecks) => {
-      if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
-        setDecks(newDecks);
       }
     });
   }, []);
@@ -252,20 +225,7 @@ export default function indexPage(props: {
     setDecks(newDecks);
   };
 
-  const deck = decks[deckIndex];
-  if (!deck) {
-    console.error(`Deck at index ${deckIndex}/${decks.length} is ${deck}.`);
-    if (decks.length === 0) {
-      console.log('Creating deck 0');
-      setDecks([createNewDeck(1)]);
-      setDeckIndex(0);
-    } else {
-      console.log(`Creating deck ${decks.length}`);
-      setDeckIndex(decks.length);
-      setDecks([...decks, createNewDeck(1)]);
-    }
-    return <>{`Deck at index ${deckIndex}/${decks.length} is ${deck}.`}</>;
-  }
+  const deck = deckIndex >= decks.length ? null : decks[deckIndex];
   return <>
     <HeaderBar loader={props.loader} decks={decks} changeDeck={(i: number) => {
       setDeckIndex(i);
@@ -303,17 +263,18 @@ export default function indexPage(props: {
       width: `calc(100% - ${searchWidth}px)`,
       height: '100%',
     }}>
-      <DeckArea imageLoadTracker={props.imageLoadTracker} mainboardCards={deck.mainboard} keycard={deck.keycard}
-        name={deck.name} sideboardCards={deck.sideboard} loader={props.loader} addCard={addCard} onStar={onStar}
-        backUrl={deck.backgroundUrl}
-        onEditName={() => editNameWindowRef.current?.open(deck.name)}
+      <DeckArea imageLoadTracker={props.imageLoadTracker} deck={deck} loader={props.loader} addCard={addCard}
+        onStar={onStar} onEditName={() => deck && editNameWindowRef.current?.open(deck.name)}
         onBulkImport={() => bulkImportWindowRef.current?.open()}
         onSettings={() => {
+          if (!deck) {
+            return;
+          }
           const existingUrls = decks.map((d) => d.backgroundUrl).filter((url) => !!url);
           existingUrls.splice(0, 0, 'https://i.imgur.com/Hg8CwwU.jpeg');
           return settingsWindowRef.current?.open(uniques(existingUrls), deck.backgroundUrl);
         }}
-        onDelete={() => confirmDeleteWindowRef.current?.open(deck.name)}
+        onDelete={() => deck && confirmDeleteWindowRef.current?.open(deck.name)}
         urlLoader={props.urlLoader} removeCard={removeCard} moveCard={moveCard}
         onSimilar={(id: string) => {
           if (searchAreaRef.current) {
@@ -360,5 +321,58 @@ export default function indexPage(props: {
       setDecks(newDecks);
       setDeckIndex(newDecks.length - 1);
     }} />
+    <ChooseStorageWindow confirmationWindow={confirmationWindowRef}
+      storageChosen={async (useCache: boolean, folder: FileSystemDirectoryHandle | null) => {
+        const loadedDecks = copyDecks(decks);
+        if (useCache) {
+          storageRef.current = createLocalStorage();
+        } else if (folder) {
+          storageRef.current = createDirectoryStorage(folder, document);
+          let existingMetadata: FrogtownMetadata | null = null;
+          try {
+            existingMetadata = JSON.parse(await storageRef.current.get('frogtown_metadata.json') || '');
+          } catch {}
+          const currentMetadata = getCurrentMetadata();
+          console.log({existingMetadata, currentMetadata});
+
+          // Verify that access was granted by writing with existing metadata.
+          if (!await storageRef.current.set('frogtown_metadata.json', JSON.stringify(existingMetadata), true)) {
+            await confirmationWindowRef.current!.open(
+                'Failed To Write To Storage',
+                'Frogtown was unable to write your decks to the selected folder, and will now refresh.',
+                'OK',
+            );
+            window.location.reload();
+            return;
+          }
+          if (currentMetadata.majorVersion !== existingMetadata?.majorVersion) {
+            await backupDecks(storageRef.current, notificationWindowRef.current!,
+                existingMetadata || {majorVersion: 0, minorVersion: 0});
+          }
+          await storageRef.current.set('frogtown_metadata.json', JSON.stringify(currentMetadata));
+          await tryMoveCacheIntoFolder(loadedDecks);
+        }
+
+        if (!storageRef.current) {
+          console.error('Failed to initialize storage!');
+        } else {
+          const storageDecks = await loadDecksFromStorage(storageRef.current);
+          loadedDecks.splice(loadedDecks.length, 0, ...storageDecks);
+          setDeckIndex(Number(await storageRef.current.get('deck_index') || '0'));
+
+          // Data transforms to address/mitigate bugs in previous versions.
+          await transformBug71722MainboardSideboard(storageRef.current, loadedDecks);
+
+          // Always pass local storage to the legacy deck loader, it is only used to track if decks have already been
+          // imported or not. The old IDs are stored in cookies, and the decks should only be imported once, makes sense
+          // to keep it in all in the browser.
+          await loadLegacyDecksInitial(loadedDecks, setLegacyPublicId, setLegacyBetaPublicId, window.location.search,
+              document.cookie, props.urlLoader, createLocalStorage());
+
+          setDecks(loadedDecks);
+        }
+      }} />
+    <ConfirmationWindow ref={confirmationWindowRef} />
+    <NotificationWindow ref={notificationWindowRef} />
   </>;
 }

@@ -6,7 +6,7 @@
     "frogtownstatic": "webpack.config.js"
   },
   "scripts": {
-    "start": "nodemon --watch bin bin/server/server.js",
+    "start": "nodemon --watch bin docs/server/server.js",
     "test": "jest"
   },
   "jest": {
@@ -21,6 +21,7 @@
     "@types/react": "^18.0.11",
     "@types/react-dom": "^18.0.5",
     "@types/react-test-renderer": "^18.0.0",
+    "@types/wicg-file-system-access": "^2020.9.5",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "eslint": "^8.17.0",

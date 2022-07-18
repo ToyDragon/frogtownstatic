@@ -83,7 +83,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var memory_url_loader_1 = __importDefault(require("./memory_url_loader"));
-var legacy_deck_loader_1 = __importStar(require("../legacy_deck_loader"));
+var legacy_deck_loader_1 = __importStar(require("./legacy_deck_loader"));
 it('loads decks for specific id', function () { return __awaiter(void 0, void 0, void 0, function () {
     var urlLoader, loaded, loadPromise, legacyData, newDecks;
     return __generator(this, function (_a) {
@@ -156,7 +156,6 @@ it('doesnt add duplicate decks', function () { return __awaiter(void 0, void 0, 
             case 1:
                 newDecks = _a.sent();
                 expect(newDecks).toEqual([
-                    originalDecks[0],
                     __assign({ backgroundUrl: 'test.com/wow.png' }, legacyData.decks[1]),
                 ]);
                 return [2 /*return*/];
@@ -185,19 +184,21 @@ it('parses ids correctly', function () { return __awaiter(void 0, void 0, void 0
                 fnSetId = jest.fn(function (_id) { return 0; });
                 fnSetBetaId = jest.fn(function (_id) { return 0; });
                 storage = {
-                    getItem: jest.fn(function (_key) { return null; }),
-                    setItem: jest.fn(function (_key, _val) { return null; }),
+                    get: jest.fn(function (_key) { return Promise.resolve(null); }),
+                    set: jest.fn(function (_key, _val) { return Promise.resolve(null); }),
+                    createDir: function (_name) { return Promise.resolve(null); },
+                    isBig: false,
                 };
                 return [4 /*yield*/, (0, legacy_deck_loader_1.default)([], fnSetId, fnSetBetaId, '?legacyBetaPublicId=abc123_beta', 'privateId=longprivateidwow12345678; publicId=abc123_www; DeckViewerDeck=0', urlLoader, storage)];
             case 1:
                 newDecks = _a.sent();
                 expect(newDecks === null || newDecks === void 0 ? void 0 : newDecks.length).toEqual(1);
                 expect(fnSetBetaId.mock.calls[0][0]).toEqual('abc123_beta');
-                expect(storage.setItem.mock.calls[0][0]).toEqual('legacy_beta_public_id');
-                expect(storage.setItem.mock.calls[0][1]).toEqual('abc123_beta');
+                expect(storage.set.mock.calls[0][0]).toEqual('legacy_beta_public_id');
+                expect(storage.set.mock.calls[0][1]).toEqual('abc123_beta');
                 expect(fnSetId.mock.calls[0][0]).toEqual('abc123_www');
-                expect(storage.setItem.mock.calls[1][0]).toEqual('legacy_public_id');
-                expect(storage.setItem.mock.calls[1][1]).toEqual('abc123_www');
+                expect(storage.set.mock.calls[1][0]).toEqual('legacy_public_id');
+                expect(storage.set.mock.calls[1][1]).toEqual('abc123_www');
                 return [2 /*return*/];
         }
     });
