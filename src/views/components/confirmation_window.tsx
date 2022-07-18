@@ -47,7 +47,7 @@ const ConfirmationWindow = forwardRef<ConfirmationWindowHandle, {}>(function Con
       width: '800px',
       height: '350px',
       position: 'absolute',
-      left: 'calc(50% - 300px)',
+      left: 'calc(50% - 400px)',
       top: 'calc(50% - 175px)',
       backgroundColor: 'white',
       borderRadius: '12px',

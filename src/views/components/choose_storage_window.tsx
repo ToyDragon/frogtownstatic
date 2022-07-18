@@ -63,12 +63,21 @@ export default function ChooseStorageWindow(props: {
             }
           } catch {}
           if (!hasMetadataFile) {
-            console.log('No metadata, confirming choice');
-            const approvedFolder = await props.confirmationWindow.current!.open(
-                `Folder "${dir.name}" has no Frogtown metadata file, are you sure you want to use this folder?`,
-                'This is normal if this is a new folder that you have never used before.',
-                'Use This Folder',
-            );
+            let fileCount = 0;
+            for await (const [key, value] of dir.entries()) {
+              fileCount++;
+              console.log('Folder contains', key, value);
+            }
+            let approvedFolder = true;
+            if (fileCount > 0) {
+              console.log('No metadata, confirming choice');
+              approvedFolder = await props.confirmationWindow.current!.open(
+                  `Folder "${dir.name}" doesn't look right, you should pick a different folder.`,
+                  `This folder contains ${fileCount} existing files/directories, you
+                    should cancel, and create or pick an empty folder.`,
+                  'Use This Folder',
+              );
+            }
             if (approvedFolder) {
               props.storageChosen(false, dir);
               setIsOpen(false);

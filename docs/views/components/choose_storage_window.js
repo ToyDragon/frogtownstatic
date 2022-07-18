@@ -58,6 +58,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 function ChooseStorageWindow(props) {
@@ -96,52 +103,88 @@ function ChooseStorageWindow(props) {
                     padding: '12px',
                     verticalAlign: 'top',
                     position: 'relative',
-                }, onMouseUp: function (e) { return __awaiter(_this, void 0, void 0, function () {
-                    var dir, hasMetadataFile, metadatafile, contents, _a, approvedFolder;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
+                }, onMouseUp: function (e) { var e_1, _a; return __awaiter(_this, void 0, void 0, function () {
+                    var dir, hasMetadataFile, metadatafile, contents, _b, fileCount, _c, _d, _e, key, value, e_1_1, approvedFolder;
+                    return __generator(this, function (_f) {
+                        switch (_f.label) {
                             case 0:
-                                if (!(e.button === 0 && !!window.showDirectoryPicker)) return [3 /*break*/, 10];
+                                if (!(e.button === 0 && !!window.showDirectoryPicker)) return [3 /*break*/, 23];
                                 return [4 /*yield*/, window.showDirectoryPicker()];
                             case 1:
-                                dir = _b.sent();
+                                dir = _f.sent();
                                 console.log('Chose directory: ', dir);
                                 hasMetadataFile = false;
-                                _b.label = 2;
+                                _f.label = 2;
                             case 2:
-                                _b.trys.push([2, 6, , 7]);
+                                _f.trys.push([2, 6, , 7]);
                                 return [4 /*yield*/, dir.getFileHandle('frogtown_metadata.json')];
                             case 3:
-                                metadatafile = _b.sent();
+                                metadatafile = _f.sent();
                                 return [4 /*yield*/, metadatafile.getFile()];
-                            case 4: return [4 /*yield*/, (_b.sent()).text()];
+                            case 4: return [4 /*yield*/, (_f.sent()).text()];
                             case 5:
-                                contents = _b.sent();
+                                contents = _f.sent();
                                 console.log('Metadata file contents: ' + contents);
                                 if (contents) {
                                     hasMetadataFile = true;
                                 }
                                 return [3 /*break*/, 7];
                             case 6:
-                                _a = _b.sent();
+                                _b = _f.sent();
                                 return [3 /*break*/, 7];
                             case 7:
-                                if (!!hasMetadataFile) return [3 /*break*/, 9];
-                                console.log('No metadata, confirming choice');
-                                return [4 /*yield*/, props.confirmationWindow.current.open("Folder \"".concat(dir.name, "\" has no Frogtown metadata file, are you sure you want to use this folder?"), 'This is normal if this is a new folder that you have never used before.', 'Use This Folder')];
+                                if (!!hasMetadataFile) return [3 /*break*/, 22];
+                                fileCount = 0;
+                                _f.label = 8;
                             case 8:
-                                approvedFolder = _b.sent();
+                                _f.trys.push([8, 13, 14, 19]);
+                                _c = __asyncValues(dir.entries());
+                                _f.label = 9;
+                            case 9: return [4 /*yield*/, _c.next()];
+                            case 10:
+                                if (!(_d = _f.sent(), !_d.done)) return [3 /*break*/, 12];
+                                _e = _d.value, key = _e[0], value = _e[1];
+                                fileCount++;
+                                console.log('Folder contains', key, value);
+                                _f.label = 11;
+                            case 11: return [3 /*break*/, 9];
+                            case 12: return [3 /*break*/, 19];
+                            case 13:
+                                e_1_1 = _f.sent();
+                                e_1 = { error: e_1_1 };
+                                return [3 /*break*/, 19];
+                            case 14:
+                                _f.trys.push([14, , 17, 18]);
+                                if (!(_d && !_d.done && (_a = _c.return))) return [3 /*break*/, 16];
+                                return [4 /*yield*/, _a.call(_c)];
+                            case 15:
+                                _f.sent();
+                                _f.label = 16;
+                            case 16: return [3 /*break*/, 18];
+                            case 17:
+                                if (e_1) throw e_1.error;
+                                return [7 /*endfinally*/];
+                            case 18: return [7 /*endfinally*/];
+                            case 19:
+                                approvedFolder = true;
+                                if (!(fileCount > 0)) return [3 /*break*/, 21];
+                                console.log('No metadata, confirming choice');
+                                return [4 /*yield*/, props.confirmationWindow.current.open("Folder \"".concat(dir.name, "\" doesn't look right, you should pick a different folder."), "This folder contains ".concat(fileCount, " existing files/directories, you\n                    should cancel, and create or pick an empty folder."), 'Use This Folder')];
+                            case 20:
+                                approvedFolder = _f.sent();
+                                _f.label = 21;
+                            case 21:
                                 if (approvedFolder) {
                                     props.storageChosen(false, dir);
                                     setIsOpen(false);
                                 }
-                                return [3 /*break*/, 10];
-                            case 9:
+                                return [3 /*break*/, 23];
+                            case 22:
                                 console.log('Metadata file present, moving forward with directory.');
                                 props.storageChosen(false, dir);
                                 setIsOpen(false);
-                                _b.label = 10;
-                            case 10: return [2 /*return*/];
+                                _f.label = 23;
+                            case 23: return [2 /*return*/];
                         }
                     });
                 }); } },

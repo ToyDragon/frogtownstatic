@@ -98,7 +98,7 @@ var ConfirmationWindow = (0, react_1.forwardRef)(function ConfirmationWindow(_pr
                 width: '800px',
                 height: '350px',
                 position: 'absolute',
-                left: 'calc(50% - 300px)',
+                left: 'calc(50% - 400px)',
                 top: 'calc(50% - 175px)',
                 backgroundColor: 'white',
                 borderRadius: '12px',
