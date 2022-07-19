@@ -156,9 +156,11 @@ const BulkImportWindow = forwardRef<BulkImportWindowHandle, BulkImportWindowProp
     <div style={{
       width: '600px',
       height: '750px',
+      maxHeight: '100%',
       position: 'absolute',
-      left: 'calc(50% - 300px)',
-      top: 'calc(50% - 375px)',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
       backgroundColor: 'white',
       borderRadius: '12px',
       border: '3px solid #cdd6e4',
@@ -175,6 +177,7 @@ const BulkImportWindow = forwardRef<BulkImportWindowHandle, BulkImportWindowProp
         fontSize: '18px',
         width: '100%',
         height: '475px',
+        maxHeight: 'calc(100% - 225px)',
         resize: 'none',
       }} value={inputValue} onChange={(e) => setInputValue(e.target.value)}
       onKeyDown={submit(true)}></textarea>
