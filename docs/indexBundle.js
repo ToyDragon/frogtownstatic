@@ -515,6 +515,20 @@ function stringFilter(cardIds, map, filterValue) {
     if (!filterValue || !map) {
         return null;
     }
+    var exactTokens = [];
+    var exactRegex = /"([^"]+)"/;
+    var filterValueWithNoExacts = filterValue;
+    while (true) {
+        var match = exactRegex.exec(filterValueWithNoExacts);
+        if (!match) {
+            break;
+        }
+        filterValueWithNoExacts = filterValueWithNoExacts.replace("\"".concat(match[1], "\""), '');
+        exactTokens.push(match[1].toLowerCase());
+    }
+    if (exactTokens.length) {
+        console.log(exactTokens);
+    }
     var idToRank = {};
     for (var _i = 0, cardIds_1 = cardIds; _i < cardIds_1.length; _i++) {
         var id = cardIds_1[_i];
@@ -524,6 +538,20 @@ function stringFilter(cardIds, map, filterValue) {
         }
         if (typeof cardValue !== 'string') {
             cardValue = cardValue.join(' ');
+        }
+        var lowerCardValue = cardValue.toLowerCase();
+        for (var _a = 0, exactTokens_1 = exactTokens; _a < exactTokens_1.length; _a++) {
+            var exactToken = exactTokens_1[_a];
+            if (lowerCardValue.indexOf(exactToken) === -1) {
+                idToRank[id] = -1;
+                break;
+            }
+            else {
+                console.log(id, lowerCardValue, exactToken, lowerCardValue.indexOf(exactToken));
+            }
+        }
+        if (idToRank[id] === -1) {
+            continue;
         }
         var rank = rankStringMatch(cardValue, filterValue);
         if (rank >= 0) {

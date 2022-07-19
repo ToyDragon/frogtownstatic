@@ -77,6 +77,23 @@ function stringFilter(
     return null;
   }
 
+  const exactTokens: string[] = [];
+  const exactRegex = /"([^"]+)"/;
+  let filterValueWithNoExacts = filterValue;
+  while (true) {
+    const match = exactRegex.exec(filterValueWithNoExacts);
+    if (!match) {
+      break;
+    }
+
+    filterValueWithNoExacts = filterValueWithNoExacts.replace(`"${match[1]}"`, '');
+    exactTokens.push(match[1].toLowerCase());
+  }
+
+  if (exactTokens.length) {
+    console.log(exactTokens);
+  }
+
   const idToRank: Record<string, number> = {};
   for (const id of cardIds) {
     let cardValue = map[id];
@@ -86,6 +103,20 @@ function stringFilter(
     if (typeof cardValue !== 'string') {
       cardValue = cardValue.join(' ');
     }
+
+    const lowerCardValue = cardValue.toLowerCase();
+    for (const exactToken of exactTokens) {
+      if (lowerCardValue.indexOf(exactToken) === -1) {
+        idToRank[id] = -1;
+        break;
+      } else {
+        console.log(id, lowerCardValue, exactToken, lowerCardValue.indexOf(exactToken));
+      }
+    }
+    if (idToRank[id] === -1) {
+      continue;
+    }
+
     const rank = rankStringMatch(cardValue, filterValue);
     if (rank >= 0) {
       idToRank[id] = rank;
