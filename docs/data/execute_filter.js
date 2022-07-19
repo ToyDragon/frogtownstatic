@@ -361,8 +361,6 @@ function executeFilter(data, loader) {
                             });
                         }
                     }
-                    // Ensure a maximum of 200 cards is displayed.
-                    cardIds.splice(200, cardIds.length - 200);
                     return [2 /*return*/, cardIds];
             }
         });

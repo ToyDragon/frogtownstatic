@@ -419,7 +419,7 @@ var SearchArea = (0, react_1.forwardRef)(function SearchArea(props, ref) {
                     flexGrow: '1',
                     overflowY: 'scroll',
                 } },
-                react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: results, displayMode: displayMode, loader: props.loader, urlLoader: props.urlLoader, actionHandlers: {
+                react_1.default.createElement(card_area_1.default, { imageLoadTracker: props.imageLoadTracker, cardIds: results, displayMode: displayMode, incrementalLoad: true, loader: props.loader, urlLoader: props.urlLoader, actionHandlers: {
                         onAdd: function (cardId) {
                             props.addCard(cardId);
                         },

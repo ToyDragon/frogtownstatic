@@ -140,6 +140,13 @@ function splitByGroups(loader, grouper, cardIds) {
     return result;
 }
 function CardArea(props) {
+    var _a = (0, react_1.useState)(props.cardIds.length), cardCount = _a[0], setCardCount = _a[1];
+    var _b = (0, react_1.useState)(200), cardLimit = _b[0], setCardLimit = _b[1];
+    if (props.cardIds.length !== cardCount) {
+        console.log('setting new len ', cardCount, props.cardIds.length);
+        setCardCount(props.cardIds.length);
+        setCardLimit(200);
+    }
     (0, lazy_background_loader_1.default)(props.imageLoadTracker);
     var setImageMapLoaded = (0, react_1.useState)(false)[1];
     (0, react_1.useEffect)(function () {
@@ -160,7 +167,8 @@ function CardArea(props) {
         }
         return cardId;
     };
-    var groups = splitByGroups(props.loader, props.grouper, props.cardIds);
+    var shownCards = props.incrementalLoad ? props.cardIds.slice(0, cardLimit) : props.cardIds;
+    var groups = splitByGroups(props.loader, props.grouper, shownCards);
     for (var _i = 0, groups_1 = groups; _i < groups_1.length; _i++) {
         var group = groups_1[_i];
         if (props.displayMode === display_dropdown_1.DisplayMode.SingleGrid) {
@@ -193,26 +201,44 @@ function CardArea(props) {
             marginLeft: 'auto',
             marginRight: 'auto',
             maxWidth: (props.displayMode === display_dropdown_1.DisplayMode.List || props.displayMode === display_dropdown_1.DisplayMode.Details) ? '1000px' : '100%',
-        } }, groups.map(function (group) {
-        return [
-            group.name ? react_1.default.createElement("div", { key: "key ".concat(group.name), style: {
-                    width: '100%',
-                    fontSize: '32px',
-                    paddingLeft: '24px',
+        } },
+        groups.map(function (group) {
+            return [
+                group.name ? react_1.default.createElement("div", { key: "key ".concat(group.name), style: {
+                        width: '100%',
+                        fontSize: '32px',
+                        paddingLeft: '24px',
+                    } },
+                    group.name,
+                    " (",
+                    group.stacks.map(function (s) { return s.length; }).reduce(function (a, b) { return a + b; }),
+                    ")") : null,
+                group.stacks.map(function (stack) {
+                    var groupName = group.name + ' ' + stack.join(',');
+                    countPerGroup[groupName] = countPerGroup[groupName] || 0;
+                    var result = react_1.default.createElement(card_group_1.default, { key: groupName + '_' + (countPerGroup[groupName]++), loader: props.loader, urlLoader: props.urlLoader, cardIds: stack, imageLoadTracker: props.imageLoadTracker, displayMode: props.displayMode, actionHandlers: props.actionHandlers, previousCount: runningCount });
+                    runningCount += stack.length;
+                    return result;
+                })
+            ];
+        }),
+        shownCards.length >= props.cardIds.length ? null :
+            react_1.default.createElement("div", { style: {
+                    paddingTop: '75px',
+                    paddingBottom: '75px',
+                    width: 'calc(100% - 32px)',
+                    position: 'relative',
                 } },
-                group.name,
-                " (",
-                group.stacks.map(function (s) { return s.length; }).reduce(function (a, b) { return a + b; }),
-                ")") : null,
-            group.stacks.map(function (stack) {
-                var groupName = group.name + ' ' + stack.join(',');
-                countPerGroup[groupName] = countPerGroup[groupName] || 0;
-                var result = react_1.default.createElement(card_group_1.default, { key: groupName + '_' + (countPerGroup[groupName]++), loader: props.loader, urlLoader: props.urlLoader, cardIds: stack, imageLoadTracker: props.imageLoadTracker, displayMode: props.displayMode, actionHandlers: props.actionHandlers, previousCount: runningCount });
-                runningCount += stack.length;
-                return result;
-            })
-        ];
-    })));
+                react_1.default.createElement("button", { className: "btn btn-primary", style: {
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }, onClick: function (e) {
+                        if (e.button === 0) {
+                            setCardLimit(cardLimit + 200);
+                        }
+                    } }, "Show More Cards"))));
 }
 exports.default = CardArea;
 //# sourceMappingURL=card_area.js.map

@@ -114,6 +114,7 @@ function splitByGroups(loader: DataLoader, grouper: Grouper | null | undefined, 
 
 export default function CardArea(props: {
   cardIds: string[],
+  incrementalLoad?: boolean,
   loader: DataLoader,
   urlLoader: URLLoader,
   displayMode: DisplayMode,
@@ -129,6 +130,14 @@ export default function CardArea(props: {
     onSwap?: (cardId: string) => void,
   }
 }) {
+  const [cardCount, setCardCount] = useState(props.cardIds.length);
+  const [cardLimit, setCardLimit] = useState(200);
+  if (props.cardIds.length !== cardCount) {
+    console.log('setting new len ', cardCount, props.cardIds.length);
+    setCardCount(props.cardIds.length);
+    setCardLimit(200);
+  }
+
   tryStartLazyBackgroundLoader(props.imageLoadTracker);
   const setImageMapLoaded = useState(false)[1];
   useEffect(() => {
@@ -152,7 +161,9 @@ export default function CardArea(props: {
     return cardId;
   };
 
-  const groups = splitByGroups(props.loader, props.grouper, props.cardIds);
+  const shownCards = props.incrementalLoad ? props.cardIds.slice(0, cardLimit) : props.cardIds;
+
+  const groups = splitByGroups(props.loader, props.grouper, shownCards);
   for (const group of groups) {
     if (props.displayMode === DisplayMode.SingleGrid) {
       group.stacks = groupModeSingleGrid(group.allCardIds);
@@ -201,6 +212,26 @@ export default function CardArea(props: {
               return result;
             })];
         })
+      }
+      {
+        shownCards.length >= props.cardIds.length ? null :
+          <div style={{
+            paddingTop: '75px',
+            paddingBottom: '75px',
+            width: 'calc(100% - 32px)',
+            position: 'relative',
+          }}>
+            <button className="btn btn-primary" style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }} onClick={(e)=>{
+              if (e.button === 0) {
+                setCardLimit(cardLimit + 200);
+              }
+            }}>Show More Cards</button>
+          </div>
       }
     </div>
   );

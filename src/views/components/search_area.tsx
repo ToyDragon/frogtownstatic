@@ -373,7 +373,7 @@ const SearchArea = forwardRef<SearchAreaHandle, SearchAreaProps>(function Search
         }}>
           {/* Create card area for the results. */}
           <CardArea imageLoadTracker={props.imageLoadTracker} cardIds={results} displayMode={displayMode}
-            loader={props.loader} urlLoader={props.urlLoader} actionHandlers={{
+            incrementalLoad={true} loader={props.loader} urlLoader={props.urlLoader} actionHandlers={{
               onAdd: (cardId: string) => {
                 props.addCard(cardId);
               },

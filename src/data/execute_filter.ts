@@ -377,7 +377,5 @@ export default async function executeFilter(
     }
   }
 
-  // Ensure a maximum of 200 cards is displayed.
-  cardIds.splice(200, cardIds.length - 200);
   return cardIds;
 }
