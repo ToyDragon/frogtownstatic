@@ -7070,6 +7070,7 @@ function indexPage(props) {
                             return [3 /*break*/, 13];
                         case 1:
                             if (!folder) return [3 /*break*/, 13];
+                            notificationWindowRef.current.open('Attaching to folder...', 'Waiting for permission to read from and write to the specified folder...');
                             storageRef.current = (0, storage_1.createDirectoryStorage)(folder, document);
                             existingMetadata = null;
                             _f.label = 2;
@@ -7089,12 +7090,14 @@ function indexPage(props) {
                             return [4 /*yield*/, storageRef.current.set('frogtown_metadata.json', JSON.stringify(existingMetadata), true)];
                         case 6:
                             if (!!(_f.sent())) return [3 /*break*/, 8];
+                            notificationWindowRef.current.close();
                             return [4 /*yield*/, confirmationWindowRef.current.open('Failed To Write To Storage', 'Frogtown was unable to write your decks to the selected folder, and will now refresh.', 'OK')];
                         case 7:
                             _f.sent();
                             window.location.reload();
                             return [2 /*return*/];
                         case 8:
+                            notificationWindowRef.current.close();
                             if (!(currentMetadata.majorVersion !== (existingMetadata === null || existingMetadata === void 0 ? void 0 : existingMetadata.majorVersion))) return [3 /*break*/, 10];
                             return [4 /*yield*/, (0, backup_decks_1.default)(storageRef.current, notificationWindowRef.current, existingMetadata || { majorVersion: 0, minorVersion: 0 })];
                         case 9:

@@ -334,6 +334,8 @@ export default function indexPage(props: {
         if (useCache) {
           storageRef.current = createLocalStorage();
         } else if (folder) {
+          notificationWindowRef.current!.open('Attaching to folder...',
+              'Waiting for permission to read from and write to the specified folder...');
           storageRef.current = createDirectoryStorage(folder, document);
           let existingMetadata: FrogtownMetadata | null = null;
           try {
@@ -344,6 +346,7 @@ export default function indexPage(props: {
 
           // Verify that access was granted by writing with existing metadata.
           if (!await storageRef.current.set('frogtown_metadata.json', JSON.stringify(existingMetadata), true)) {
+            notificationWindowRef.current!.close();
             await confirmationWindowRef.current!.open(
                 'Failed To Write To Storage',
                 'Frogtown was unable to write your decks to the selected folder, and will now refresh.',
@@ -352,6 +355,7 @@ export default function indexPage(props: {
             window.location.reload();
             return;
           }
+          notificationWindowRef.current!.close();
           if (currentMetadata.majorVersion !== existingMetadata?.majorVersion) {
             await backupDecks(storageRef.current, notificationWindowRef.current!,
                 existingMetadata || {majorVersion: 0, minorVersion: 0});
