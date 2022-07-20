@@ -8,12 +8,14 @@ export type BulkImportWindowHandle = {
 
 type BulkImportWindowProps = {
   loader: DataLoader,
-  addCards: (cardIds: string[]) => void,
+  addCards: (toMainboard: string[], toSideboard: string[]) => void,
 };
 
-export function parseCards(loader: DataLoader, input: string): {ids: string[], errors: string[]} {
-  const result: {ids: string[], errors: string[]} = {
-    ids: [],
+export function parseCards(loader: DataLoader, input: string):
+  {mainboard: string[], sideboard: string[], errors: string[]} {
+  const result: {mainboard: string[], sideboard: string[], errors: string[]} = {
+    mainboard: [],
+    sideboard: [],
     errors: [],
   };
   const idToName = loader.getMapDataSync('IDToName')!;
@@ -32,14 +34,25 @@ export function parseCards(loader: DataLoader, input: string): {ids: string[], e
     matchedNameRank: number,
     setCode: string,
     quantity: number,
+    mainboard: boolean,
   }[] = [];
+
+  let mainboard = true;
   for (const line of input.split('\n')) {
+    if (line.trim().toLocaleLowerCase() === 'sideboard') {
+      mainboard = false;
+      continue;
+    }
     let matchResult = idRegex.exec(line);
     if (matchResult && matchResult[2]?.length) {
       if (idToName[matchResult[2]]) {
         const quantity = Number(matchResult[1]) || 1;
         for (let i = 0; i < quantity; i++) {
-          result.ids.push(matchResult[2]);
+          if (mainboard) {
+            result.mainboard.push(matchResult[2]);
+          } else {
+            result.sideboard.push(matchResult[2]);
+          }
         }
       } else {
         uniqueErrors[`ID "${matchResult[2]}" not found.`] = true;
@@ -56,6 +69,7 @@ export function parseCards(loader: DataLoader, input: string): {ids: string[], e
         matchedNameRank: 0,
         quantity: Number(matchResult[1] || 1),
         setCode: (matchResult[3] || '').toLowerCase(),
+        mainboard,
       });
       continue;
     }
@@ -86,7 +100,11 @@ export function parseCards(loader: DataLoader, input: string): {ids: string[], e
       continue;
     }
     for (let i = 0; i < info.quantity; i++) {
-      result.ids.push(info.matchedId);
+      if (info.mainboard) {
+        result.mainboard.push(info.matchedId);
+      } else {
+        result.sideboard.push(info.matchedId);
+      }
     }
   }
 
@@ -132,12 +150,12 @@ const BulkImportWindow = forwardRef<BulkImportWindowHandle, BulkImportWindowProp
         setErrors(result.errors);
         return;
       }
-      if (result.ids.length === 0) {
+      if (result.mainboard.length === 0 && result.sideboard.length === 0) {
         setErrors([`No cards entered.`]);
         return;
       }
 
-      props.addCards(result.ids);
+      props.addCards(result.mainboard, result.sideboard);
       setIsOpen(false);
     };
   };
@@ -172,12 +190,13 @@ const BulkImportWindow = forwardRef<BulkImportWindowHandle, BulkImportWindowProp
       <div style={{
         fontSize: '16px',
         color: 'darkgray',
-      }}>{'Enter cards by name like "Island", and optionally include count or setcode like "20 Island <pana>"'}</div>
+      }}>{`Enter cards by name like "Island", and optionally include count or setcode like "20 Island <pana>".
+          Cards after a line containing just the word "sideboard" will be imported to the sideboard.`}</div>
       <textarea ref={inputRef} style={{
         fontSize: '18px',
         width: '100%',
         height: '475px',
-        maxHeight: 'calc(100% - 225px)',
+        maxHeight: 'calc(100% - 252px)',
         resize: 'none',
       }} value={inputValue} onChange={(e) => setInputValue(e.target.value)}
       onKeyDown={submit(true)}></textarea>

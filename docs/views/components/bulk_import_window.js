@@ -29,7 +29,8 @@ var execute_filter_1 = require("../../data/execute_filter");
 function parseCards(loader, input) {
     var _a, _b;
     var result = {
-        ids: [],
+        mainboard: [],
+        sideboard: [],
         errors: [],
     };
     var idToName = loader.getMapDataSync('IDToName');
@@ -40,14 +41,24 @@ function parseCards(loader, input) {
     var idRegex = /([0-9]+)?x?\s*([0-9a-z]){36}\s*(?:\/\/.*)?/;
     var uniqueErrors = {};
     var namesToMatch = [];
+    var mainboard = true;
     for (var _i = 0, _c = input.split('\n'); _i < _c.length; _i++) {
         var line = _c[_i];
+        if (line.trim().toLocaleLowerCase() === 'sideboard') {
+            mainboard = false;
+            continue;
+        }
         var matchResult = idRegex.exec(line);
         if (matchResult && ((_a = matchResult[2]) === null || _a === void 0 ? void 0 : _a.length)) {
             if (idToName[matchResult[2]]) {
                 var quantity = Number(matchResult[1]) || 1;
                 for (var i = 0; i < quantity; i++) {
-                    result.ids.push(matchResult[2]);
+                    if (mainboard) {
+                        result.mainboard.push(matchResult[2]);
+                    }
+                    else {
+                        result.sideboard.push(matchResult[2]);
+                    }
                 }
             }
             else {
@@ -64,6 +75,7 @@ function parseCards(loader, input) {
                 matchedNameRank: 0,
                 quantity: Number(matchResult[1] || 1),
                 setCode: (matchResult[3] || '').toLowerCase(),
+                mainboard: mainboard,
             });
             continue;
         }
@@ -94,7 +106,12 @@ function parseCards(loader, input) {
             continue;
         }
         for (var i = 0; i < info.quantity; i++) {
-            result.ids.push(info.matchedId);
+            if (info.mainboard) {
+                result.mainboard.push(info.matchedId);
+            }
+            else {
+                result.sideboard.push(info.matchedId);
+            }
         }
     }
     result.errors = Object.keys(uniqueErrors);
@@ -132,11 +149,11 @@ var BulkImportWindow = (0, react_1.forwardRef)(function BulkImportWindow(props, 
                 setErrors(result.errors);
                 return;
             }
-            if (result.ids.length === 0) {
+            if (result.mainboard.length === 0 && result.sideboard.length === 0) {
                 setErrors(["No cards entered."]);
                 return;
             }
-            props.addCards(result.ids);
+            props.addCards(result.mainboard, result.sideboard);
             setIsOpen(false);
         };
     };
@@ -170,12 +187,12 @@ var BulkImportWindow = (0, react_1.forwardRef)(function BulkImportWindow(props, 
             react_1.default.createElement("div", { style: {
                     fontSize: '16px',
                     color: 'darkgray',
-                } }, 'Enter cards by name like "Island", and optionally include count or setcode like "20 Island <pana>"'),
+                } }, "Enter cards by name like \"Island\", and optionally include count or setcode like \"20 Island <pana>\".\n          Cards after a line containing just the word \"sideboard\" will be imported to the sideboard."),
             react_1.default.createElement("textarea", { ref: inputRef, style: {
                     fontSize: '18px',
                     width: '100%',
                     height: '475px',
-                    maxHeight: 'calc(100% - 225px)',
+                    maxHeight: 'calc(100% - 252px)',
                     resize: 'none',
                 }, value: inputValue, onChange: function (e) { return setInputValue(e.target.value); }, onKeyDown: submit(true) }),
             react_1.default.createElement("div", { style: { marginTop: '12px' } },

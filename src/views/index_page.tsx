@@ -138,10 +138,17 @@ export default function indexPage(props: {
     }
     setDecks(newDecks);
   };
-  const addCards = (ids: string[]) => {
+  const addCards = (toMainboard: string[], toSideboard: string[]) => {
     const newDecks = copyDecks(decks);
-    for (const cardId of ids) {
-      newDecks[deckIndex].mainboard.push(cardId);
+    if (toMainboard) {
+      for (const cardId of toMainboard) {
+        newDecks[deckIndex].mainboard.push(cardId);
+      }
+    }
+    if (toSideboard) {
+      for (const cardId of toSideboard) {
+        newDecks[deckIndex].sideboard.push(cardId);
+      }
     }
     setDecks(newDecks);
   };

@@ -218,11 +218,19 @@ function indexPage(props) {
         }
         setDecks(newDecks);
     };
-    var addCards = function (ids) {
+    var addCards = function (toMainboard, toSideboard) {
         var newDecks = (0, deck_1.copyDecks)(decks);
-        for (var _i = 0, ids_1 = ids; _i < ids_1.length; _i++) {
-            var cardId = ids_1[_i];
-            newDecks[deckIndex].mainboard.push(cardId);
+        if (toMainboard) {
+            for (var _i = 0, toMainboard_1 = toMainboard; _i < toMainboard_1.length; _i++) {
+                var cardId = toMainboard_1[_i];
+                newDecks[deckIndex].mainboard.push(cardId);
+            }
+        }
+        if (toSideboard) {
+            for (var _a = 0, toSideboard_1 = toSideboard; _a < toSideboard_1.length; _a++) {
+                var cardId = toSideboard_1[_a];
+                newDecks[deckIndex].sideboard.push(cardId);
+            }
         }
         setDecks(newDecks);
     };
