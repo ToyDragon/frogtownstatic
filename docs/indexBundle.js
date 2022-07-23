@@ -606,7 +606,7 @@ function substringFilter(cardIds, map, filterValue) {
                     var cleanVal = cleanName(val);
                     // Only match on each filter word once. IE if the user enters 'war', don't
                     // double count it for a 'dWARf WARrior'
-                    if (cleanVal.split(' ').indexOf(filterWord)) {
+                    if (cleanVal.split(' ').indexOf(filterWord) >= 0) {
                         score += 10;
                         break;
                     }
@@ -677,7 +677,7 @@ function categoryFilter(cardIds, map, filterValue) {
 }
 function executeFilter(data, loader) {
     return __awaiter(this, void 0, void 0, function () {
-        var idToName, seenName, cardIds, id, anyFilterApplied, anySortApplied, cumulativeScores, tryApplyFilter, idToSetCode_1, setCodeToRelease_1;
+        var idToName, seenName, cardIds, id, anyFilterApplied, anySortApplied, cumulativeScores, debugLog, tryApplyFilter, idToSetCode_1, setCodeToRelease_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, loader.getMapData('IDToName')];
@@ -695,16 +695,21 @@ function executeFilter(data, loader) {
                     anyFilterApplied = false;
                     anySortApplied = false;
                     cumulativeScores = {};
+                    debugLog = false;
                     tryApplyFilter = function (ranking) {
                         if (!ranking) {
+                            debugLog && console.log('No ranking');
                             return;
                         }
                         anyFilterApplied = true;
+                        var cardsRemoved = 0;
                         for (var i = cardIds.length - 1; i >= 0; i--) {
                             if (!ranking[cardIds[i]] || ranking[cardIds[i]] <= 0) {
+                                cardsRemoved++;
                                 cardIds.splice(i, 1);
                             }
                         }
+                        debugLog && console.log("Removed ".concat(cardsRemoved, " cards with no ranking."));
                         var sortedIds = cardIds.slice(0, cardIds.length)
                             .filter(function (a) { return ranking[a] > 0; })
                             .sort(function (a, b) { return ranking[a] - ranking[b]; });
@@ -717,12 +722,14 @@ function executeFilter(data, loader) {
                         for (var i = 0; i < sortedIds.length; i++) {
                             if (!rankToMetaRanking[ranking[sortedIds[i]]]) {
                                 rankToMetaRanking[ranking[sortedIds[i]]] = ++currentMetaRank;
+                                debugLog && console.log("Rank ".concat(currentMetaRank, " starts at ").concat(i, "."));
                                 metaRankCount[currentMetaRank] = 1;
                             }
                             else {
                                 metaRankCount[currentMetaRank]++;
                             }
                         }
+                        debugLog && console.log("".concat(currentMetaRank, " Ranks."));
                         // Find the first metarank not overlapping with the 100 best fit cards.
                         var maxIncludedMetaRank = currentMetaRank + 1;
                         var runningTotal = 0;

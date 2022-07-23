@@ -178,7 +178,7 @@ function substringFilter(
 
           // Only match on each filter word once. IE if the user enters 'war', don't
           // double count it for a 'dWARf WARrior'
-          if (cleanVal.split(' ').indexOf(filterWord)) {
+          if (cleanVal.split(' ').indexOf(filterWord) >= 0) {
             score += 10;
             break;
           }
@@ -275,17 +275,22 @@ export default async function executeFilter(
   let anyFilterApplied = false;
   let anySortApplied = false;
   const cumulativeScores: Record<string, number> = {};
+  let debugLog = false;
   const tryApplyFilter = (ranking: Record<string, number> | null) => {
     if (!ranking) {
+      debugLog && console.log('No ranking');
       return;
     }
 
     anyFilterApplied = true;
+    let cardsRemoved = 0;
     for (let i = cardIds.length - 1; i >= 0; i--) {
       if (!ranking[cardIds[i]] || ranking[cardIds[i]] <= 0) {
+        cardsRemoved++;
         cardIds.splice(i, 1);
       }
     }
+    debugLog && console.log(`Removed ${cardsRemoved} cards with no ranking.`);
 
     const sortedIds = cardIds.slice(0, cardIds.length)
         .filter((a) => ranking[a] > 0)
@@ -300,11 +305,14 @@ export default async function executeFilter(
     for (let i = 0; i < sortedIds.length; i++) {
       if (!rankToMetaRanking[ranking[sortedIds[i]]]) {
         rankToMetaRanking[ranking[sortedIds[i]]] = ++currentMetaRank;
+        debugLog && console.log(`Rank ${currentMetaRank} starts at ${i}.`);
         metaRankCount[currentMetaRank] = 1;
       } else {
         metaRankCount[currentMetaRank]++;
       }
     }
+
+    debugLog && console.log(`${currentMetaRank} Ranks.`);
 
     // Find the first metarank not overlapping with the 100 best fit cards.
     let maxIncludedMetaRank = currentMetaRank + 1;
