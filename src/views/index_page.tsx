@@ -1,6 +1,6 @@
 import HeaderBar from './components/header_bar';
 import React, {useEffect, useRef, useState} from 'react';
-import {copyDecks, createNewDeck, Deck, loadDecksFromStorage, saveDecksToStorage} from '../data/deck';
+import {copyDeck, copyDecks, createNewDeck, Deck, loadDecksFromStorage, saveDecksToStorage} from '../data/deck';
 import SearchArea, {SearchAreaHandle} from './components/search_area';
 import DeckArea from './components/deck_area';
 import ImageLoadTracker from './components/image_load_tracker';
@@ -273,6 +273,13 @@ export default function indexPage(props: {
       <DeckArea imageLoadTracker={props.imageLoadTracker} deck={deck} loader={props.loader} addCard={addCard}
         onStar={onStar} onEditName={() => deck && editNameWindowRef.current?.open(deck.name)}
         onBulkImport={() => bulkImportWindowRef.current?.open()}
+        onClone={() => {
+          const newDecks = copyDecks(decks);
+          const copy = copyDeck(newDecks[deckIndex]);
+          copy.name += ' (Copy)';
+          newDecks.splice(deckIndex, 0, copy);
+          setDecks(newDecks);
+        }}
         onSettings={() => {
           if (!deck) {
             return;

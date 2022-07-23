@@ -24,6 +24,7 @@ export default function deckArea(props: {
     onBulkImport: () => void,
     onSettings: () => void,
     onDelete: () => void,
+    onClone: () => void,
     onSwap: (id: string) => void,
 }) {
   const [displayMode, setDisplayMode] = useState(DisplayMode.Grid);
@@ -197,6 +198,8 @@ export default function deckArea(props: {
               }} href="#" onMouseUp={(e) => e.button === 0 && props.onSettings()}><IconGear /></a></li>
             <li><a className={'dropdown-item ' + (tcgplayerLink === '' ? 'disabled' : '')}
               href={tcgplayerLink} target="_blank" rel="noreferrer">TCG Player</a></li>
+            <li><a className="dropdown-item" href="#"
+              onMouseUp={(e) => e.button === 0 && props.onClone()}>Clone Deck</a></li>
             <li><a className="dropdown-item" href="#"
               onMouseUp={(e) => e.button === 0 && props.onDelete()}>Delete Deck</a></li>
           </ul>

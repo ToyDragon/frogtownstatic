@@ -348,7 +348,13 @@ function indexPage(props) {
                 width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
-            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, deck: deck, loader: props.loader, addCard: addCard, onStar: onStar, onEditName: function () { var _a; return deck && ((_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () {
+            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, deck: deck, loader: props.loader, addCard: addCard, onStar: onStar, onEditName: function () { var _a; return deck && ((_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onClone: function () {
+                    var newDecks = (0, deck_1.copyDecks)(decks);
+                    var copy = (0, deck_1.copyDeck)(newDecks[deckIndex]);
+                    copy.name += ' (Copy)';
+                    newDecks.splice(deckIndex, 0, copy);
+                    setDecks(newDecks);
+                }, onSettings: function () {
                     var _a;
                     if (!deck) {
                         return;

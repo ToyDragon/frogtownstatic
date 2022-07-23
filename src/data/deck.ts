@@ -61,16 +61,20 @@ export async function saveDecksToStorage(storage: FrogtownStorage | null, decks:
   ]);
 }
 
+export function copyDeck(deck: Deck): Deck {
+  return {
+    name: deck.name,
+    keycard: deck.keycard,
+    mainboard: deck.mainboard.slice(),
+    sideboard: deck.sideboard.slice(),
+    backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
+  };
+}
+
 export function copyDecks(decks: Deck[]): Deck[] {
   const newDecks: Deck[] = [];
   for (const deck of decks) {
-    newDecks.push({
-      name: deck.name,
-      keycard: deck.keycard,
-      mainboard: deck.mainboard.slice(),
-      sideboard: deck.sideboard.slice(),
-      backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
-    });
+    newDecks.push(copyDeck(deck));
   }
   return newDecks;
 }

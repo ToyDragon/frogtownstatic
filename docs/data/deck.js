@@ -45,7 +45,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.copyDecks = exports.saveDecksToStorage = exports.loadDecksFromStorage = exports.ensureValidDeck = exports.createNewDeck = void 0;
+exports.copyDecks = exports.copyDeck = exports.saveDecksToStorage = exports.loadDecksFromStorage = exports.ensureValidDeck = exports.createNewDeck = void 0;
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -146,17 +146,21 @@ function saveDecksToStorage(storage, decks) {
     });
 }
 exports.saveDecksToStorage = saveDecksToStorage;
+function copyDeck(deck) {
+    return {
+        name: deck.name,
+        keycard: deck.keycard,
+        mainboard: deck.mainboard.slice(),
+        sideboard: deck.sideboard.slice(),
+        backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
+    };
+}
+exports.copyDeck = copyDeck;
 function copyDecks(decks) {
     var newDecks = [];
     for (var _i = 0, decks_1 = decks; _i < decks_1.length; _i++) {
         var deck = decks_1[_i];
-        newDecks.push({
-            name: deck.name,
-            keycard: deck.keycard,
-            mainboard: deck.mainboard.slice(),
-            sideboard: deck.sideboard.slice(),
-            backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
-        });
+        newDecks.push(copyDeck(deck));
     }
     return newDecks;
 }

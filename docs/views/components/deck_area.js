@@ -194,6 +194,8 @@ function deckArea(props) {
                     react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: 'dropdown-item ' + (tcgplayerLink === '' ? 'disabled' : ''), href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")),
                     react_1.default.createElement("li", null,
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onClone(); } }, "Clone Deck")),
+                    react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onDelete(); } }, "Delete Deck")))))));
 }
 exports.default = deckArea;

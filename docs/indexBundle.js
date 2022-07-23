@@ -302,7 +302,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.copyDecks = exports.saveDecksToStorage = exports.loadDecksFromStorage = exports.ensureValidDeck = exports.createNewDeck = void 0;
+exports.copyDecks = exports.copyDeck = exports.saveDecksToStorage = exports.loadDecksFromStorage = exports.ensureValidDeck = exports.createNewDeck = void 0;
 function createNewDeck(num) {
     return {
         keycard: '75b56b18-47a3-470b-911c-57da82c5ac03',
@@ -403,17 +403,21 @@ function saveDecksToStorage(storage, decks) {
     });
 }
 exports.saveDecksToStorage = saveDecksToStorage;
+function copyDeck(deck) {
+    return {
+        name: deck.name,
+        keycard: deck.keycard,
+        mainboard: deck.mainboard.slice(),
+        sideboard: deck.sideboard.slice(),
+        backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
+    };
+}
+exports.copyDeck = copyDeck;
 function copyDecks(decks) {
     var newDecks = [];
     for (var _i = 0, decks_1 = decks; _i < decks_1.length; _i++) {
         var deck = decks_1[_i];
-        newDecks.push({
-            name: deck.name,
-            keycard: deck.keycard,
-            mainboard: deck.mainboard.slice(),
-            sideboard: deck.sideboard.slice(),
-            backgroundUrl: deck.backgroundUrl || 'https://i.imgur.com/Hg8CwwU.jpeg',
-        });
+        newDecks.push(copyDeck(deck));
     }
     return newDecks;
 }
@@ -3211,6 +3215,8 @@ function deckArea(props) {
                             react_1.default.createElement(icon_gear_1.default, null))),
                     react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: 'dropdown-item ' + (tcgplayerLink === '' ? 'disabled' : ''), href: tcgplayerLink, target: "_blank", rel: "noreferrer" }, "TCG Player")),
+                    react_1.default.createElement("li", null,
+                        react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onClone(); } }, "Clone Deck")),
                     react_1.default.createElement("li", null,
                         react_1.default.createElement("a", { className: "dropdown-item", href: "#", onMouseUp: function (e) { return e.button === 0 && props.onDelete(); } }, "Delete Deck")))))));
 }
@@ -7076,7 +7082,13 @@ function indexPage(props) {
                 width: "calc(100% - ".concat(searchWidth, "px)"),
                 height: '100%',
             } },
-            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, deck: deck, loader: props.loader, addCard: addCard, onStar: onStar, onEditName: function () { var _a; return deck && ((_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onSettings: function () {
+            react_1.default.createElement(deck_area_1.default, { imageLoadTracker: props.imageLoadTracker, deck: deck, loader: props.loader, addCard: addCard, onStar: onStar, onEditName: function () { var _a; return deck && ((_a = editNameWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(deck.name)); }, onBulkImport: function () { var _a; return (_a = bulkImportWindowRef.current) === null || _a === void 0 ? void 0 : _a.open(); }, onClone: function () {
+                    var newDecks = (0, deck_1.copyDecks)(decks);
+                    var copy = (0, deck_1.copyDeck)(newDecks[deckIndex]);
+                    copy.name += ' (Copy)';
+                    newDecks.splice(deckIndex, 0, copy);
+                    setDecks(newDecks);
+                }, onSettings: function () {
                     var _a;
                     if (!deck) {
                         return;
