@@ -8,8 +8,21 @@ import IndexPage from './index_page';
 const loader = new UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json',
     (url: string) => {
       return new Promise((resolve) => {
-        fetch(url).then((response) => {
-          resolve(response.json());
+        const fetchAndResolve = () => {
+          return fetch(url).then((response) => {
+            resolve(response.json());
+          });
+        };
+        fetchAndResolve().catch(async () => {
+          console.warn(`Fetch for ${url} failed, trying again in 1s...`);
+          await new Promise((r) => setTimeout(r, 1000));
+          fetchAndResolve().catch(async () => {
+            console.warn(`Fetch for ${url} failed twice, trying again in 1s...`);
+            await new Promise((r) => setTimeout(r, 1000));
+            fetchAndResolve().catch(async () => {
+              console.error(`Fetch for ${url} failed three times, aborting`);
+            });
+          });
         });
       });
     });
