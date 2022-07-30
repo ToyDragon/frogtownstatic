@@ -24,6 +24,7 @@ import {FrogtownMetadata, getCurrentMetadata} from '../data/frogtown_metadata';
 import backupDecks from '../data/backup_decks';
 import {transformBug71722MainboardSideboard} from '../data/bugs/bug71722MainboardSideboard';
 import NotificationWindow, {NotificationWindowHandle} from './components/notification_window';
+import EnterOldPrivateIdWindow, {EnterOldPrivateIdWindowHandle} from './components/enter_old_private_id_window';
 
 function uniques(vals: string[]): string[] {
   const obj: Record<string, boolean> = {};
@@ -60,6 +61,7 @@ export default function indexPage(props: {
   const confirmDeleteWindowRef = useRef<ConfirmDeleteWindowHandle>(null);
   const infoWindowRef = useRef<InfoWindowHandle>(null);
   const swapPrintingsWindowRef = useRef<SwapPrintingsWindowHandle>(null);
+  const enterOldPrivateIdWindowRef = useRef<EnterOldPrivateIdWindowHandle>(null);
   const storageRef = useRef<FrogtownStorage | null>(null);
   const [legacyPublicId, setLegacyPublicId] = useState('');
   const [legacyBetaPublicId, setLegacyBetaPublicId] = useState('');
@@ -232,6 +234,13 @@ export default function indexPage(props: {
     setDecks(newDecks);
   };
 
+  const reExportForPublicId = async (publicId: string) => {
+    const newDecks = await loadLegacyDecksForPublicId(publicId, copyDecks(decks), props.urlLoader);
+    if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
+      setDecks(newDecks);
+    }
+  };
+
   const deck = deckIndex >= decks.length ? null : decks[deckIndex];
   return <>
     <HeaderBar loader={props.loader} decks={decks} changeDeck={(i: number) => {
@@ -305,16 +314,15 @@ export default function indexPage(props: {
       newDecks[deckIndex].name = newName;
       setDecks(newDecks);
     }} />
+    <EnterOldPrivateIdWindow ref={enterOldPrivateIdWindowRef} urlLoader={props.urlLoader}
+      idEntered={reExportForPublicId} />
     <BulkImportWindow ref={bulkImportWindowRef} loader={props.loader} addCards={addCards} />
     <SettingsWindow ref={settingsWindowRef} loader={props.loader} setBackgroundUrl={setBackgroundUrl} />
     <HoverCardHandler loader={props.loader} />
     <LoadingWindow loader={props.loader} />
     <ConfirmDeleteWindow deleteConfirmed={deleteConfirmed} ref={confirmDeleteWindowRef} />
-    <InfoWindow ref={infoWindowRef} onReexport={async (publicId: string) => {
-      const newDecks = await loadLegacyDecksForPublicId(publicId, copyDecks(decks), props.urlLoader);
-      if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
-        setDecks(newDecks);
-      }
+    <InfoWindow ref={infoWindowRef} onReexport={reExportForPublicId} onPrivateId={() => {
+      enterOldPrivateIdWindowRef.current!.open();
     }} />
     <SecondaryLoadWindow loader={props.loader} />
     <SwapPrintingsWindow ref={swapPrintingsWindowRef} addCard={(id) => addCard(id, false)} loader={props.loader}

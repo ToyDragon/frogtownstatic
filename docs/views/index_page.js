@@ -94,6 +94,7 @@ var frogtown_metadata_1 = require("../data/frogtown_metadata");
 var backup_decks_1 = __importDefault(require("../data/backup_decks"));
 var bug71722MainboardSideboard_1 = require("../data/bugs/bug71722MainboardSideboard");
 var notification_window_1 = __importDefault(require("./components/notification_window"));
+var enter_old_private_id_window_1 = __importDefault(require("./components/enter_old_private_id_window"));
 function uniques(vals) {
     var obj = {};
     for (var _i = 0, vals_1 = vals; _i < vals_1.length; _i++) {
@@ -124,6 +125,7 @@ function indexPage(props) {
     var confirmDeleteWindowRef = (0, react_1.useRef)(null);
     var infoWindowRef = (0, react_1.useRef)(null);
     var swapPrintingsWindowRef = (0, react_1.useRef)(null);
+    var enterOldPrivateIdWindowRef = (0, react_1.useRef)(null);
     var storageRef = (0, react_1.useRef)(null);
     var _d = (0, react_1.useState)(''), legacyPublicId = _d[0], setLegacyPublicId = _d[1];
     var _e = (0, react_1.useState)(''), legacyBetaPublicId = _e[0], setLegacyBetaPublicId = _e[1];
@@ -311,6 +313,20 @@ function indexPage(props) {
         }
         setDecks(newDecks);
     };
+    var reExportForPublicId = function (publicId) { return __awaiter(_this, void 0, void 0, function () {
+        var newDecks;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, legacy_deck_loader_1.loadLegacyDecksForPublicId)(publicId, (0, deck_1.copyDecks)(decks), props.urlLoader)];
+                case 1:
+                    newDecks = _a.sent();
+                    if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
+                        setDecks(newDecks);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     var deck = deckIndex >= decks.length ? null : decks[deckIndex];
     return react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement(header_bar_1.default, { loader: props.loader, decks: decks, changeDeck: function (i) {
@@ -376,25 +392,15 @@ function indexPage(props) {
                 newDecks[deckIndex].name = newName;
                 setDecks(newDecks);
             } }),
+        react_1.default.createElement(enter_old_private_id_window_1.default, { ref: enterOldPrivateIdWindowRef, urlLoader: props.urlLoader, idEntered: reExportForPublicId }),
         react_1.default.createElement(bulk_import_window_1.default, { ref: bulkImportWindowRef, loader: props.loader, addCards: addCards }),
         react_1.default.createElement(settings_window_1.default, { ref: settingsWindowRef, loader: props.loader, setBackgroundUrl: setBackgroundUrl }),
         react_1.default.createElement(hovercard_handler_1.default, { loader: props.loader }),
         react_1.default.createElement(loading_window_1.default, { loader: props.loader }),
         react_1.default.createElement(confirm_delete_window_1.default, { deleteConfirmed: deleteConfirmed, ref: confirmDeleteWindowRef }),
-        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef, onReexport: function (publicId) { return __awaiter(_this, void 0, void 0, function () {
-                var newDecks;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, (0, legacy_deck_loader_1.loadLegacyDecksForPublicId)(publicId, (0, deck_1.copyDecks)(decks), props.urlLoader)];
-                        case 1:
-                            newDecks = _a.sent();
-                            if (newDecks && JSON.stringify(newDecks) !== JSON.stringify(decks)) {
-                                setDecks(newDecks);
-                            }
-                            return [2 /*return*/];
-                    }
-                });
-            }); } }),
+        react_1.default.createElement(info_window_1.default, { ref: infoWindowRef, onReexport: reExportForPublicId, onPrivateId: function () {
+                enterOldPrivateIdWindowRef.current.open();
+            } }),
         react_1.default.createElement(secondary_load_window_1.default, { loader: props.loader }),
         react_1.default.createElement(swap_printings_window_1.default, { ref: swapPrintingsWindowRef, addCard: function (id) { return addCard(id, false); }, loader: props.loader, imageLoadTracker: props.imageLoadTracker, urlLoader: props.urlLoader, swapCard: swapCard }),
         react_1.default.createElement(deck_drop_handler_1.default, { loader: props.loader, addDeck: function (deck) {

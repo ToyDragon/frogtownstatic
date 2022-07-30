@@ -6,6 +6,7 @@ export type InfoWindowHandle = {
 
 export type InfoWindowProps = {
   onReexport: (publicId: string) => unknown,
+  onPrivateId: () => unknown,
 };
 
 const InfoWindow = forwardRef<InfoWindowHandle, InfoWindowProps>(function InfoWindow(
@@ -72,25 +73,29 @@ const InfoWindow = forwardRef<InfoWindowHandle, InfoWindowProps>(function InfoWi
       <div>{githubLogo}</div>
       <div style={{marginTop: '12px'}}></div>
       <div>
-        {
-          (legacyPublicId || legacyBetaPublicId) &&
-              <div>
-                If you&apos;re missing decks from the old version of frogtown, here you can attempt to import the
-                decks again.
-              </div>
-        }
         <div>
-          {!legacyPublicId ? null : <button className="btn btn-primary" onMouseUp={(e)=> {
+          If you&apos;re missing decks from the old version of frogtown, here you can attempt to import the
+          decks again.
+        </div>
+        <div>
+          {!legacyPublicId ? null : <button className="btn btn-primary" style={{marginRight: '8px'}} onMouseUp={(e)=> {
             if (e.button === 0) {
               props.onReexport(legacyPublicId);
             }
-          }}>Try Import WWW Decks</button>}
-          {!legacyBetaPublicId ? null : <button className="btn btn-primary" style={{marginLeft: '8px'}}
+          }}>Import WWW Decks</button>}
+          {!legacyBetaPublicId ? null : <button className="btn btn-primary" style={{marginRight: '8px'}}
             onMouseUp={(e)=> {
               if (e.button === 0) {
                 props.onReexport(legacyBetaPublicId);
               }
-            }}>Try Import Beta Decks</button>}
+            }}>Import Beta Decks</button>}
+          <button className="btn btn-primary"
+            onMouseUp={(e)=> {
+              if (e.button === 0) {
+                setIsOpen(false);
+                props.onPrivateId();
+              }
+            }}>Import With Private ID</button>
         </div>
       </div>
       <div style={{fontSize: '12px', color: '#555555', position: 'absolute', bottom: '37px', padding: '12px'}}>
