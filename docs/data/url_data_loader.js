@@ -66,12 +66,82 @@ var UrlDataLoader = /** @class */ (function () {
                         _a.label = 2;
                     case 2:
                         if (!this.mapLoadPromise[mapName]) {
-                            this.mapLoadPromise[mapName] = new Promise(function (resolve) {
-                                _this.jsonRequestHelper(_this.baseUrl.replace(/\{MapName\}/g, mapName)).then(function (result) {
-                                    _this.loadedMaps[mapName] = result;
-                                    resolve(result);
+                            this.mapLoadPromise[mapName] = new Promise(function (resolve) { return __awaiter(_this, void 0, void 0, function () {
+                                var _this = this;
+                                return __generator(this, function (_a) {
+                                    // Special handling for some maps that can be constructed from other maps.
+                                    if (mapName === 'IDToNormalImageURI' || mapName === 'IDToCropImageURI') {
+                                        return [2 /*return*/, this.getMapData('IDToLargeImageURI').then(function (largeMap) {
+                                                if (!largeMap) {
+                                                    _this.loadedMaps[mapName] = null;
+                                                    resolve(null);
+                                                }
+                                                else {
+                                                    var mapData = {};
+                                                    for (var _i = 0, _a = Object.keys(largeMap); _i < _a.length; _i++) {
+                                                        var id = _a[_i];
+                                                        var replacement = mapName === 'IDToNormalImageURI' ? 'normal' : 'art_crop';
+                                                        mapData[id] = largeMap[id].replace(/io\/large/g, 'io/' + replacement);
+                                                    }
+                                                    _this.loadedMaps[mapName] = mapData;
+                                                    window.maps = window.maps || {};
+                                                    window.maps[mapName] = mapData;
+                                                    console.log('Loaded ' + mapName + ' as derivative');
+                                                    resolve(mapData);
+                                                }
+                                            })];
+                                    }
+                                    else if (mapName === 'IDToCMC') {
+                                        return [2 /*return*/, this.getMapData('IDToCost').then(function (costMap) { return __awaiter(_this, void 0, void 0, function () {
+                                                var idToCMCAbv, mapData, _i, _a, id, cost, _b, _c, id;
+                                                return __generator(this, function (_d) {
+                                                    switch (_d.label) {
+                                                        case 0: return [4 /*yield*/, this.jsonRequestHelper(this.baseUrl.replace(/\{MapName\}/g, 'IDToCMC'))];
+                                                        case 1:
+                                                            idToCMCAbv = _d.sent();
+                                                            console.log("".concat(Object.keys(costMap).length, " vs ").concat(Object.keys(idToCMCAbv).length));
+                                                            if (!costMap) {
+                                                                this.loadedMaps[mapName] = null;
+                                                                resolve(null);
+                                                            }
+                                                            else {
+                                                                mapData = {};
+                                                                for (_i = 0, _a = Object.keys(costMap); _i < _a.length; _i++) {
+                                                                    id = _a[_i];
+                                                                    cost = costMap[id] || '';
+                                                                    // Logic must match the exported exactly.
+                                                                    mapData[id] = cost === '' ? 0 : cost.split(' //')[0].split('}{')
+                                                                        .map(function (c) { return c.replace(/[\{\}]/g, ''); })
+                                                                        .map(function (c) { return c === 'X' || c === '0' ? 0 : (Number.parseInt(c) || 1); })
+                                                                        .reduce(function (c, v) { return c + v; });
+                                                                }
+                                                                for (_b = 0, _c = Object.keys(idToCMCAbv); _b < _c.length; _b++) {
+                                                                    id = _c[_b];
+                                                                    mapData[id] = idToCMCAbv[id];
+                                                                }
+                                                                this.loadedMaps[mapName] = mapData;
+                                                                window.maps = window.maps || {};
+                                                                window.maps[mapName] = mapData;
+                                                                window.maps[mapName + '_abv'] = idToCMCAbv;
+                                                                console.log('Loaded ' + mapName + ' as derivative');
+                                                                resolve(mapData);
+                                                            }
+                                                            return [2 /*return*/];
+                                                    }
+                                                });
+                                            }); })];
+                                    }
+                                    // All other maps load directly from url.
+                                    this.jsonRequestHelper(this.baseUrl.replace(/\{MapName\}/g, mapName)).then(function (result) {
+                                        _this.loadedMaps[mapName] = result;
+                                        window.maps = window.maps || {};
+                                        window.maps[mapName] = result;
+                                        console.log('Loaded ' + mapName);
+                                        resolve(result);
+                                    });
+                                    return [2 /*return*/];
                                 });
-                            });
+                            }); });
                         }
                         return [4 /*yield*/, this.mapLoadPromise[mapName]];
                     case 3: return [2 /*return*/, _a.sent()];

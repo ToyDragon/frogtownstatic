@@ -5,13 +5,39 @@ import ImageLoadTracker from './components/image_load_tracker';
 import URLLoader from './components/url_loader';
 import IndexPage from './index_page';
 
-const loader = new UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json',
+const loader = new UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json.gz',
     (url: string) => {
       return new Promise((resolve) => {
         const fetchAndResolve = () => {
-          return fetch(url).then((response) => {
-            resolve(response.json());
-          });
+          if (!url.endsWith('.gz')) {
+            return fetch(url).then((response) => {
+              resolve(response.json());
+            });
+          }
+          return fetch(url)
+              .then((response) => {
+                return response.body!.pipeThrough(new (window as any).DecompressionStream('gzip'));
+              })
+              .then((decompressedStream) => {
+                const reader = decompressedStream.getReader();
+                return new ReadableStream({
+                  start: async (controller) => {
+                    while (true) {
+                      const {done, value} = await reader.read();
+                      if (done) {
+                        break;
+                      }
+                      controller.enqueue(value);
+                    }
+                    controller.close();
+                    reader.releaseLock();
+                  },
+                });
+              })
+              .then((stream) => new Response(stream))
+              .then((response) => {
+                resolve(response.json());
+              });
         };
         fetchAndResolve().catch(async () => {
           console.warn(`Fetch for ${url} failed, trying again in 1s...`);

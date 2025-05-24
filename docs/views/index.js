@@ -45,10 +45,46 @@ var url_data_loader_1 = require("../data/url_data_loader");
 var image_load_tracker_1 = __importDefault(require("./components/image_load_tracker"));
 var url_loader_1 = __importDefault(require("./components/url_loader"));
 var index_page_1 = __importDefault(require("./index_page"));
-var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json', function (url) {
+var loader = new url_data_loader_1.UrlDataLoader('https://s3-us-west-2.amazonaws.com/frogtown.apricot.data/{MapName}.json.gz', function (url) {
     return new Promise(function (resolve) {
         var fetchAndResolve = function () {
-            return fetch(url).then(function (response) {
+            if (!url.endsWith('.gz')) {
+                return fetch(url).then(function (response) {
+                    resolve(response.json());
+                });
+            }
+            return fetch(url)
+                .then(function (response) {
+                return response.body.pipeThrough(new window.DecompressionStream('gzip'));
+            })
+                .then(function (decompressedStream) {
+                var reader = decompressedStream.getReader();
+                return new ReadableStream({
+                    start: function (controller) { return __awaiter(void 0, void 0, void 0, function () {
+                        var _a, done, value;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    if (!true) return [3 /*break*/, 2];
+                                    return [4 /*yield*/, reader.read()];
+                                case 1:
+                                    _a = _b.sent(), done = _a.done, value = _a.value;
+                                    if (done) {
+                                        return [3 /*break*/, 2];
+                                    }
+                                    controller.enqueue(value);
+                                    return [3 /*break*/, 0];
+                                case 2:
+                                    controller.close();
+                                    reader.releaseLock();
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); },
+                });
+            })
+                .then(function (stream) { return new Response(stream); })
+                .then(function (response) {
                 resolve(response.json());
             });
         };
