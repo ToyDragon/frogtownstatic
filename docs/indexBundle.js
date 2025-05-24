@@ -25990,7 +25990,8 @@ function logCapturedError(boundary, errorInfo) {
       // displayed by the browser thanks to the DEV-only fake event trick in ReactErrorUtils.
 
       console['error'](combinedMessage); // Don't transform to our wrapper
-    } else {}
+    } else // removed by dead control flow
+{}
   } catch (e) {
     // This method must not throw, or React internal state will get messed up.
     // If console.error is overridden, or logCapturedError() shows a dialog that throws,
@@ -37196,7 +37197,8 @@ if (
 
 
 var m = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-if (false) {} else {
+if (false) // removed by dead control flow
+{} else {
   var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
   exports.createRoot = function(c, o) {
     i.usingClientEntryPoint = true;
@@ -37245,17 +37247,12 @@ function checkDCE() {
     // a false positive.
     throw new Error('^_^');
   }
-  try {
-    // Verify that the code above has been dead code eliminated (DCE'd).
-    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
-  } catch (err) {
-    // DevTools shouldn't crash React, no matter what.
-    // We should still report in case we break this code.
-    console.error(err);
-  }
+  // removed by dead control flow
+{}
 }
 
-if (false) {} else {
+if (false) // removed by dead control flow
+{} else {
   module.exports = __webpack_require__(/*! ./cjs/react-dom.development.js */ "./node_modules/react-dom/cjs/react-dom.development.js");
 }
 
@@ -37294,36 +37291,26 @@ if (
 ) {
   __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
 }
-          var ReactVersion = '18.1.0';
-
-// -----------------------------------------------------------------------------
-
-var enableScopeAPI = false; // Experimental Create Event Handle API.
-var enableCacheElement = false;
-var enableTransitionTracing = false; // No known bugs, but needs performance testing
-
-var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
-// stuff. Intended to enable React core members to more easily debug scheduling
-// issues in DEV builds.
-
-var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
+          var ReactVersion = '18.2.0';
 
 // ATTENTION
-
-var REACT_ELEMENT_TYPE =  Symbol.for('react.element');
-var REACT_PORTAL_TYPE =  Symbol.for('react.portal');
-var REACT_FRAGMENT_TYPE =  Symbol.for('react.fragment');
-var REACT_STRICT_MODE_TYPE =  Symbol.for('react.strict_mode');
-var REACT_PROFILER_TYPE =  Symbol.for('react.profiler');
-var REACT_PROVIDER_TYPE =  Symbol.for('react.provider');
-var REACT_CONTEXT_TYPE =  Symbol.for('react.context');
-var REACT_FORWARD_REF_TYPE =  Symbol.for('react.forward_ref');
-var REACT_SUSPENSE_TYPE =  Symbol.for('react.suspense');
-var REACT_SUSPENSE_LIST_TYPE =  Symbol.for('react.suspense_list');
-var REACT_MEMO_TYPE =  Symbol.for('react.memo');
-var REACT_LAZY_TYPE =  Symbol.for('react.lazy');
-var REACT_OFFSCREEN_TYPE =  Symbol.for('react.offscreen');
-var MAYBE_ITERATOR_SYMBOL =  Symbol.iterator;
+// When adding new symbols to this file,
+// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+// The Symbol used to tag the ReactElement-like types.
+var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+var REACT_MEMO_TYPE = Symbol.for('react.memo');
+var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator';
 function getIteratorFn(maybeIterable) {
   if (maybeIterable === null || typeof maybeIterable !== 'object') {
@@ -37414,6 +37401,18 @@ function setExtraStackFrame(stack) {
     return stack;
   };
 }
+
+// -----------------------------------------------------------------------------
+
+var enableScopeAPI = false; // Experimental Create Event Handle API.
+var enableCacheElement = false;
+var enableTransitionTracing = false; // No known bugs, but needs performance testing
+
+var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
+// stuff. Intended to enable React core members to more easily debug scheduling
+// issues in DEV builds.
+
+var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
 
 var ReactSharedInternals = {
   ReactCurrentDispatcher: ReactCurrentDispatcher,
@@ -40018,7 +40017,8 @@ if (
 
 
 
-if (false) {} else {
+if (false) // removed by dead control flow
+{} else {
   module.exports = __webpack_require__(/*! ./cjs/react.development.js */ "./node_modules/react/cjs/react.development.js");
 }
 
@@ -40677,7 +40677,8 @@ if (
 
 
 
-if (false) {} else {
+if (false) // removed by dead control flow
+{} else {
   module.exports = __webpack_require__(/*! ./cjs/scheduler.development.js */ "./node_modules/scheduler/cjs/scheduler.development.js");
 }
 
@@ -40730,7 +40731,7 @@ if (false) {} else {
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__("./docs/views/index.js");
 /******/ 	var __webpack_export_target__ = exports;
-/******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+/******/ 	for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ 	
 /******/ })()
