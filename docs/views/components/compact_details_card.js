@@ -49,6 +49,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var card_actions_1 = __importDefault(require("./card_actions"));
 var make_mana_icon_1 = __importDefault(require("./make_mana_icon"));
+var get_card_image_url_1 = __importDefault(require("./get_card_image_url"));
 function CompactDetailsCard(props) {
     var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -76,9 +77,8 @@ function CompactDetailsCard(props) {
         rarityColor = '#e24d23';
     }
     var idToText = props.loader.getMapDataSync('IDToText');
-    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     var idToArtist = props.loader.getMapDataSync('IDToArtist');
-    var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+    var bg = (0, get_card_image_url_1.default)(props.cardId, props.loader);
     var artist = (idToArtist && idToArtist[props.cardId] && "Artist: ".concat(idToArtist[props.cardId])) || '';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',

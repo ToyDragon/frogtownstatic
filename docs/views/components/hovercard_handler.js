@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importDefault(require("react"));
 var react_2 = require("react");
+var get_card_image_url_1 = __importDefault(require("./get_card_image_url"));
 function hoverCardHandler(props) {
     var id = (0, react_2.useId)();
     (0, react_2.useEffect)(function () {
@@ -20,7 +21,7 @@ function hoverCardHandler(props) {
                 var ele = allElements_1[_i];
                 var cardId = ele.getAttribute('data-hovercardid');
                 if (cardId) {
-                    var bg = idToImageUri[cardId];
+                    var bg = (0, get_card_image_url_1.default)(cardId, props.loader);
                     if (bg) {
                         hoverCard.style.top = (e.pageY + 20) + 'px';
                         hoverCard.style.left = e.pageX + 'px';

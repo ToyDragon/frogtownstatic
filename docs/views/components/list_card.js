@@ -95,7 +95,7 @@ function ListCard(props) {
                 marginLeft: '2px',
             }, title: idToSetCode[props.cardId] || '', dangerouslySetInnerHTML: {
                 __html: svgText.replace(/\n/g, '').replace(/^{.*$/, '')
-                    .replace('<svg ', '<svg style="width:100%; height:100%;" '),
+                    .replace('<svg ', '<svg style="width:100%; height:100%; margin-left:0;" '),
             } }),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',

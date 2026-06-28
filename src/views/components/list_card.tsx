@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {DataLoader} from '../../data/data_loader';
+import React, { useState, useEffect } from 'react';
+import { DataLoader } from '../../data/data_loader';
 import CardActions from './card_actions';
 import makeManaIcon from './make_mana_icon';
 import URLLoader from './url_loader';
 
-export default function ListCard(props: { cardId: string, count: number, loader: DataLoader, urlLoader: URLLoader,
+export default function ListCard(props: {
+  cardId: string, count: number, loader: DataLoader, urlLoader: URLLoader,
   index: number, actionHandlers: {
     onAdd?: (cardId: string) => void,
     onRemove?: (cardId: string) => void,
@@ -47,7 +48,7 @@ export default function ListCard(props: { cardId: string, count: number, loader:
       maxWidth: '750px',
       height: '42px',
       position: 'relative',
-      backgroundColor: props.index%2 === 1 ? '#303b4c' : '#4d5869',
+      backgroundColor: props.index % 2 === 1 ? '#303b4c' : '#4d5869',
       color: 'white',
       borderTopLeftRadius: props.index === 0 ? '8px' : '',
       borderTopRightRadius: props.index === 0 ? '8px' : '',
@@ -62,7 +63,7 @@ export default function ListCard(props: { cardId: string, count: number, loader:
         marginLeft: '2px',
       }} title={idToSetCode[props.cardId] || ''} dangerouslySetInnerHTML={{
         __html: svgText.replace(/\n/g, '').replace(/^{.*$/, '')
-            .replace('<svg ', '<svg style="width:100%; height:100%;" '),
+          .replace('<svg ', '<svg style="width:100%; height:100%; margin-left:0;" '),
       }}></div>
       <div style={{
         display: 'inline-block',
@@ -70,9 +71,9 @@ export default function ListCard(props: { cardId: string, count: number, loader:
         textAlign: 'center',
         verticalAlign: 'bottom',
       }}>{
-        typeof props.loader.getMapDataSync('IDToPower')![props.cardId] !== 'undefined' ?
-          (props.loader.getMapDataSync('IDToPower')![props.cardId] +
-            '/' + props.loader.getMapDataSync('IDToToughness')![props.cardId]) : null
+          typeof props.loader.getMapDataSync('IDToPower')![props.cardId] !== 'undefined' ?
+            (props.loader.getMapDataSync('IDToPower')![props.cardId] +
+              '/' + props.loader.getMapDataSync('IDToToughness')![props.cardId]) : null
         }
       </div>
       <div style={{
@@ -95,7 +96,7 @@ export default function ListCard(props: { cardId: string, count: number, loader:
         paddingRight: '4px',
       }} title={props.loader.getMapDataSync('IDToCost')![props.cardId]} dangerouslySetInnerHTML={{
         __html: (props.loader.getMapDataSync('IDToCost')![props.cardId] || '')
-            .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+          .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1')).replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
       }}></div>
       <div style={{
         display: 'inline-block',

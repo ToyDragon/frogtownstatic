@@ -49,6 +49,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var card_actions_1 = __importDefault(require("./card_actions"));
 var make_mana_icon_1 = __importDefault(require("./make_mana_icon"));
+var get_card_image_url_1 = __importDefault(require("./get_card_image_url"));
 function DetailsCard(props) {
     var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -76,8 +77,6 @@ function DetailsCard(props) {
         rarityColor = '#e24d23';
     }
     var idToText = props.loader.getMapDataSync('IDToText');
-    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
-    var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',
             height: '225px',
@@ -93,7 +92,7 @@ function DetailsCard(props) {
                 width: '160px',
                 height: '225px',
                 backgroundSize: '100% 100%',
-                backgroundImage: "url(".concat(bg, ")"),
+                backgroundImage: "url(".concat((0, get_card_image_url_1.default)(props.cardId, props.loader), ")"),
                 borderRadius: '8px',
             } }),
         react_1.default.createElement("div", { className: 'actionContainer', style: {
@@ -113,7 +112,7 @@ function DetailsCard(props) {
                         marginLeft: '2px',
                     }, title: idToSetCode[props.cardId] || '', dangerouslySetInnerHTML: {
                         __html: svgText.replace(/\n/g, '').replace(/^{.*$/, '')
-                            .replace('<svg ', '<svg style="width:100%; height:100%;" '),
+                            .replace('<svg ', '<svg style="width:100%; height:100%; margin-left:0;" '),
                     } }),
                 react_1.default.createElement("div", { style: {
                         display: 'inline-block',

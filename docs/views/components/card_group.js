@@ -22,6 +22,7 @@ var compact_list_card_1 = __importDefault(require("./compact_list_card"));
 var details_card_1 = __importDefault(require("./details_card"));
 var display_dropdown_1 = require("./display_dropdown");
 var list_card_1 = __importDefault(require("./list_card"));
+var get_card_image_url_1 = __importDefault(require("./get_card_image_url"));
 function countCards(cardIds) {
     var idToCount = {};
     for (var _i = 0, cardIds_1 = cardIds; _i < cardIds_1.length; _i++) {
@@ -38,7 +39,6 @@ function countCards(cardIds) {
 exports.countCards = countCards;
 ;
 function CardGroup(props) {
-    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     if (props.displayMode === display_dropdown_1.DisplayMode.Grid ||
         props.displayMode === display_dropdown_1.DisplayMode.CompactGrid ||
         props.displayMode === display_dropdown_1.DisplayMode.SingleGrid) {
@@ -51,7 +51,7 @@ function CardGroup(props) {
                     height: (312 + (props.cardIds.length - 1) * 37) + 'px',
                 } },
                 props.cardIds.map(function (cardId, i) {
-                    var bg = (idToImageUri && idToImageUri[cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+                    var bg = (0, get_card_image_url_1.default)(cardId, props.loader);
                     var bgProp = props.imageLoadTracker.getURLIsLoaded(bg) ? {} : {
                         'data-lazybackground': bg,
                     };

@@ -66,7 +66,7 @@ function deckArea(props) {
     }
     var downloadProps = (!props.deck || !exportReady) ? { href: '#' } : {
         href: 'data:text/json,' +
-            encodeURIComponent(tabletopSimManager.current.exportDeck(props.deck.mainboard, props.deck.sideboard, props.deck.backgroundUrl)),
+            encodeURIComponent(tabletopSimManager.current.exportDeck(props.deck.mainboard, props.deck.sideboard, props.deck.backgroundUrl, props.loader)),
         download: "".concat(props.deck.name, ".json"),
     };
     var idToName = props.loader.getMapDataSync('IDToName');

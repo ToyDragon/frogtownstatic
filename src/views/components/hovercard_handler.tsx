@@ -1,9 +1,10 @@
 import React from 'react';
-import {useId, useEffect} from 'react';
-import {DataLoader} from '../../data/data_loader';
+import { useId, useEffect } from 'react';
+import { DataLoader } from '../../data/data_loader';
+import getCardImageUrl from './get_card_image_url';
 
 
-export default function hoverCardHandler(props: {loader: DataLoader}) {
+export default function hoverCardHandler(props: { loader: DataLoader }) {
   const id = useId();
   useEffect(() => {
     document.getElementsByTagName('body')[0].addEventListener('mousemove', (e) => {
@@ -17,7 +18,7 @@ export default function hoverCardHandler(props: {loader: DataLoader}) {
       for (const ele of allElements) {
         const cardId = ele.getAttribute('data-hovercardid');
         if (cardId) {
-          const bg = idToImageUri[cardId];
+          const bg = getCardImageUrl(cardId, props.loader);
           if (bg) {
             hoverCard.style.top = (e.pageY + 20) + 'px';
             hoverCard.style.left = e.pageX + 'px';

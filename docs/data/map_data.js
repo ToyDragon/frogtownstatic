@@ -76,6 +76,7 @@ var MapData = /** @class */ (function () {
         this.IDToType = {};
         this.TypeToID = {};
         this.IDToArtist = {};
+        this.IDToMultiverseIds = {};
         this.IDToLegalFormat = {};
         this.LegalFormatToID = {};
         this.IDToText = {};
@@ -92,7 +93,9 @@ var MapData = /** @class */ (function () {
         this.TokenStringToTokenID = {};
         this.TokenIDToTokenString = {};
         this.TokenIDToLargeImageURI = {};
+        this.TokenIDToMultiverseIds = {};
         this.BackIDToLargeImageURI = {};
+        this.BackIDToMultiverseIds = {};
     }
     return MapData;
 }());

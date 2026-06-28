@@ -973,6 +973,7 @@ var MapData = /** @class */ (function () {
         this.IDToType = {};
         this.TypeToID = {};
         this.IDToArtist = {};
+        this.IDToMultiverseIds = {};
         this.IDToLegalFormat = {};
         this.LegalFormatToID = {};
         this.IDToText = {};
@@ -989,7 +990,9 @@ var MapData = /** @class */ (function () {
         this.TokenStringToTokenID = {};
         this.TokenIDToTokenString = {};
         this.TokenIDToLargeImageURI = {};
+        this.TokenIDToMultiverseIds = {};
         this.BackIDToLargeImageURI = {};
+        this.BackIDToMultiverseIds = {};
     }
     return MapData;
 }());
@@ -1276,6 +1279,28 @@ var UrlDataLoader = /** @class */ (function () {
                                 var _this = this;
                                 return __generator(this, function (_a) {
                                     // Special handling for some maps that can be constructed from other maps.
+                                    if (mapName === 'NameToID') {
+                                        return [2 /*return*/, this.getMapData('IDToName').then(function (nameMap) {
+                                                if (!nameMap) {
+                                                    _this.loadedMaps[mapName] = null;
+                                                    resolve(null);
+                                                }
+                                                else {
+                                                    var mapData = {};
+                                                    for (var _i = 0, _a = Object.keys(nameMap); _i < _a.length; _i++) {
+                                                        var id = _a[_i];
+                                                        var name_1 = nameMap[id];
+                                                        mapData[name_1] = mapData[name_1] || [];
+                                                        mapData[name_1].push(id);
+                                                    }
+                                                    _this.loadedMaps[mapName] = mapData;
+                                                    window.maps = window.maps || {};
+                                                    window.maps[mapName] = mapData;
+                                                    console.log('Loaded ' + mapName + ' as derivative');
+                                                    resolve(mapData);
+                                                }
+                                            })];
+                                    }
                                     if (mapName === 'IDToNormalImageURI' || mapName === 'IDToCropImageURI') {
                                         return [2 /*return*/, this.getMapData('IDToLargeImageURI').then(function (largeMap) {
                                                 if (!largeMap) {
@@ -2156,6 +2181,7 @@ var compact_list_card_1 = __importDefault(__webpack_require__(/*! ./compact_list
 var details_card_1 = __importDefault(__webpack_require__(/*! ./details_card */ "./docs/views/components/details_card.js"));
 var display_dropdown_1 = __webpack_require__(/*! ./display_dropdown */ "./docs/views/components/display_dropdown.js");
 var list_card_1 = __importDefault(__webpack_require__(/*! ./list_card */ "./docs/views/components/list_card.js"));
+var get_card_image_url_1 = __importDefault(__webpack_require__(/*! ./get_card_image_url */ "./docs/views/components/get_card_image_url.js"));
 function countCards(cardIds) {
     var idToCount = {};
     for (var _i = 0, cardIds_1 = cardIds; _i < cardIds_1.length; _i++) {
@@ -2172,7 +2198,6 @@ function countCards(cardIds) {
 exports.countCards = countCards;
 ;
 function CardGroup(props) {
-    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     if (props.displayMode === display_dropdown_1.DisplayMode.Grid ||
         props.displayMode === display_dropdown_1.DisplayMode.CompactGrid ||
         props.displayMode === display_dropdown_1.DisplayMode.SingleGrid) {
@@ -2185,7 +2210,7 @@ function CardGroup(props) {
                     height: (312 + (props.cardIds.length - 1) * 37) + 'px',
                 } },
                 props.cardIds.map(function (cardId, i) {
-                    var bg = (idToImageUri && idToImageUri[cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+                    var bg = (0, get_card_image_url_1.default)(cardId, props.loader);
                     var bgProp = props.imageLoadTracker.getURLIsLoaded(bg) ? {} : {
                         'data-lazybackground': bg,
                     };
@@ -2561,6 +2586,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
+var get_card_image_url_1 = __importDefault(__webpack_require__(/*! ./get_card_image_url */ "./docs/views/components/get_card_image_url.js"));
 function CompactDetailsCard(props) {
     var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -2588,9 +2614,8 @@ function CompactDetailsCard(props) {
         rarityColor = '#e24d23';
     }
     var idToText = props.loader.getMapDataSync('IDToText');
-    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
     var idToArtist = props.loader.getMapDataSync('IDToArtist');
-    var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+    var bg = (0, get_card_image_url_1.default)(props.cardId, props.loader);
     var artist = (idToArtist && idToArtist[props.cardId] && "Artist: ".concat(idToArtist[props.cardId])) || '';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',
@@ -3158,7 +3183,7 @@ function deckArea(props) {
     }
     var downloadProps = (!props.deck || !exportReady) ? { href: '#' } : {
         href: 'data:text/json,' +
-            encodeURIComponent(tabletopSimManager.current.exportDeck(props.deck.mainboard, props.deck.sideboard, props.deck.backgroundUrl)),
+            encodeURIComponent(tabletopSimManager.current.exportDeck(props.deck.mainboard, props.deck.sideboard, props.deck.backgroundUrl, props.loader)),
         download: "".concat(props.deck.name, ".json"),
     };
     var idToName = props.loader.getMapDataSync('IDToName');
@@ -3643,6 +3668,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var card_actions_1 = __importDefault(__webpack_require__(/*! ./card_actions */ "./docs/views/components/card_actions.js"));
 var make_mana_icon_1 = __importDefault(__webpack_require__(/*! ./make_mana_icon */ "./docs/views/components/make_mana_icon.js"));
+var get_card_image_url_1 = __importDefault(__webpack_require__(/*! ./get_card_image_url */ "./docs/views/components/get_card_image_url.js"));
 function DetailsCard(props) {
     var _a = (0, react_1.useState)(''), svgText = _a[0], setSvgText = _a[1];
     var idToSetCode = props.loader.getMapDataSync('IDToSetCode');
@@ -3670,8 +3696,6 @@ function DetailsCard(props) {
         rarityColor = '#e24d23';
     }
     var idToText = props.loader.getMapDataSync('IDToText');
-    var idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
-    var bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
     return (react_1.default.createElement("div", { style: {
             width: 'calc(100% - 8px)',
             height: '225px',
@@ -3687,7 +3711,7 @@ function DetailsCard(props) {
                 width: '160px',
                 height: '225px',
                 backgroundSize: '100% 100%',
-                backgroundImage: "url(".concat(bg, ")"),
+                backgroundImage: "url(".concat((0, get_card_image_url_1.default)(props.cardId, props.loader), ")"),
                 borderRadius: '8px',
             } }),
         react_1.default.createElement("div", { className: 'actionContainer', style: {
@@ -3707,7 +3731,7 @@ function DetailsCard(props) {
                         marginLeft: '2px',
                     }, title: idToSetCode[props.cardId] || '', dangerouslySetInnerHTML: {
                         __html: svgText.replace(/\n/g, '').replace(/^{.*$/, '')
-                            .replace('<svg ', '<svg style="width:100%; height:100%;" '),
+                            .replace('<svg ', '<svg style="width:100%; height:100%; margin-left:0;" '),
                     } }),
                 react_1.default.createElement("div", { style: {
                         display: 'inline-block',
@@ -4531,6 +4555,50 @@ exports["default"] = FilterText;
 
 /***/ }),
 
+/***/ "./docs/views/components/get_card_image_url.js":
+/*!*****************************************************!*\
+  !*** ./docs/views/components/get_card_image_url.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+function getCardImageUrl(cardId, loader) {
+    var result = 'https://gatherer.wizards.com/assets/card_back.webp';
+    var mid = [];
+    var idToMultiverseIds = loader.getMapDataSync('IDToMultiverseIds');
+    if (idToMultiverseIds) {
+        mid = idToMultiverseIds[cardId];
+        if (!mid) {
+            var name_1 = loader.getMapDataSync('IDToName')[cardId];
+            for (var _i = 0, _a = ((loader.getMapDataSync('NameToID') || {})[name_1] || []); _i < _a.length; _i++) {
+                var otherId = _a[_i];
+                var otherMid = idToMultiverseIds[otherId];
+                if ((otherMid || []).length > 0) {
+                    mid = otherMid;
+                    break;
+                }
+            }
+        }
+    }
+    var tokenIdToMultiverseIds = loader.getMapDataSync('TokenIDToMultiverseIds');
+    if (!mid && tokenIdToMultiverseIds) {
+        mid = tokenIdToMultiverseIds[cardId];
+    }
+    var backIdToMultiverseIds = loader.getMapDataSync('BackIDToMultiverseIds');
+    if (!mid && backIdToMultiverseIds) {
+        mid = backIdToMultiverseIds[cardId];
+    }
+    if (mid) {
+        result = "https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=".concat(mid[0]);
+    }
+    return result;
+}
+exports["default"] = getCardImageUrl;
+//# sourceMappingURL=get_card_image_url.js.map
+
+/***/ }),
+
 /***/ "./docs/views/components/grouper_dropdown.js":
 /*!***************************************************!*\
   !*** ./docs/views/components/grouper_dropdown.js ***!
@@ -4877,6 +4945,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var get_card_image_url_1 = __importDefault(__webpack_require__(/*! ./get_card_image_url */ "./docs/views/components/get_card_image_url.js"));
 function hoverCardHandler(props) {
     var id = (0, react_2.useId)();
     (0, react_2.useEffect)(function () {
@@ -4892,7 +4961,7 @@ function hoverCardHandler(props) {
                 var ele = allElements_1[_i];
                 var cardId = ele.getAttribute('data-hovercardid');
                 if (cardId) {
-                    var bg = idToImageUri[cardId];
+                    var bg = (0, get_card_image_url_1.default)(cardId, props.loader);
                     if (bg) {
                         hoverCard.style.top = (e.pageY + 20) + 'px';
                         hoverCard.style.left = e.pageX + 'px';
@@ -5397,7 +5466,7 @@ function ListCard(props) {
                 marginLeft: '2px',
             }, title: idToSetCode[props.cardId] || '', dangerouslySetInnerHTML: {
                 __html: svgText.replace(/\n/g, '').replace(/^{.*$/, '')
-                    .replace('<svg ', '<svg style="width:100%; height:100%;" '),
+                    .replace('<svg ', '<svg style="width:100%; height:100%; margin-left:0;" '),
             } }),
         react_1.default.createElement("div", { style: {
                 display: 'inline-block',
@@ -6120,28 +6189,32 @@ var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/reac
 var react_2 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 function loadingWindow(props) {
     var _a = (0, react_2.useState)(false), isOpen = _a[0], setIsOpen = _a[1];
-    var _b = (0, react_2.useState)(false), isIDToRarityLoaded = _b[0], setIDToRarityLoaded = _b[1];
-    var _c = (0, react_2.useState)(false), isIDToColorLoaded = _c[0], setIDToColorLoaded = _c[1];
-    var _d = (0, react_2.useState)(false), isIDToColorIdentityLoaded = _d[0], setIDToColorIdentityLoaded = _d[1];
-    var _e = (0, react_2.useState)(false), isIDToArtistLoaded = _e[0], setIDToArtistLoaded = _e[1];
-    var _f = (0, react_2.useState)(false), isIDToSupertypeLoaded = _f[0], setIDToSupertypeLoaded = _f[1];
-    var _g = (0, react_2.useState)(false), isIDToTypeLoaded = _g[0], setIDToTypeLoaded = _g[1];
-    var _h = (0, react_2.useState)(false), isIDToSubtypeLoaded = _h[0], setIDToSubtypeLoaded = _h[1];
-    var _j = (0, react_2.useState)(false), isIDToPowerLoaded = _j[0], setIDToPowerLoaded = _j[1];
-    var _k = (0, react_2.useState)(false), isIDToToughnessLoaded = _k[0], setIDToToughnessLoaded = _k[1];
-    var _l = (0, react_2.useState)(false), isIDToCMCLoaded = _l[0], setIDToCMCLoaded = _l[1];
-    var _m = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _m[0], setIDToLegalFormatLoaded = _m[1];
-    var _o = (0, react_2.useState)(false), isIDToSetCodeLoaded = _o[0], setIDToSetCodeLoaded = _o[1];
-    var _p = (0, react_2.useState)(false), isSetCodeToReleaseLoaded = _p[0], setSetCodeToReleaseLoaded = _p[1];
-    var _q = (0, react_2.useState)(false), isIDToTokenStringsLoaded = _q[0], setIDToTokenStringsLoaded = _q[1];
-    var _r = (0, react_2.useState)(false), isIDToLargeImageURILoaded = _r[0], setIDToLargeImageURILoaded = _r[1];
-    var _s = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _s[0], setTokenIDToTokenStringLoaded = _s[1];
-    var _t = (0, react_2.useState)(false), isTokenIDToNameLoaded = _t[0], setTokenIDToNameLoaded = _t[1];
-    var _u = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _u[0], setTokenIDToLargeImageURILoaded = _u[1];
-    var _v = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _v[0], setFrontIDToBackIDLoaded = _v[1];
-    var _w = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _w[0], setBackIDToLargeImageURILoaded = _w[1];
-    var _x = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _x[0], setSetCodeToSetNameLoaded = _x[1];
-    var _y = (0, react_2.useState)(false), isIDToCostLoaded = _y[0], setIDToCostLoaded = _y[1];
+    var _b = (0, react_2.useState)(false), isNameToID = _b[0], setNameToIDLoaded = _b[1];
+    var _c = (0, react_2.useState)(false), isIDToRarityLoaded = _c[0], setIDToRarityLoaded = _c[1];
+    var _d = (0, react_2.useState)(false), isIDToColorLoaded = _d[0], setIDToColorLoaded = _d[1];
+    var _e = (0, react_2.useState)(false), isIDToColorIdentityLoaded = _e[0], setIDToColorIdentityLoaded = _e[1];
+    var _f = (0, react_2.useState)(false), isIDToArtistLoaded = _f[0], setIDToArtistLoaded = _f[1];
+    var _g = (0, react_2.useState)(false), isIDToSupertypeLoaded = _g[0], setIDToSupertypeLoaded = _g[1];
+    var _h = (0, react_2.useState)(false), isIDToTypeLoaded = _h[0], setIDToTypeLoaded = _h[1];
+    var _j = (0, react_2.useState)(false), isIDToSubtypeLoaded = _j[0], setIDToSubtypeLoaded = _j[1];
+    var _k = (0, react_2.useState)(false), isIDToPowerLoaded = _k[0], setIDToPowerLoaded = _k[1];
+    var _l = (0, react_2.useState)(false), isIDToToughnessLoaded = _l[0], setIDToToughnessLoaded = _l[1];
+    var _m = (0, react_2.useState)(false), isIDToMultiverIdsLoaded = _m[0], setIDToMultiverIdsLoaded = _m[1];
+    var _o = (0, react_2.useState)(false), isIDToCMCLoaded = _o[0], setIDToCMCLoaded = _o[1];
+    var _p = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _p[0], setIDToLegalFormatLoaded = _p[1];
+    var _q = (0, react_2.useState)(false), isIDToSetCodeLoaded = _q[0], setIDToSetCodeLoaded = _q[1];
+    var _r = (0, react_2.useState)(false), isSetCodeToReleaseLoaded = _r[0], setSetCodeToReleaseLoaded = _r[1];
+    var _s = (0, react_2.useState)(false), isIDToTokenStringsLoaded = _s[0], setIDToTokenStringsLoaded = _s[1];
+    var _t = (0, react_2.useState)(false), isIDToLargeImageURILoaded = _t[0], setIDToLargeImageURILoaded = _t[1];
+    var _u = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _u[0], setTokenIDToTokenStringLoaded = _u[1];
+    var _v = (0, react_2.useState)(false), isTokenIDToNameLoaded = _v[0], setTokenIDToNameLoaded = _v[1];
+    var _w = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _w[0], setTokenIDToLargeImageURILoaded = _w[1];
+    var _x = (0, react_2.useState)(false), isTokenIDToMultiverseIdsLoaded = _x[0], setTokenIDToMultiverseIdsLoaded = _x[1];
+    var _y = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _y[0], setFrontIDToBackIDLoaded = _y[1];
+    var _z = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _z[0], setBackIDToLargeImageURILoaded = _z[1];
+    var _0 = (0, react_2.useState)(false), isBackIDToMultiverseIdsLoaded = _0[0], setBackIDToMultiverseIdsLoaded = _0[1];
+    var _1 = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _1[0], setSetCodeToSetNameLoaded = _1[1];
+    var _2 = (0, react_2.useState)(false), isIDToCostLoaded = _2[0], setIDToCostLoaded = _2[1];
     (0, react_1.useEffect)(function () {
         Promise.all([
             props.loader.getMapData('IDToName'),
@@ -6152,6 +6225,7 @@ function loadingWindow(props) {
             setIsOpen(true);
             var remainingPromises = [];
             /* eslint-disable max-len */
+            remainingPromises.push(props.loader.getMapData('NameToID').then(function () { return setNameToIDLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToRarity').then(function () { return setIDToRarityLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToColor').then(function () { return setIDToColorLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToColorIdentity').then(function () { return setIDToColorIdentityLoaded(true); }));
@@ -6161,6 +6235,7 @@ function loadingWindow(props) {
             remainingPromises.push(props.loader.getMapData('IDToSubtype').then(function () { return setIDToSubtypeLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToPower').then(function () { return setIDToPowerLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToToughness').then(function () { return setIDToToughnessLoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('IDToMultiverseIds').then(function () { return setIDToMultiverIdsLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToCMC').then(function () { return setIDToCMCLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToLegalFormat').then(function () { return setIDToLegalFormatLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToSetCode').then(function () { return setIDToSetCodeLoaded(true); }));
@@ -6170,8 +6245,10 @@ function loadingWindow(props) {
             remainingPromises.push(props.loader.getMapData('TokenIDToTokenString').then(function () { return setTokenIDToTokenStringLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('TokenIDToName').then(function () { return setTokenIDToNameLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('TokenIDToLargeImageURI').then(function () { return setTokenIDToLargeImageURILoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('TokenIDToMultiverseIds').then(function () { return setTokenIDToMultiverseIdsLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('FrontIDToBackID').then(function () { return setFrontIDToBackIDLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('BackIDToLargeImageURI').then(function () { return setBackIDToLargeImageURILoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('BackIDToMultiverseIds').then(function () { return setBackIDToMultiverseIdsLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('SetCodeToSetName').then(function () { return setSetCodeToSetNameLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToCost').then(function () { return setIDToCostLoaded(true); }));
             /* eslint-enable max-len */
@@ -6204,6 +6281,7 @@ function loadingWindow(props) {
             opacity: '.5',
         }, onMouseUp: function (e) { return e.stopPropagation(); } },
         react_1.default.createElement("div", { style: { fontWeight: 'bold' } }, "Loading data required for searching and exporting."),
+        createLoadingIndicator(isNameToID, 'NameToID'),
         createLoadingIndicator(isIDToRarityLoaded, 'IDToRarity'),
         createLoadingIndicator(isIDToColorLoaded, 'IDToColor'),
         createLoadingIndicator(isIDToColorIdentityLoaded, 'IDToColorIdentity'),
@@ -6213,6 +6291,7 @@ function loadingWindow(props) {
         createLoadingIndicator(isIDToSubtypeLoaded, 'IDToSubtype'),
         createLoadingIndicator(isIDToPowerLoaded, 'IDToPower'),
         createLoadingIndicator(isIDToToughnessLoaded, 'IDToToughness'),
+        createLoadingIndicator(isIDToMultiverIdsLoaded, 'IDToMultiverseIds'),
         createLoadingIndicator(isIDToCMCLoaded, 'IDToCMC'),
         createLoadingIndicator(isIDToLegalFormatLoaded, 'IDToLegalFormat'),
         createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode'),
@@ -6222,8 +6301,10 @@ function loadingWindow(props) {
         createLoadingIndicator(isTokenIDToTokenStringLoaded, 'TokenIDToTokenString'),
         createLoadingIndicator(isTokenIDToNameLoaded, 'TokenIDToName'),
         createLoadingIndicator(isTokenIDToLargeImageURILoaded, 'TokenIDToLargeImageURI'),
+        createLoadingIndicator(isTokenIDToMultiverseIdsLoaded, 'TokenIDToMultiverseIds'),
         createLoadingIndicator(isFrontIDToBackIDLoaded, 'FrontIDToBackID'),
         createLoadingIndicator(isBackIDToLargeImageURILoaded, 'BackIDToLargeImageURI'),
+        createLoadingIndicator(isBackIDToMultiverseIdsLoaded, 'BackIDToMultiverseIds'),
         createLoadingIndicator(isSetCodeToSetNameLoaded, 'SetCodeToSetName'),
         createLoadingIndicator(isIDToCostLoaded, 'IDToCost'));
 }
@@ -6681,7 +6762,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+var get_card_image_url_1 = __importDefault(__webpack_require__(/*! ../components/get_card_image_url */ "./docs/views/components/get_card_image_url.js"));
 var TTSExport = __importStar(__webpack_require__(/*! ./exporter */ "./docs/views/exporter/exporter.js"));
 var TableTopSimulator = /** @class */ (function () {
     function TableTopSimulator(dl) {
@@ -6694,12 +6779,10 @@ var TableTopSimulator = /** @class */ (function () {
         Promise.all([
             dl.getMapData('IDToName'),
             dl.getMapData('IDToTokenStrings'),
-            dl.getMapData('IDToLargeImageURI'),
+            dl.getMapData('IDToMultiverseIds'),
             dl.getMapData('TokenIDToTokenString'),
             dl.getMapData('TokenIDToName'),
-            dl.getMapData('TokenIDToLargeImageURI'),
             dl.getMapData('FrontIDToBackID'),
-            dl.getMapData('BackIDToLargeImageURI'),
         ]).then(function () {
             setTimeout(resolver, 0);
         });
@@ -6736,11 +6819,8 @@ var TableTopSimulator = /** @class */ (function () {
         }
         return tokens;
     };
-    TableTopSimulator.prototype.exportDeck = function (mainboardIds, sideboardIds, backURL) {
+    TableTopSimulator.prototype.exportDeck = function (mainboardIds, sideboardIds, backURL, loader) {
         var _this = this;
-        var idToLargeImageURI = this.dl.getMapDataSync('IDToLargeImageURI');
-        var tokenIDToLargeImageURI = this.dl.getMapDataSync('TokenIDToLargeImageURI');
-        var backIDToLargeImageURI = this.dl.getMapDataSync('BackIDToLargeImageURI');
         var tokenCardIds = this.getTokens(mainboardIds, sideboardIds);
         var mainboard = {
             cards: [],
@@ -6792,9 +6872,7 @@ var TableTopSimulator = /** @class */ (function () {
             }),
             backURL: backURL,
         }, function (id) {
-            return idToLargeImageURI[id] ||
-                tokenIDToLargeImageURI[id] ||
-                backIDToLargeImageURI[id];
+            return (0, get_card_image_url_1.default)(id, loader);
         });
         return JSON.stringify(compiledDeck);
     };

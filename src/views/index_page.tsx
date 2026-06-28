@@ -1,30 +1,30 @@
 import HeaderBar from './components/header_bar';
-import React, {useEffect, useRef, useState} from 'react';
-import {copyDeck, copyDecks, createNewDeck, Deck, loadDecksFromStorage, saveDecksToStorage} from '../data/deck';
-import SearchArea, {SearchAreaHandle} from './components/search_area';
+import React, { useEffect, useRef, useState } from 'react';
+import { copyDeck, copyDecks, createNewDeck, Deck, loadDecksFromStorage, saveDecksToStorage } from '../data/deck';
+import SearchArea, { SearchAreaHandle } from './components/search_area';
 import DeckArea from './components/deck_area';
 import ImageLoadTracker from './components/image_load_tracker';
 import URLLoader from './components/url_loader';
 import HoverCardHandler from './components/hovercard_handler';
-import EditNameWindow, {EditNameWindowHandle} from './components/edit_name_window';
-import BulkImportWindow, {BulkImportWindowHandle} from './components/bulk_import_window';
-import SettingsWindow, {SettingsWindowHandle} from './components/settings_window';
+import EditNameWindow, { EditNameWindowHandle } from './components/edit_name_window';
+import BulkImportWindow, { BulkImportWindowHandle } from './components/bulk_import_window';
+import SettingsWindow, { SettingsWindowHandle } from './components/settings_window';
 import SecondaryLoadWindow from './components/secondary_load_window';
 import LoadingWindow from './components/loading_window';
-import {DataLoader} from '../data/data_loader';
-import ConfirmDeleteWindow, {ConfirmDeleteWindowHandle} from './components/confirm_delete_window';
+import { DataLoader } from '../data/data_loader';
+import ConfirmDeleteWindow, { ConfirmDeleteWindowHandle } from './components/confirm_delete_window';
 import DeckDropHandler from './components/deck_drop_handler';
-import InfoWindow, {InfoWindowHandle} from './components/info_window';
-import SwapPrintingsWindow, {SwapPrintingsWindowHandle} from './components/swap_printings_window';
-import loadLegacyDecksInitial, {loadLegacyDecksForPublicId} from './components/legacy_deck_loader';
+import InfoWindow, { InfoWindowHandle } from './components/info_window';
+import SwapPrintingsWindow, { SwapPrintingsWindowHandle } from './components/swap_printings_window';
+import loadLegacyDecksInitial, { loadLegacyDecksForPublicId } from './components/legacy_deck_loader';
 import ChooseStorageWindow from './components/choose_storage_window';
-import ConfirmationWindow, {ConfirmationWindowHandle} from './components/confirmation_window';
-import {createDirectoryStorage, createLocalStorage, FrogtownStorage} from '../data/storage';
-import {FrogtownMetadata, getCurrentMetadata} from '../data/frogtown_metadata';
+import ConfirmationWindow, { ConfirmationWindowHandle } from './components/confirmation_window';
+import { createDirectoryStorage, createLocalStorage, FrogtownStorage } from '../data/storage';
+import { FrogtownMetadata, getCurrentMetadata } from '../data/frogtown_metadata';
 import backupDecks from '../data/backup_decks';
-import {transformBug71722MainboardSideboard} from '../data/bugs/bug71722MainboardSideboard';
-import NotificationWindow, {NotificationWindowHandle} from './components/notification_window';
-import EnterOldPrivateIdWindow, {EnterOldPrivateIdWindowHandle} from './components/enter_old_private_id_window';
+import { transformBug71722MainboardSideboard } from '../data/bugs/bug71722MainboardSideboard';
+import NotificationWindow, { NotificationWindowHandle } from './components/notification_window';
+import EnterOldPrivateIdWindow, { EnterOldPrivateIdWindowHandle } from './components/enter_old_private_id_window';
 
 function uniques(vals: string[]): string[] {
   const obj: Record<string, boolean> = {};
@@ -72,9 +72,9 @@ export default function indexPage(props: {
     const cacheDecks = await loadDecksFromStorage(localStorage);
     if (cacheDecks.filter((d) => d.mainboard.length || d.sideboard.length).length) {
       const performTransfer = await confirmationWindowRef.current!.open(
-          `Would you like to transfer the ${cacheDecks.length} decks in your local cache to this folder?`,
-          'The decks will no longer be available when choosing "Local Cache".',
-          'Transfer Decks',
+        `Would you like to transfer the ${cacheDecks.length} decks in your local cache to this folder?`,
+        'The decks will no longer be available when choosing "Local Cache".',
+        'Transfer Decks',
       );
       if (performTransfer) {
         decks.splice(decks.length, 0, ...dirDecks);
@@ -350,22 +350,22 @@ export default function indexPage(props: {
           storageRef.current = createLocalStorage();
         } else if (folder) {
           notificationWindowRef.current!.open('Attaching to folder...',
-              'Waiting for permission to read from and write to the specified folder...');
+            'Waiting for permission to read from and write to the specified folder...');
           storageRef.current = createDirectoryStorage(folder, document);
           let existingMetadata: FrogtownMetadata | null = null;
           try {
             existingMetadata = JSON.parse(await storageRef.current.get('frogtown_metadata.json') || '');
-          } catch {}
+          } catch { }
           const currentMetadata = getCurrentMetadata();
-          console.log({existingMetadata, currentMetadata});
+          console.log({ existingMetadata, currentMetadata });
 
           // Verify that access was granted by writing with existing metadata.
           if (!await storageRef.current.set('frogtown_metadata.json', JSON.stringify(existingMetadata), true)) {
             notificationWindowRef.current!.close();
             await confirmationWindowRef.current!.open(
-                'Failed To Write To Storage',
-                'Frogtown was unable to write your decks to the selected folder, and will now refresh.',
-                'OK',
+              'Failed To Write To Storage',
+              'Frogtown was unable to write your decks to the selected folder, and will now refresh.',
+              'OK',
             );
             window.location.reload();
             return;
@@ -373,7 +373,7 @@ export default function indexPage(props: {
           notificationWindowRef.current!.close();
           if (currentMetadata.majorVersion !== existingMetadata?.majorVersion) {
             await backupDecks(storageRef.current, notificationWindowRef.current!,
-                existingMetadata || {majorVersion: 0, minorVersion: 0});
+              existingMetadata || { majorVersion: 0, minorVersion: 0 });
           }
           await storageRef.current.set('frogtown_metadata.json', JSON.stringify(currentMetadata));
           await tryMoveCacheIntoFolder(loadedDecks);
@@ -393,7 +393,7 @@ export default function indexPage(props: {
           // imported or not. The old IDs are stored in cookies, and the decks should only be imported once, makes sense
           // to keep it in all in the browser.
           await loadLegacyDecksInitial(loadedDecks, setLegacyPublicId, setLegacyBetaPublicId, window.location.search,
-              document.cookie, props.urlLoader, createLocalStorage());
+            document.cookie, props.urlLoader, createLocalStorage());
 
           setDecks(loadedDecks);
         }

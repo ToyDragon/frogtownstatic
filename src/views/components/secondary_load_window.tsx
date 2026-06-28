@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
-import {useState} from 'react';
-import {DataLoader} from '../../data/data_loader';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import { DataLoader } from '../../data/data_loader';
 
-export default function loadingWindow(props: {loader: DataLoader}) {
+export default function loadingWindow(props: { loader: DataLoader }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [isNameToID, setNameToIDLoaded] = useState(false);
   const [isIDToRarityLoaded, setIDToRarityLoaded] = useState(false);
   const [isIDToColorLoaded, setIDToColorLoaded] = useState(false);
   const [isIDToColorIdentityLoaded, setIDToColorIdentityLoaded] = useState(false);
@@ -14,6 +15,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
   const [isIDToSubtypeLoaded, setIDToSubtypeLoaded] = useState(false);
   const [isIDToPowerLoaded, setIDToPowerLoaded] = useState(false);
   const [isIDToToughnessLoaded, setIDToToughnessLoaded] = useState(false);
+  const [isIDToMultiverIdsLoaded, setIDToMultiverIdsLoaded] = useState(false);
   const [isIDToCMCLoaded, setIDToCMCLoaded] = useState(false);
   const [isIDToLegalFormatLoaded, setIDToLegalFormatLoaded] = useState(false);
   const [isIDToSetCodeLoaded, setIDToSetCodeLoaded] = useState(false);
@@ -23,8 +25,10 @@ export default function loadingWindow(props: {loader: DataLoader}) {
   const [isTokenIDToTokenStringLoaded, setTokenIDToTokenStringLoaded] = useState(false);
   const [isTokenIDToNameLoaded, setTokenIDToNameLoaded] = useState(false);
   const [isTokenIDToLargeImageURILoaded, setTokenIDToLargeImageURILoaded] = useState(false);
+  const [isTokenIDToMultiverseIdsLoaded, setTokenIDToMultiverseIdsLoaded] = useState(false);
   const [isFrontIDToBackIDLoaded, setFrontIDToBackIDLoaded] = useState(false);
   const [isBackIDToLargeImageURILoaded, setBackIDToLargeImageURILoaded] = useState(false);
+  const [isBackIDToMultiverseIdsLoaded, setBackIDToMultiverseIdsLoaded] = useState(false);
   const [isSetCodeToSetNameLoaded, setSetCodeToSetNameLoaded] = useState(false);
   const [isIDToCostLoaded, setIDToCostLoaded] = useState(false);
 
@@ -38,6 +42,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
       setIsOpen(true);
       const remainingPromises: Promise<void>[] = [];
       /* eslint-disable max-len */
+      remainingPromises.push(props.loader.getMapData('NameToID').then(() => setNameToIDLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToRarity').then(() => setIDToRarityLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToColor').then(() => setIDToColorLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToColorIdentity').then(() => setIDToColorIdentityLoaded(true)));
@@ -47,6 +52,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
       remainingPromises.push(props.loader.getMapData('IDToSubtype').then(() => setIDToSubtypeLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToPower').then(() => setIDToPowerLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToToughness').then(() => setIDToToughnessLoaded(true)));
+      remainingPromises.push(props.loader.getMapData('IDToMultiverseIds').then(() => setIDToMultiverIdsLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToCMC').then(() => setIDToCMCLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToLegalFormat').then(() => setIDToLegalFormatLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToSetCode').then(() => setIDToSetCodeLoaded(true)));
@@ -56,8 +62,10 @@ export default function loadingWindow(props: {loader: DataLoader}) {
       remainingPromises.push(props.loader.getMapData('TokenIDToTokenString').then(() => setTokenIDToTokenStringLoaded(true)));
       remainingPromises.push(props.loader.getMapData('TokenIDToName').then(() => setTokenIDToNameLoaded(true)));
       remainingPromises.push(props.loader.getMapData('TokenIDToLargeImageURI').then(() => setTokenIDToLargeImageURILoaded(true)));
+      remainingPromises.push(props.loader.getMapData('TokenIDToMultiverseIds').then(() => setTokenIDToMultiverseIdsLoaded(true)));
       remainingPromises.push(props.loader.getMapData('FrontIDToBackID').then(() => setFrontIDToBackIDLoaded(true)));
       remainingPromises.push(props.loader.getMapData('BackIDToLargeImageURI').then(() => setBackIDToLargeImageURILoaded(true)));
+      remainingPromises.push(props.loader.getMapData('BackIDToMultiverseIds').then(() => setBackIDToMultiverseIdsLoaded(true)));
       remainingPromises.push(props.loader.getMapData('SetCodeToSetName').then(() => setSetCodeToSetNameLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToCost').then(() => setIDToCostLoaded(true)));
       /* eslint-enable max-len */
@@ -75,7 +83,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     if (loaded) {
       return null;
     }
-    return <div style={{paddingLeft: '18px', fontSize: '18px'}}>{name}...</div>;
+    return <div style={{ paddingLeft: '18px', fontSize: '18px' }}>{name}...</div>;
   }
 
   return <div data-whatthef='urmum' style={{
@@ -90,7 +98,8 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     fontSize: '18px',
     opacity: '.5',
   }} onMouseUp={(e) => e.stopPropagation()}>
-    <div style={{fontWeight: 'bold'}}>Loading data required for searching and exporting.</div>
+    <div style={{ fontWeight: 'bold' }}>Loading data required for searching and exporting.</div>
+    {createLoadingIndicator(isNameToID, 'NameToID')}
     {createLoadingIndicator(isIDToRarityLoaded, 'IDToRarity')}
     {createLoadingIndicator(isIDToColorLoaded, 'IDToColor')}
     {createLoadingIndicator(isIDToColorIdentityLoaded, 'IDToColorIdentity')}
@@ -100,6 +109,7 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     {createLoadingIndicator(isIDToSubtypeLoaded, 'IDToSubtype')}
     {createLoadingIndicator(isIDToPowerLoaded, 'IDToPower')}
     {createLoadingIndicator(isIDToToughnessLoaded, 'IDToToughness')}
+    {createLoadingIndicator(isIDToMultiverIdsLoaded, 'IDToMultiverseIds')}
     {createLoadingIndicator(isIDToCMCLoaded, 'IDToCMC')}
     {createLoadingIndicator(isIDToLegalFormatLoaded, 'IDToLegalFormat')}
     {createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode')}
@@ -109,8 +119,10 @@ export default function loadingWindow(props: {loader: DataLoader}) {
     {createLoadingIndicator(isTokenIDToTokenStringLoaded, 'TokenIDToTokenString')}
     {createLoadingIndicator(isTokenIDToNameLoaded, 'TokenIDToName')}
     {createLoadingIndicator(isTokenIDToLargeImageURILoaded, 'TokenIDToLargeImageURI')}
+    {createLoadingIndicator(isTokenIDToMultiverseIdsLoaded, 'TokenIDToMultiverseIds')}
     {createLoadingIndicator(isFrontIDToBackIDLoaded, 'FrontIDToBackID')}
     {createLoadingIndicator(isBackIDToLargeImageURILoaded, 'BackIDToLargeImageURI')}
+    {createLoadingIndicator(isBackIDToMultiverseIdsLoaded, 'BackIDToMultiverseIds')}
     {createLoadingIndicator(isSetCodeToSetNameLoaded, 'SetCodeToSetName')}
     {createLoadingIndicator(isIDToCostLoaded, 'IDToCost')}
   </div>;

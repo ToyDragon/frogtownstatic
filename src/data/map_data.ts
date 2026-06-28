@@ -91,6 +91,7 @@ export class MapData {
   public IDToType: CardIDMap<string[]> = {};
   public TypeToID: StringValueMap<string[]> = {};
   public IDToArtist: CardIDMap<string> = {};
+  public IDToMultiverseIds: CardIDMap<number[]> = {};
 
   public IDToLegalFormat: CardIDMap<string[]> = {};
   public LegalFormatToID: StringValueMap<string[]> = {};
@@ -111,5 +112,7 @@ export class MapData {
   public TokenStringToTokenID: CardIDMap<string> = {};
   public TokenIDToTokenString: CardIDMap<string> = {};
   public TokenIDToLargeImageURI: CardIDMap<string> = {};
+  public TokenIDToMultiverseIds: CardIDMap<number[]> = {};
   public BackIDToLargeImageURI: CardIDMap<string> = {};
+  public BackIDToMultiverseIds: CardIDMap<number[]> = {};
 }

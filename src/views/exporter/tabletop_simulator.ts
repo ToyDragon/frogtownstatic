@@ -1,4 +1,5 @@
-import {DataLoader} from '../../data/data_loader';
+import { DataLoader } from '../../data/data_loader';
+import getCardImageUrl from '../components/get_card_image_url';
 import * as TTSExport from './exporter';
 
 export default class TableTopSimulator {
@@ -17,12 +18,10 @@ export default class TableTopSimulator {
     Promise.all([
       dl.getMapData('IDToName'),
       dl.getMapData('IDToTokenStrings'),
-      dl.getMapData('IDToLargeImageURI'),
+      dl.getMapData('IDToMultiverseIds'),
       dl.getMapData('TokenIDToTokenString'),
       dl.getMapData('TokenIDToName'),
-      dl.getMapData('TokenIDToLargeImageURI'),
       dl.getMapData('FrontIDToBackID'),
-      dl.getMapData('BackIDToLargeImageURI'),
     ]).then(() => {
       setTimeout(resolver, 0);
     });
@@ -63,10 +62,7 @@ export default class TableTopSimulator {
     return tokens;
   }
 
-  public exportDeck(mainboardIds: string[], sideboardIds: string[], backURL: string): string {
-    const idToLargeImageURI = this.dl.getMapDataSync('IDToLargeImageURI')!;
-    const tokenIDToLargeImageURI = this.dl.getMapDataSync('TokenIDToLargeImageURI')!;
-    const backIDToLargeImageURI = this.dl.getMapDataSync('BackIDToLargeImageURI')!;
+  public exportDeck(mainboardIds: string[], sideboardIds: string[], backURL: string, loader: DataLoader): string {
     const tokenCardIds = this.getTokens(mainboardIds, sideboardIds);
     const mainboard: TTSExport.Board = {
       cards: [],
@@ -118,9 +114,7 @@ export default class TableTopSimulator {
       }),
       backURL: backURL,
     }, (id) => {
-      return idToLargeImageURI[id] ||
-          tokenIDToLargeImageURI[id] ||
-          backIDToLargeImageURI[id];
+      return getCardImageUrl(id, loader);
     });
 
     return JSON.stringify(compiledDeck);

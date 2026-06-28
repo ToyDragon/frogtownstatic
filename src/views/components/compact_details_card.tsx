@@ -1,10 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {DataLoader} from '../../data/data_loader';
+import React, { useState, useEffect } from 'react';
+import { DataLoader } from '../../data/data_loader';
 import CardActions from './card_actions';
 import makeManaIcon from './make_mana_icon';
 import URLLoader from './url_loader';
+import getCardImageUrl from './get_card_image_url';
 
-export default function CompactDetailsCard(props: { cardId: string, loader: DataLoader, urlLoader: URLLoader,
+export default function CompactDetailsCard(props: {
+  cardId: string, loader: DataLoader, urlLoader: URLLoader,
   index: number, actionHandlers: {
     onAdd?: (cardId: string) => void,
     onRemove?: (cardId: string) => void,
@@ -42,16 +44,15 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
   }
 
   const idToText = props.loader.getMapDataSync('IDToText')!;
-  const idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
   const idToArtist = props.loader.getMapDataSync('IDToArtist');
-  const bg = (idToImageUri && idToImageUri[props.cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+  const bg = getCardImageUrl(props.cardId, props.loader);
   const artist = (idToArtist && idToArtist[props.cardId] && `Artist: ${idToArtist[props.cardId]}`) || '';
   return (
     <div style={{
       width: 'calc(100% - 8px)',
       height: '225px',
       position: 'relative',
-      backgroundColor: props.index%2 === 1 ? '#303b4c' : '#4d5869',
+      backgroundColor: props.index % 2 === 1 ? '#303b4c' : '#4d5869',
       color: 'white',
       borderTopLeftRadius: props.index === 0 ? '8px' : '',
       borderTopRightRadius: props.index === 0 ? '8px' : '',
@@ -71,7 +72,7 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
         height: '225px',
         width: 'calc(100% - 160px)',
       }}>
-        <div style={{position: 'relative'}}>
+        <div style={{ position: 'relative' }}>
           <div style={{
             display: 'inline-block',
             width: '42px',
@@ -82,7 +83,7 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
             marginLeft: '2px',
           }} title={idToSetCode[props.cardId] || ''} dangerouslySetInnerHTML={{
             __html: svgText.replace(/\n/g, '').replace(/^{.*$/, '')
-                .replace('<svg ', '<svg style="width:100%; height:100%;" '),
+              .replace('<svg ', '<svg style="width:100%; height:100%;" '),
           }}></div>
           <div style={{
             display: 'inline-block',
@@ -104,8 +105,8 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
             top: '14px',
           }} title={props.loader.getMapDataSync('IDToCost')![props.cardId]} dangerouslySetInnerHTML={{
             __html: (props.loader.getMapDataSync('IDToCost')![props.cardId] || '')
-                .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
-                .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+              .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
+              .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
           }}></div>
         </div>
         <div style={{
@@ -122,9 +123,9 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
             width: '42px',
             textAlign: 'center',
           }}>{
-            typeof props.loader.getMapDataSync('IDToPower')![props.cardId] !== 'undefined' ?
-              (props.loader.getMapDataSync('IDToPower')![props.cardId] +
-                '/' + props.loader.getMapDataSync('IDToToughness')![props.cardId]) : null
+              typeof props.loader.getMapDataSync('IDToPower')![props.cardId] !== 'undefined' ?
+                (props.loader.getMapDataSync('IDToPower')![props.cardId] +
+                  '/' + props.loader.getMapDataSync('IDToToughness')![props.cardId]) : null
             }
           </div>
           <div style={{
@@ -145,8 +146,8 @@ export default function CompactDetailsCard(props: { cardId: string, loader: Data
           marginTop: '-6px',
         }} dangerouslySetInnerHTML={{
           __html: (idToText[props.cardId] || '')
-              .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
-              .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
+            .replace(/{([0-9/A-Z]+)}/g, makeManaIcon('Mana$1'))
+            .replace(/([A-Z])\/([A-Z]).jpg/g, '$1$2.jpg'),
         }}>
         </div>
         <CardActions top={false} cardId={props.cardId} {...props.actionHandlers} />

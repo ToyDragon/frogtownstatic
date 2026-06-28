@@ -1,15 +1,16 @@
 import React from 'react';
-import {DataLoader} from '../../data/data_loader';
+import { DataLoader } from '../../data/data_loader';
 import CardActions from './card_actions';
 import CompactDetailsCard from './compact_details_card';
 import CompactListCard from './compact_list_card';
 import DetailsCard from './details_card';
-import {DisplayMode} from './display_dropdown';
+import { DisplayMode } from './display_dropdown';
 import ImageLoadTracker from './image_load_tracker';
 import ListCard from './list_card';
 import URLLoader from './url_loader';
+import getCardImageUrl from './get_card_image_url';
 
-export function countCards(cardIds: string[]): {id: string, count: number}[] {
+export function countCards(cardIds: string[]): { id: string, count: number }[] {
   const idToCount: Record<string, number> = {};
   for (const id of cardIds) {
     idToCount[id] = (idToCount[id] || 0) + 1;
@@ -33,7 +34,6 @@ export default function CardGroup(props: {
     onStar?: (cardId: string) => void,
   }
 }) {
-  const idToImageUri = props.loader.getMapDataSync('IDToNormalImageURI');
   if (props.displayMode === DisplayMode.Grid ||
     props.displayMode === DisplayMode.CompactGrid ||
     props.displayMode === DisplayMode.SingleGrid) {
@@ -44,11 +44,11 @@ export default function CardGroup(props: {
           margin: '16px',
           position: 'relative',
           width: '223px',
-          height: (312 + (props.cardIds.length-1) * 37) + 'px',
+          height: (312 + (props.cardIds.length - 1) * 37) + 'px',
         }}>
           {
             props.cardIds.map((cardId, i) => {
-              const bg = (idToImageUri && idToImageUri[cardId]) || 'https://www.frogtown.me/Images/CardBack.jpg';
+              const bg = getCardImageUrl(cardId, props.loader);
               const bgProp = props.imageLoadTracker.getURLIsLoaded(bg) ? {} : {
                 'data-lazybackground': bg,
               };
@@ -62,7 +62,7 @@ export default function CardGroup(props: {
                 }}>
                 {multipleCardsInStacks ?
                   <CardActions top={multipleCardsInStacks} cardId={cardId} {...props.actionHandlers} /> :
-                null}
+                  null}
                 <div className='hoverToTop'
                   {...bgProp} style={{
                     backgroundImage: props.imageLoadTracker.getURLIsLoaded(bg) ? `url("${bg}")` : '',
@@ -79,7 +79,7 @@ export default function CardGroup(props: {
           }
           {!multipleCardsInStacks ?
             <CardActions top={multipleCardsInStacks} cardId={props.cardIds[0]} {...props.actionHandlers} /> :
-          null}
+            null}
         </div>
       </div>
     );

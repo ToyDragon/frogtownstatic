@@ -1,31 +1,31 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {DataLoader} from '../../data/data_loader';
-import {Deck} from '../../data/deck';
+import React, { useEffect, useRef, useState } from 'react';
+import { DataLoader } from '../../data/data_loader';
+import { Deck } from '../../data/deck';
 import IconGear from '../bootstrap_icons/icon_gear';
 import TableTopSimulator from '../exporter/tabletop_simulator';
 import CardArea from './card_area';
-import {countCards} from './card_group';
-import DisplayDropdown, {DisplayMode} from './display_dropdown';
-import GrouperDropdown, {Grouper} from './grouper_dropdown';
+import { countCards } from './card_group';
+import DisplayDropdown, { DisplayMode } from './display_dropdown';
+import GrouperDropdown, { Grouper } from './grouper_dropdown';
 import ImageLoadTracker from './image_load_tracker';
 import URLLoader from './url_loader';
 
 export default function deckArea(props: {
-    imageLoadTracker: ImageLoadTracker,
-    loader: DataLoader,
-    urlLoader: URLLoader,
-    deck: Deck | null,
-    addCard: (id: string, toSideboard: boolean) => void,
-    removeCard: (id: string, toSideboard: boolean) => void,
-    moveCard: (id: string, toSideboard: boolean) => void,
-    onSimilar: (id: string) => void,
-    onStar: (id: string) => void,
-    onEditName: () => void,
-    onBulkImport: () => void,
-    onSettings: () => void,
-    onDelete: () => void,
-    onClone: () => void,
-    onSwap: (id: string) => void,
+  imageLoadTracker: ImageLoadTracker,
+  loader: DataLoader,
+  urlLoader: URLLoader,
+  deck: Deck | null,
+  addCard: (id: string, toSideboard: boolean) => void,
+  removeCard: (id: string, toSideboard: boolean) => void,
+  moveCard: (id: string, toSideboard: boolean) => void,
+  onSimilar: (id: string) => void,
+  onStar: (id: string) => void,
+  onEditName: () => void,
+  onBulkImport: () => void,
+  onSettings: () => void,
+  onDelete: () => void,
+  onClone: () => void,
+  onSwap: (id: string) => void,
 }) {
   const [displayMode, setDisplayMode] = useState(DisplayMode.Grid);
   const [grouper, setGrouper] = useState<Grouper | null>(null);
@@ -47,12 +47,13 @@ export default function deckArea(props: {
     keycardImageUrl = `url("${idToCropImageURI[props.deck.keycard]}")`;
   }
 
-  const downloadProps = (!props.deck || !exportReady) ? {href: '#'} : {
+  const downloadProps = (!props.deck || !exportReady) ? { href: '#' } : {
     href: 'data:text/json,' +
       encodeURIComponent(tabletopSimManager.current.exportDeck(
-          props.deck.mainboard,
-          props.deck.sideboard,
-          props.deck.backgroundUrl)),
+        props.deck.mainboard,
+        props.deck.sideboard,
+        props.deck.backgroundUrl,
+        props.loader)),
     download: `${props.deck.name}.json`,
   };
 
@@ -62,7 +63,7 @@ export default function deckArea(props: {
     const affiliateCode = 'frogtown';
     tcgplayerLink = `https://www.tcgplayer.com/massentry?productline=Magic&utm_campaign=${affiliateCode}&utm_medium=scryfall&utm_source=${affiliateCode}&c=` +
       encodeURIComponent(countCards(props.deck.mainboard.concat(props.deck.sideboard))
-          .map((a) => `${a.count} ${idToName[a.id]}`).join('||'));
+        .map((a) => `${a.count} ${idToName[a.id]}`).join('||'));
   }
 
   const cardCount = !props.deck ? 0 : props.deck.mainboard.length + props.deck.sideboard.length;
@@ -168,7 +169,7 @@ export default function deckArea(props: {
             DisplayMode.Details,
             DisplayMode.Text,
             DisplayMode.TextIDs,
-          ]}/>
+          ]} />
         <GrouperDropdown loader={props.loader} value={grouper} setValue={setGrouper} />
         <div className="input-group" style={{
           display: 'inline-block',
@@ -184,7 +185,7 @@ export default function deckArea(props: {
               onMouseUp={(e) => e.button === 0 && props.onEditName()}>Edit Name</a></li>
             <li><a className="dropdown-item" href="#"
               onMouseUp={(e) => e.button === 0 && props.onBulkImport()}>Bulk Import</a></li>
-            <li style={{position: 'relative', marginRight: '26px', width: '222px'}}>
+            <li style={{ position: 'relative', marginRight: '26px', width: '222px' }}>
               <a className={'dropdown-item ' + ((!exportReady || cardCount === 0) ? 'disabled' : '')}
                 {...downloadProps}>Export to Tabletop Simulator</a>
               <a className="dropdown-item" style={{

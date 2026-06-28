@@ -70,6 +70,28 @@ var UrlDataLoader = /** @class */ (function () {
                                 var _this = this;
                                 return __generator(this, function (_a) {
                                     // Special handling for some maps that can be constructed from other maps.
+                                    if (mapName === 'NameToID') {
+                                        return [2 /*return*/, this.getMapData('IDToName').then(function (nameMap) {
+                                                if (!nameMap) {
+                                                    _this.loadedMaps[mapName] = null;
+                                                    resolve(null);
+                                                }
+                                                else {
+                                                    var mapData = {};
+                                                    for (var _i = 0, _a = Object.keys(nameMap); _i < _a.length; _i++) {
+                                                        var id = _a[_i];
+                                                        var name_1 = nameMap[id];
+                                                        mapData[name_1] = mapData[name_1] || [];
+                                                        mapData[name_1].push(id);
+                                                    }
+                                                    _this.loadedMaps[mapName] = mapData;
+                                                    window.maps = window.maps || {};
+                                                    window.maps[mapName] = mapData;
+                                                    console.log('Loaded ' + mapName + ' as derivative');
+                                                    resolve(mapData);
+                                                }
+                                            })];
+                                    }
                                     if (mapName === 'IDToNormalImageURI' || mapName === 'IDToCropImageURI') {
                                         return [2 /*return*/, this.getMapData('IDToLargeImageURI').then(function (largeMap) {
                                                 if (!largeMap) {

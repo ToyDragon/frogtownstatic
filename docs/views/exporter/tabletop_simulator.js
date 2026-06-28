@@ -22,7 +22,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var get_card_image_url_1 = __importDefault(require("../components/get_card_image_url"));
 var TTSExport = __importStar(require("./exporter"));
 var TableTopSimulator = /** @class */ (function () {
     function TableTopSimulator(dl) {
@@ -35,12 +39,10 @@ var TableTopSimulator = /** @class */ (function () {
         Promise.all([
             dl.getMapData('IDToName'),
             dl.getMapData('IDToTokenStrings'),
-            dl.getMapData('IDToLargeImageURI'),
+            dl.getMapData('IDToMultiverseIds'),
             dl.getMapData('TokenIDToTokenString'),
             dl.getMapData('TokenIDToName'),
-            dl.getMapData('TokenIDToLargeImageURI'),
             dl.getMapData('FrontIDToBackID'),
-            dl.getMapData('BackIDToLargeImageURI'),
         ]).then(function () {
             setTimeout(resolver, 0);
         });
@@ -77,11 +79,8 @@ var TableTopSimulator = /** @class */ (function () {
         }
         return tokens;
     };
-    TableTopSimulator.prototype.exportDeck = function (mainboardIds, sideboardIds, backURL) {
+    TableTopSimulator.prototype.exportDeck = function (mainboardIds, sideboardIds, backURL, loader) {
         var _this = this;
-        var idToLargeImageURI = this.dl.getMapDataSync('IDToLargeImageURI');
-        var tokenIDToLargeImageURI = this.dl.getMapDataSync('TokenIDToLargeImageURI');
-        var backIDToLargeImageURI = this.dl.getMapDataSync('BackIDToLargeImageURI');
         var tokenCardIds = this.getTokens(mainboardIds, sideboardIds);
         var mainboard = {
             cards: [],
@@ -133,9 +132,7 @@ var TableTopSimulator = /** @class */ (function () {
             }),
             backURL: backURL,
         }, function (id) {
-            return idToLargeImageURI[id] ||
-                tokenIDToLargeImageURI[id] ||
-                backIDToLargeImageURI[id];
+            return (0, get_card_image_url_1.default)(id, loader);
         });
         return JSON.stringify(compiledDeck);
     };

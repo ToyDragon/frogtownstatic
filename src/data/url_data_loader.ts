@@ -1,4 +1,4 @@
-import {CardIDMap, MapData} from './map_data';
+import { CardIDMap, MapData, StringValueMap } from './map_data';
 
 export class UrlDataLoader {
   public baseUrl!: string;
@@ -28,6 +28,26 @@ export class UrlDataLoader {
     if (!this.mapLoadPromise[mapName]) {
       this.mapLoadPromise[mapName] = new Promise(async (resolve) => {
         // Special handling for some maps that can be constructed from other maps.
+        if (mapName === 'NameToID') {
+          return this.getMapData('IDToName').then((nameMap) => {
+            if (!nameMap) {
+              this.loadedMaps[mapName] = null;
+              resolve(null);
+            } else {
+              const mapData: StringValueMap<string[]> = {};
+              for (const id of Object.keys(nameMap)) {
+                const name = nameMap[id];
+                mapData[name] = mapData[name] || [];
+                mapData[name].push(id);
+              }
+              this.loadedMaps[mapName] = mapData;
+              (window as any).maps = (window as any).maps || {};
+              (window as any).maps[mapName] = mapData;
+              console.log('Loaded ' + mapName + ' as derivative');
+              resolve(mapData);
+            }
+          });
+        }
         if (mapName === 'IDToNormalImageURI' || mapName === 'IDToCropImageURI') {
           return this.getMapData('IDToLargeImageURI').then((largeMap) => {
             if (!largeMap) {
@@ -60,9 +80,9 @@ export class UrlDataLoader {
                 const cost = costMap[id] || '';
                 // Logic must match the exported exactly.
                 mapData[id] = cost === '' ? 0 : cost.split(' //')[0].split('}{')
-                    .map((c) => c.replace(/[\{\}]/g, ''))
-                    .map((c) => c === 'X' || c === '0' ? 0 : (Number.parseInt(c) || 1))
-                    .reduce((c, v) => c + v);
+                  .map((c) => c.replace(/[\{\}]/g, ''))
+                  .map((c) => c === 'X' || c === '0' ? 0 : (Number.parseInt(c) || 1))
+                  .reduce((c, v) => c + v);
               }
               for (const id of Object.keys(idToCMCAbv)) {
                 mapData[id] = idToCMCAbv[id];
