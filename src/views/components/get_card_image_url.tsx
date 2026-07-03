@@ -10,9 +10,9 @@ export default function getCardImageUrl(cardId: string, loader: DataLoader): str
       const name = loader.getMapDataSync('IDToName')![cardId];
       for (const otherId of ((loader.getMapDataSync('NameToID') || {})[name] || [])) {
         const otherMid = idToMultiverseId[otherId] || null;
-        if (otherMid !== null) {
+        // Lower ids have a higher chance of working for some reason?
+        if (otherMid !== null && (mid === null || mid > otherMid)) {
           mid = otherMid;
-          break;
         }
       }
     }

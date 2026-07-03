@@ -4574,9 +4574,9 @@ function getCardImageUrl(cardId, loader) {
             for (var _i = 0, _a = ((loader.getMapDataSync('NameToID') || {})[name_1] || []); _i < _a.length; _i++) {
                 var otherId = _a[_i];
                 var otherMid = idToMultiverseId[otherId] || null;
-                if (otherMid !== null) {
+                // Lower ids have a higher chance of working for some reason?
+                if (otherMid !== null && (mid === null || mid > otherMid)) {
                     mid = otherMid;
-                    break;
                 }
             }
         }
