@@ -974,6 +974,7 @@ var MapData = /** @class */ (function () {
         this.TypeToID = {};
         this.IDToArtist = {};
         this.IDToMultiverseId = {};
+        this.IDToGImgId = {};
         this.IDToLegalFormat = {};
         this.LegalFormatToID = {};
         this.IDToText = {};
@@ -4565,32 +4566,53 @@ exports["default"] = FilterText;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 function getCardImageUrl(cardId, loader) {
     var result = 'https://gatherer.wizards.com/assets/card_back.webp';
-    var mid = null;
-    var idToMultiverseId = loader.getMapDataSync('IDToMultiverseId');
-    if (idToMultiverseId) {
-        mid = idToMultiverseId[cardId] || null;
-        if (mid === null) {
-            var name_1 = loader.getMapDataSync('IDToName')[cardId];
-            for (var _i = 0, _a = ((loader.getMapDataSync('NameToID') || {})[name_1] || []); _i < _a.length; _i++) {
-                var otherId = _a[_i];
-                var otherMid = idToMultiverseId[otherId] || null;
-                // Lower ids have a higher chance of working for some reason?
-                if (otherMid !== null && (mid === null || mid > otherMid)) {
-                    mid = otherMid;
-                }
+    var idToGImgId = loader.getMapDataSync('IDToGImgId');
+    var gImgId = null;
+    if (idToGImgId && cardId in idToGImgId) {
+        gImgId = idToGImgId[cardId];
+    }
+    if (idToGImgId && !gImgId) {
+        var name_1 = loader.getMapDataSync('IDToName')[cardId];
+        for (var _i = 0, _a = ((loader.getMapDataSync('NameToID') || {})[name_1] || []); _i < _a.length; _i++) {
+            var otherId = _a[_i];
+            var otherGImgId = idToGImgId[otherId] || null;
+            if (otherGImgId) {
+                gImgId = otherGImgId;
+                break;
             }
         }
     }
-    var tokenIdToMultiverseIds = loader.getMapDataSync('TokenIDToMultiverseIds');
-    if (mid === null && tokenIdToMultiverseIds && tokenIdToMultiverseIds[cardId]) {
-        mid = tokenIdToMultiverseIds[cardId][0];
+    if (gImgId) {
+        result = "https://gatherer-static.wizards.com/Cards/medium/".concat(gImgId, ".webp");
     }
-    var backIdToMultiverseIds = loader.getMapDataSync('BackIDToMultiverseIds');
-    if (mid === null && backIdToMultiverseIds && backIdToMultiverseIds[cardId]) {
-        mid = backIdToMultiverseIds[cardId][0];
-    }
-    if (mid) {
-        result = "https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=".concat(mid);
+    else {
+        var mid = null;
+        var idToMultiverseId = loader.getMapDataSync('IDToMultiverseId');
+        if (idToMultiverseId) {
+            mid = idToMultiverseId[cardId] || null;
+            if (mid === null) {
+                var name_2 = loader.getMapDataSync('IDToName')[cardId];
+                for (var _b = 0, _c = ((loader.getMapDataSync('NameToID') || {})[name_2] || []); _b < _c.length; _b++) {
+                    var otherId = _c[_b];
+                    var otherMid = idToMultiverseId[otherId] || null;
+                    // Lower ids have a higher chance of working for some reason?
+                    if (otherMid !== null && (mid === null || mid > otherMid)) {
+                        mid = otherMid;
+                    }
+                }
+            }
+        }
+        var tokenIdToMultiverseIds = loader.getMapDataSync('TokenIDToMultiverseIds');
+        if (mid === null && tokenIdToMultiverseIds && tokenIdToMultiverseIds[cardId]) {
+            mid = tokenIdToMultiverseIds[cardId][0];
+        }
+        var backIdToMultiverseIds = loader.getMapDataSync('BackIDToMultiverseIds');
+        if (mid === null && backIdToMultiverseIds && backIdToMultiverseIds[cardId]) {
+            mid = backIdToMultiverseIds[cardId][0];
+        }
+        if (mid) {
+            result = "https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=".concat(mid);
+        }
     }
     return result;
 }
@@ -6199,22 +6221,23 @@ function loadingWindow(props) {
     var _j = (0, react_2.useState)(false), isIDToSubtypeLoaded = _j[0], setIDToSubtypeLoaded = _j[1];
     var _k = (0, react_2.useState)(false), isIDToPowerLoaded = _k[0], setIDToPowerLoaded = _k[1];
     var _l = (0, react_2.useState)(false), isIDToToughnessLoaded = _l[0], setIDToToughnessLoaded = _l[1];
-    var _m = (0, react_2.useState)(false), isIDToMultiverIdLoaded = _m[0], setIDToMultiverIdLoaded = _m[1];
-    var _o = (0, react_2.useState)(false), isIDToCMCLoaded = _o[0], setIDToCMCLoaded = _o[1];
-    var _p = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _p[0], setIDToLegalFormatLoaded = _p[1];
-    var _q = (0, react_2.useState)(false), isIDToSetCodeLoaded = _q[0], setIDToSetCodeLoaded = _q[1];
-    var _r = (0, react_2.useState)(false), isSetCodeToReleaseLoaded = _r[0], setSetCodeToReleaseLoaded = _r[1];
-    var _s = (0, react_2.useState)(false), isIDToTokenStringsLoaded = _s[0], setIDToTokenStringsLoaded = _s[1];
-    var _t = (0, react_2.useState)(false), isIDToLargeImageURILoaded = _t[0], setIDToLargeImageURILoaded = _t[1];
-    var _u = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _u[0], setTokenIDToTokenStringLoaded = _u[1];
-    var _v = (0, react_2.useState)(false), isTokenIDToNameLoaded = _v[0], setTokenIDToNameLoaded = _v[1];
-    var _w = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _w[0], setTokenIDToLargeImageURILoaded = _w[1];
-    var _x = (0, react_2.useState)(false), isTokenIDToMultiverseIdsLoaded = _x[0], setTokenIDToMultiverseIdsLoaded = _x[1];
-    var _y = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _y[0], setFrontIDToBackIDLoaded = _y[1];
-    var _z = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _z[0], setBackIDToLargeImageURILoaded = _z[1];
-    var _0 = (0, react_2.useState)(false), isBackIDToMultiverseIdsLoaded = _0[0], setBackIDToMultiverseIdsLoaded = _0[1];
-    var _1 = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _1[0], setSetCodeToSetNameLoaded = _1[1];
-    var _2 = (0, react_2.useState)(false), isIDToCostLoaded = _2[0], setIDToCostLoaded = _2[1];
+    var _m = (0, react_2.useState)(false), isIDToMultiverIdLoaded = _m[0], setIDToMultiverseIdLoaded = _m[1];
+    var _o = (0, react_2.useState)(false), isIDToGImgIdLoaded = _o[0], setIDToGImgIdLoaded = _o[1];
+    var _p = (0, react_2.useState)(false), isIDToCMCLoaded = _p[0], setIDToCMCLoaded = _p[1];
+    var _q = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _q[0], setIDToLegalFormatLoaded = _q[1];
+    var _r = (0, react_2.useState)(false), isIDToSetCodeLoaded = _r[0], setIDToSetCodeLoaded = _r[1];
+    var _s = (0, react_2.useState)(false), isSetCodeToReleaseLoaded = _s[0], setSetCodeToReleaseLoaded = _s[1];
+    var _t = (0, react_2.useState)(false), isIDToTokenStringsLoaded = _t[0], setIDToTokenStringsLoaded = _t[1];
+    var _u = (0, react_2.useState)(false), isIDToLargeImageURILoaded = _u[0], setIDToLargeImageURILoaded = _u[1];
+    var _v = (0, react_2.useState)(false), isTokenIDToTokenStringLoaded = _v[0], setTokenIDToTokenStringLoaded = _v[1];
+    var _w = (0, react_2.useState)(false), isTokenIDToNameLoaded = _w[0], setTokenIDToNameLoaded = _w[1];
+    var _x = (0, react_2.useState)(false), isTokenIDToLargeImageURILoaded = _x[0], setTokenIDToLargeImageURILoaded = _x[1];
+    var _y = (0, react_2.useState)(false), isTokenIDToMultiverseIdsLoaded = _y[0], setTokenIDToMultiverseIdsLoaded = _y[1];
+    var _z = (0, react_2.useState)(false), isFrontIDToBackIDLoaded = _z[0], setFrontIDToBackIDLoaded = _z[1];
+    var _0 = (0, react_2.useState)(false), isBackIDToLargeImageURILoaded = _0[0], setBackIDToLargeImageURILoaded = _0[1];
+    var _1 = (0, react_2.useState)(false), isBackIDToMultiverseIdsLoaded = _1[0], setBackIDToMultiverseIdsLoaded = _1[1];
+    var _2 = (0, react_2.useState)(false), isSetCodeToSetNameLoaded = _2[0], setSetCodeToSetNameLoaded = _2[1];
+    var _3 = (0, react_2.useState)(false), isIDToCostLoaded = _3[0], setIDToCostLoaded = _3[1];
     (0, react_1.useEffect)(function () {
         Promise.all([
             props.loader.getMapData('IDToName'),
@@ -6235,7 +6258,8 @@ function loadingWindow(props) {
             remainingPromises.push(props.loader.getMapData('IDToSubtype').then(function () { return setIDToSubtypeLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToPower').then(function () { return setIDToPowerLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToToughness').then(function () { return setIDToToughnessLoaded(true); }));
-            remainingPromises.push(props.loader.getMapData('IDToMultiverseId').then(function () { return setIDToMultiverIdLoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('IDToMultiverseId').then(function () { return setIDToMultiverseIdLoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('IDToGImgId').then(function () { return setIDToGImgIdLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToCMC').then(function () { return setIDToCMCLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToLegalFormat').then(function () { return setIDToLegalFormatLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToSetCode').then(function () { return setIDToSetCodeLoaded(true); }));
@@ -6292,6 +6316,7 @@ function loadingWindow(props) {
         createLoadingIndicator(isIDToPowerLoaded, 'IDToPower'),
         createLoadingIndicator(isIDToToughnessLoaded, 'IDToToughness'),
         createLoadingIndicator(isIDToMultiverIdLoaded, 'IDToMultiverseId'),
+        createLoadingIndicator(isIDToGImgIdLoaded, 'IDToGImgId'),
         createLoadingIndicator(isIDToCMCLoaded, 'IDToCMC'),
         createLoadingIndicator(isIDToLegalFormatLoaded, 'IDToLegalFormat'),
         createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode'),
@@ -6779,7 +6804,7 @@ var TableTopSimulator = /** @class */ (function () {
         Promise.all([
             dl.getMapData('IDToName'),
             dl.getMapData('IDToTokenStrings'),
-            dl.getMapData('IDToMultiverseId'),
+            dl.getMapData('IDToGImgId'),
             dl.getMapData('TokenIDToTokenString'),
             dl.getMapData('TokenIDToName'),
             dl.getMapData('FrontIDToBackID'),

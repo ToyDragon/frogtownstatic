@@ -15,7 +15,8 @@ export default function loadingWindow(props: { loader: DataLoader }) {
   const [isIDToSubtypeLoaded, setIDToSubtypeLoaded] = useState(false);
   const [isIDToPowerLoaded, setIDToPowerLoaded] = useState(false);
   const [isIDToToughnessLoaded, setIDToToughnessLoaded] = useState(false);
-  const [isIDToMultiverIdLoaded, setIDToMultiverIdLoaded] = useState(false);
+  const [isIDToMultiverIdLoaded, setIDToMultiverseIdLoaded] = useState(false);
+  const [isIDToGImgIdLoaded, setIDToGImgIdLoaded] = useState(false);
   const [isIDToCMCLoaded, setIDToCMCLoaded] = useState(false);
   const [isIDToLegalFormatLoaded, setIDToLegalFormatLoaded] = useState(false);
   const [isIDToSetCodeLoaded, setIDToSetCodeLoaded] = useState(false);
@@ -52,7 +53,8 @@ export default function loadingWindow(props: { loader: DataLoader }) {
       remainingPromises.push(props.loader.getMapData('IDToSubtype').then(() => setIDToSubtypeLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToPower').then(() => setIDToPowerLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToToughness').then(() => setIDToToughnessLoaded(true)));
-      remainingPromises.push(props.loader.getMapData('IDToMultiverseId').then(() => setIDToMultiverIdLoaded(true)));
+      remainingPromises.push(props.loader.getMapData('IDToMultiverseId').then(() => setIDToMultiverseIdLoaded(true)));
+      remainingPromises.push(props.loader.getMapData('IDToGImgId').then(() => setIDToGImgIdLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToCMC').then(() => setIDToCMCLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToLegalFormat').then(() => setIDToLegalFormatLoaded(true)));
       remainingPromises.push(props.loader.getMapData('IDToSetCode').then(() => setIDToSetCodeLoaded(true)));
@@ -110,6 +112,7 @@ export default function loadingWindow(props: { loader: DataLoader }) {
     {createLoadingIndicator(isIDToPowerLoaded, 'IDToPower')}
     {createLoadingIndicator(isIDToToughnessLoaded, 'IDToToughness')}
     {createLoadingIndicator(isIDToMultiverIdLoaded, 'IDToMultiverseId')}
+    {createLoadingIndicator(isIDToGImgIdLoaded, 'IDToGImgId')}
     {createLoadingIndicator(isIDToCMCLoaded, 'IDToCMC')}
     {createLoadingIndicator(isIDToLegalFormatLoaded, 'IDToLegalFormat')}
     {createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode')}

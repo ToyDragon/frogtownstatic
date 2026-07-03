@@ -2,31 +2,52 @@ import { DataLoader } from '../../data/data_loader';
 
 export default function getCardImageUrl(cardId: string, loader: DataLoader): string {
   let result = 'https://gatherer.wizards.com/assets/card_back.webp';
-  let mid: number | null = null;
-  const idToMultiverseId = loader.getMapDataSync('IDToMultiverseId');
-  if (idToMultiverseId) {
-    mid = idToMultiverseId[cardId] || null;
-    if (mid === null) {
-      const name = loader.getMapDataSync('IDToName')![cardId];
-      for (const otherId of ((loader.getMapDataSync('NameToID') || {})[name] || [])) {
-        const otherMid = idToMultiverseId[otherId] || null;
-        // Lower ids have a higher chance of working for some reason?
-        if (otherMid !== null && (mid === null || mid > otherMid)) {
-          mid = otherMid;
-        }
+  const idToGImgId = loader.getMapDataSync('IDToGImgId');
+  let gImgId: string | null = null;
+  if (idToGImgId && cardId in idToGImgId) {
+    gImgId = idToGImgId[cardId];
+  }
+
+  if (idToGImgId && !gImgId) {
+    const name = loader.getMapDataSync('IDToName')![cardId];
+    for (const otherId of ((loader.getMapDataSync('NameToID') || {})[name] || [])) {
+      const otherGImgId = idToGImgId[otherId] || null;
+      if (otherGImgId) {
+        gImgId = otherGImgId;
+        break;
       }
     }
   }
-  const tokenIdToMultiverseIds = loader.getMapDataSync('TokenIDToMultiverseIds');
-  if (mid === null && tokenIdToMultiverseIds && tokenIdToMultiverseIds[cardId]) {
-    mid = tokenIdToMultiverseIds[cardId][0];
-  }
-  const backIdToMultiverseIds = loader.getMapDataSync('BackIDToMultiverseIds');
-  if (mid === null && backIdToMultiverseIds && backIdToMultiverseIds[cardId]) {
-    mid = backIdToMultiverseIds[cardId][0];
-  }
-  if (mid) {
-    result = `https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=${mid}`;
+
+  if (gImgId) {
+    result = `https://gatherer-static.wizards.com/Cards/medium/${gImgId}.webp`;
+  } else {
+    let mid: number | null = null;
+    const idToMultiverseId = loader.getMapDataSync('IDToMultiverseId');
+    if (idToMultiverseId) {
+      mid = idToMultiverseId[cardId] || null;
+      if (mid === null) {
+        const name = loader.getMapDataSync('IDToName')![cardId];
+        for (const otherId of ((loader.getMapDataSync('NameToID') || {})[name] || [])) {
+          const otherMid = idToMultiverseId[otherId] || null;
+          // Lower ids have a higher chance of working for some reason?
+          if (otherMid !== null && (mid === null || mid > otherMid)) {
+            mid = otherMid;
+          }
+        }
+      }
+    }
+    const tokenIdToMultiverseIds = loader.getMapDataSync('TokenIDToMultiverseIds');
+    if (mid === null && tokenIdToMultiverseIds && tokenIdToMultiverseIds[cardId]) {
+      mid = tokenIdToMultiverseIds[cardId][0];
+    }
+    const backIdToMultiverseIds = loader.getMapDataSync('BackIDToMultiverseIds');
+    if (mid === null && backIdToMultiverseIds && backIdToMultiverseIds[cardId]) {
+      mid = backIdToMultiverseIds[cardId][0];
+    }
+    if (mid) {
+      result = `https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=${mid}`;
+    }
   }
   return result;
 }
