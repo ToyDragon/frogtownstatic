@@ -37,7 +37,7 @@ function loadingWindow(props) {
     var _j = (0, react_2.useState)(false), isIDToSubtypeLoaded = _j[0], setIDToSubtypeLoaded = _j[1];
     var _k = (0, react_2.useState)(false), isIDToPowerLoaded = _k[0], setIDToPowerLoaded = _k[1];
     var _l = (0, react_2.useState)(false), isIDToToughnessLoaded = _l[0], setIDToToughnessLoaded = _l[1];
-    var _m = (0, react_2.useState)(false), isIDToMultiverIdsLoaded = _m[0], setIDToMultiverIdsLoaded = _m[1];
+    var _m = (0, react_2.useState)(false), isIDToMultiverIdLoaded = _m[0], setIDToMultiverIdLoaded = _m[1];
     var _o = (0, react_2.useState)(false), isIDToCMCLoaded = _o[0], setIDToCMCLoaded = _o[1];
     var _p = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _p[0], setIDToLegalFormatLoaded = _p[1];
     var _q = (0, react_2.useState)(false), isIDToSetCodeLoaded = _q[0], setIDToSetCodeLoaded = _q[1];
@@ -73,7 +73,7 @@ function loadingWindow(props) {
             remainingPromises.push(props.loader.getMapData('IDToSubtype').then(function () { return setIDToSubtypeLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToPower').then(function () { return setIDToPowerLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToToughness').then(function () { return setIDToToughnessLoaded(true); }));
-            remainingPromises.push(props.loader.getMapData('IDToMultiverseIds').then(function () { return setIDToMultiverIdsLoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('IDToMultiverseId').then(function () { return setIDToMultiverIdLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToCMC').then(function () { return setIDToCMCLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToLegalFormat').then(function () { return setIDToLegalFormatLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToSetCode').then(function () { return setIDToSetCodeLoaded(true); }));
@@ -129,7 +129,7 @@ function loadingWindow(props) {
         createLoadingIndicator(isIDToSubtypeLoaded, 'IDToSubtype'),
         createLoadingIndicator(isIDToPowerLoaded, 'IDToPower'),
         createLoadingIndicator(isIDToToughnessLoaded, 'IDToToughness'),
-        createLoadingIndicator(isIDToMultiverIdsLoaded, 'IDToMultiverseIds'),
+        createLoadingIndicator(isIDToMultiverIdLoaded, 'IDToMultiverseId'),
         createLoadingIndicator(isIDToCMCLoaded, 'IDToCMC'),
         createLoadingIndicator(isIDToLegalFormatLoaded, 'IDToLegalFormat'),
         createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode'),

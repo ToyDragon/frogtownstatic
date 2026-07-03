@@ -973,7 +973,7 @@ var MapData = /** @class */ (function () {
         this.IDToType = {};
         this.TypeToID = {};
         this.IDToArtist = {};
-        this.IDToMultiverseIds = {};
+        this.IDToMultiverseId = {};
         this.IDToLegalFormat = {};
         this.LegalFormatToID = {};
         this.IDToText = {};
@@ -4565,16 +4565,16 @@ exports["default"] = FilterText;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 function getCardImageUrl(cardId, loader) {
     var result = 'https://gatherer.wizards.com/assets/card_back.webp';
-    var mid = [];
-    var idToMultiverseIds = loader.getMapDataSync('IDToMultiverseIds');
-    if (idToMultiverseIds) {
-        mid = idToMultiverseIds[cardId];
-        if (!mid) {
+    var mid = null;
+    var idToMultiverseId = loader.getMapDataSync('IDToMultiverseId');
+    if (idToMultiverseId) {
+        mid = idToMultiverseId[cardId] || null;
+        if (mid === null) {
             var name_1 = loader.getMapDataSync('IDToName')[cardId];
             for (var _i = 0, _a = ((loader.getMapDataSync('NameToID') || {})[name_1] || []); _i < _a.length; _i++) {
                 var otherId = _a[_i];
-                var otherMid = idToMultiverseIds[otherId];
-                if ((otherMid || []).length > 0) {
+                var otherMid = idToMultiverseId[otherId] || null;
+                if (otherMid !== null) {
                     mid = otherMid;
                     break;
                 }
@@ -4582,15 +4582,15 @@ function getCardImageUrl(cardId, loader) {
         }
     }
     var tokenIdToMultiverseIds = loader.getMapDataSync('TokenIDToMultiverseIds');
-    if (!mid && tokenIdToMultiverseIds) {
-        mid = tokenIdToMultiverseIds[cardId];
+    if (mid === null && tokenIdToMultiverseIds && tokenIdToMultiverseIds[cardId]) {
+        mid = tokenIdToMultiverseIds[cardId][0];
     }
     var backIdToMultiverseIds = loader.getMapDataSync('BackIDToMultiverseIds');
-    if (!mid && backIdToMultiverseIds) {
-        mid = backIdToMultiverseIds[cardId];
+    if (mid === null && backIdToMultiverseIds && backIdToMultiverseIds[cardId]) {
+        mid = backIdToMultiverseIds[cardId][0];
     }
     if (mid) {
-        result = "https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=".concat(mid[0]);
+        result = "https://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=".concat(mid);
     }
     return result;
 }
@@ -6199,7 +6199,7 @@ function loadingWindow(props) {
     var _j = (0, react_2.useState)(false), isIDToSubtypeLoaded = _j[0], setIDToSubtypeLoaded = _j[1];
     var _k = (0, react_2.useState)(false), isIDToPowerLoaded = _k[0], setIDToPowerLoaded = _k[1];
     var _l = (0, react_2.useState)(false), isIDToToughnessLoaded = _l[0], setIDToToughnessLoaded = _l[1];
-    var _m = (0, react_2.useState)(false), isIDToMultiverIdsLoaded = _m[0], setIDToMultiverIdsLoaded = _m[1];
+    var _m = (0, react_2.useState)(false), isIDToMultiverIdLoaded = _m[0], setIDToMultiverIdLoaded = _m[1];
     var _o = (0, react_2.useState)(false), isIDToCMCLoaded = _o[0], setIDToCMCLoaded = _o[1];
     var _p = (0, react_2.useState)(false), isIDToLegalFormatLoaded = _p[0], setIDToLegalFormatLoaded = _p[1];
     var _q = (0, react_2.useState)(false), isIDToSetCodeLoaded = _q[0], setIDToSetCodeLoaded = _q[1];
@@ -6235,7 +6235,7 @@ function loadingWindow(props) {
             remainingPromises.push(props.loader.getMapData('IDToSubtype').then(function () { return setIDToSubtypeLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToPower').then(function () { return setIDToPowerLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToToughness').then(function () { return setIDToToughnessLoaded(true); }));
-            remainingPromises.push(props.loader.getMapData('IDToMultiverseIds').then(function () { return setIDToMultiverIdsLoaded(true); }));
+            remainingPromises.push(props.loader.getMapData('IDToMultiverseId').then(function () { return setIDToMultiverIdLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToCMC').then(function () { return setIDToCMCLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToLegalFormat').then(function () { return setIDToLegalFormatLoaded(true); }));
             remainingPromises.push(props.loader.getMapData('IDToSetCode').then(function () { return setIDToSetCodeLoaded(true); }));
@@ -6291,7 +6291,7 @@ function loadingWindow(props) {
         createLoadingIndicator(isIDToSubtypeLoaded, 'IDToSubtype'),
         createLoadingIndicator(isIDToPowerLoaded, 'IDToPower'),
         createLoadingIndicator(isIDToToughnessLoaded, 'IDToToughness'),
-        createLoadingIndicator(isIDToMultiverIdsLoaded, 'IDToMultiverseIds'),
+        createLoadingIndicator(isIDToMultiverIdLoaded, 'IDToMultiverseId'),
         createLoadingIndicator(isIDToCMCLoaded, 'IDToCMC'),
         createLoadingIndicator(isIDToLegalFormatLoaded, 'IDToLegalFormat'),
         createLoadingIndicator(isIDToSetCodeLoaded, 'IDToSetCode'),
@@ -6779,7 +6779,7 @@ var TableTopSimulator = /** @class */ (function () {
         Promise.all([
             dl.getMapData('IDToName'),
             dl.getMapData('IDToTokenStrings'),
-            dl.getMapData('IDToMultiverseIds'),
+            dl.getMapData('IDToMultiverseId'),
             dl.getMapData('TokenIDToTokenString'),
             dl.getMapData('TokenIDToName'),
             dl.getMapData('FrontIDToBackID'),

@@ -91,7 +91,7 @@ export class MapData {
   public IDToType: CardIDMap<string[]> = {};
   public TypeToID: StringValueMap<string[]> = {};
   public IDToArtist: CardIDMap<string> = {};
-  public IDToMultiverseIds: CardIDMap<number[]> = {};
+  public IDToMultiverseId: CardIDMap<number> = {};
 
   public IDToLegalFormat: CardIDMap<string[]> = {};
   public LegalFormatToID: StringValueMap<string[]> = {};

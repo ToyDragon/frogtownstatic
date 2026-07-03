@@ -18,7 +18,7 @@ export default class TableTopSimulator {
     Promise.all([
       dl.getMapData('IDToName'),
       dl.getMapData('IDToTokenStrings'),
-      dl.getMapData('IDToMultiverseIds'),
+      dl.getMapData('IDToMultiverseId'),
       dl.getMapData('TokenIDToTokenString'),
       dl.getMapData('TokenIDToName'),
       dl.getMapData('FrontIDToBackID'),
